@@ -16,7 +16,8 @@ User Stories
 <https://docs.google.com/document/d/1ACbHHsRUVK9P3kpGzJqS8SDrAS6OJJCpS5vsPo9IIFw/view>
 
 
-Team Members:
+Team Members
+--------------
 
 Sujaya Maiyya ([@sujaya](https://github.com/sujaya))  
 ![sujaya photo](https://avatars2.githubusercontent.com/u/4294071?v=4&s=400)

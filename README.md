@@ -1,4 +1,4 @@
-# Luber: A Car-sharing app
+# Luber: :oncoming_automobile: A Car-sharing App :oncoming_taxi:
 ==================================
 
 Sharing economy is efficient, environment-friendly and accessible to all. Uber and Airbnb have swept out the traditional rental business in every aspect. It's much faster and more convenient to ask for a ride by Uber or Lyft, however, sometimes a ride is not sufficient for all travelling demand, in case of family trip, long journey or private event. Therefore, We'd like to work on a Uber-like car-sharing app for CS291A project.
@@ -19,16 +19,16 @@ User Stories
 Team Members:
 
 Sujaya Maiyya ([@sujaya](https://github.com/sujaya))  
-![sujaya photo](https://avatars3.githubusercontent.com/u/919763?v=2&s=120)
+![sujaya photo](https://avatars2.githubusercontent.com/u/4294071?v=4&s=400)
 
 Sammy Guo ([@masoug](https://github.com/masoug))  
-![masoug photo](https://avatars3.githubusercontent.com/u/919763?v=2&s=120)
+![masoug photo](https://github.com/scalableinternetservices/Luber/blob/master/misc/snapshots/sammy.jpg)
 
 Kyle Carson ([@carsonkk](https://github.com/carsonkk))  
-![carsonkk photo](https://avatars3.githubusercontent.com/u/919763?v=2&s=120)
+![carsonkk photo](https://avatars0.githubusercontent.com/u/10569071?v=4&s=400)
 
 Justin Pearson ([@justinpearson](https://github.com/justinpearson))  
 ![justinpearson photo](http://justinppearson.com/assets/my-face-2.png)
 
 Michael Zhang ([@Heronalps](https://github.com/Heronalps))  
-![Heronalps photo](https://avatars3.githubusercontent.com/u/919763?v=2&s=120)
+![Heronalps photo](https://github.com/scalableinternetservices/Luber/blob/master/misc/snapshots/heronalps.jpg)

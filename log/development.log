@@ -1,0 +1,24 @@
+Started GET "/" for 127.0.0.1 at 2017-10-10 12:04:18 -0700
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb (4.7ms)
+Completed 200 OK in 69ms (Views: 17.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-10-10 12:04:28 -0700
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb (3.2ms)
+Completed 200 OK in 9ms (Views: 6.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-10-10 16:53:43 -0700
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb (4.7ms)
+Completed 200 OK in 57ms (Views: 13.7ms | ActiveRecord: 0.0ms)
+
+

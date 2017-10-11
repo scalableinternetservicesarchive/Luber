@@ -1,3 +1,13 @@
 language: ruby
 rvm:
     - 2.4.0
+
+travis encrypt "cs291:fe0m3PcwMWx7ShXdBQwSz7Bd" --add notifications.slack
+
+notifications:
+    email: false
+    slack:
+        rooms:
+            - 'cs291:fe0m3PcwMWx7ShXdBQwSz7Bd'
+        on_success: change
+        on_failure: always

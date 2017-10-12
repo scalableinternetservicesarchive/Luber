@@ -1103,3 +1103,137 @@ Completed 200 OK in 31ms (Views: 28.0ms | ActiveRecord: 0.2ms)
   [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
   [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Started GET "/rentalposts" for 127.0.0.1 at 2017-10-12 11:35:58 -0700
+Processing by RentalpostsController#index as HTML
+  Rendering rentalposts/index.html.erb within layouts/application
+  [1m[36mRentalpost Load (0.4ms)[0m  [1m[34mSELECT "rentalposts".* FROM "rentalposts"[0m
+  Rendered rentalposts/index.html.erb within layouts/application (5.2ms)
+Completed 200 OK in 91ms (Views: 55.5ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/rentalposts/new" for 127.0.0.1 at 2017-10-12 11:35:59 -0700
+Processing by RentalpostsController#new as HTML
+  Rendering rentalposts/new.html.erb within layouts/application
+  Rendered rentalposts/_form.html.erb (10.2ms)
+  Rendered rentalposts/new.html.erb within layouts/application (14.1ms)
+Completed 200 OK in 51ms (Views: 38.0ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/rentalposts" for 127.0.0.1 at 2017-10-12 11:36:03 -0700
+Processing by RentalpostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"P82oRKw7GUyEyZ/yztK8IYaCll8+RAXbTho6PzFevJNcC0OciS1B2B+wnvbHqNQhL0wNkJFcdJ+h0dSBryUioA==", "rentalpost"=>{"content"=>"1", "user_id"=>"1"}, "commit"=>"Create Rentalpost"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "rentalposts" ("content", "user_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["content", "1"], ["user_id", 1], ["created_at", "2017-10-12 18:36:03.737183"], ["updated_at", "2017-10-12 18:36:03.737183"]]
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+Completed 500 Internal Server Error in 45ms (ActiveRecord: 1.2ms)
+
+
+  
+ActiveRecord::StatementInvalid (SQLite3::ReadOnlyException: attempt to write a readonly database: INSERT INTO "rentalposts" ("content", "user_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)):
+  
+app/controllers/rentalposts_controller.rb:30:in `block in create'
+app/controllers/rentalposts_controller.rb:29:in `create'
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (6.0ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.2ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (104.0ms)
+Started GET "/rentalposts" for 127.0.0.1 at 2017-10-12 11:36:08 -0700
+Processing by RentalpostsController#index as HTML
+  Rendering rentalposts/index.html.erb within layouts/application
+  [1m[36mRentalpost Load (0.3ms)[0m  [1m[34mSELECT "rentalposts".* FROM "rentalposts"[0m
+  Rendered rentalposts/index.html.erb within layouts/application (2.6ms)
+Completed 200 OK in 30ms (Views: 26.2ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2017-10-12 11:36:13 -0700
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 31ms (Views: 27.3ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/users/1" for 127.0.0.1 at 2017-10-12 11:36:15 -0700
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/show.html.erb within layouts/application
+  Rendered users/show.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 38ms (Views: 31.6ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2017-10-12 11:36:17 -0700
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (2.9ms)
+Completed 200 OK in 33ms (Views: 30.2ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/rentalposts" for 127.0.0.1 at 2017-10-12 11:36:23 -0700
+Processing by RentalpostsController#index as HTML
+  Rendering rentalposts/index.html.erb within layouts/application
+  [1m[36mRentalpost Load (0.2ms)[0m  [1m[34mSELECT "rentalposts".* FROM "rentalposts"[0m
+  Rendered rentalposts/index.html.erb within layouts/application (1.6ms)
+Completed 200 OK in 29ms (Views: 26.4ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/rentalposts/new" for 127.0.0.1 at 2017-10-12 11:36:28 -0700
+Processing by RentalpostsController#new as HTML
+  Rendering rentalposts/new.html.erb within layouts/application
+  Rendered rentalposts/_form.html.erb (3.0ms)
+  Rendered rentalposts/new.html.erb within layouts/application (6.3ms)
+Completed 200 OK in 30ms (Views: 27.8ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/rentalposts" for 127.0.0.1 at 2017-10-12 11:36:39 -0700
+Processing by RentalpostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"GlFFDgCc68q07BuWpZvwTvNGUWCjLF9tn6pvzMy8F615l67WJYqzXi+VGpKs4ZhOWojKrww0LilwYYFyUseJng==", "rentalpost"=>{"content"=>"sadf", "user_id"=>"1"}, "commit"=>"Create Rentalpost"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "rentalposts" ("content", "user_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["content", "sadf"], ["user_id", 1], ["created_at", "2017-10-12 18:36:39.467396"], ["updated_at", "2017-10-12 18:36:39.467396"]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Completed 500 Internal Server Error in 5ms (ActiveRecord: 0.9ms)
+
+
+  
+ActiveRecord::StatementInvalid (SQLite3::ReadOnlyException: attempt to write a readonly database: INSERT INTO "rentalposts" ("content", "user_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)):
+  
+app/controllers/rentalposts_controller.rb:30:in `block in create'
+app/controllers/rentalposts_controller.rb:29:in `create'
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (8.0ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.4ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (94.7ms)
+Started POST "/rentalposts" for 127.0.0.1 at 2017-10-12 11:37:05 -0700
+Processing by RentalpostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"ll8ccII3NjyLevGpUrGSjEZuxusvkAc5KoNJxHOqVYZCK+Od2r5BQSLuIF2Jrcvz4PgB51h3g3AXzs8jL4b/Dw==", "rentalpost"=>{"content"=>"sadf", "user_id"=>"2"}, "commit"=>"Create Rentalpost"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "rentalposts" ("content", "user_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["content", "sadf"], ["user_id", 2], ["created_at", "2017-10-12 18:37:05.447305"], ["updated_at", "2017-10-12 18:37:05.447305"]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Completed 500 Internal Server Error in 4ms (ActiveRecord: 0.7ms)
+
+
+  
+ActiveRecord::StatementInvalid (SQLite3::ReadOnlyException: attempt to write a readonly database: INSERT INTO "rentalposts" ("content", "user_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)):
+  
+app/controllers/rentalposts_controller.rb:30:in `block in create'
+app/controllers/rentalposts_controller.rb:29:in `create'
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (6.1ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.4ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (88.9ms)

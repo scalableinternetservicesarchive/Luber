@@ -22,3 +22,350 @@ Processing by Rails::WelcomeController#index as HTML
 Completed 200 OK in 57ms (Views: 13.7ms | ActiveRecord: 0.0ms)
 
 
+Started GET "/" for 127.0.0.1 at 2017-10-11 20:31:01 -0700
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+):
+  
+activerecord (5.0.6) lib/active_record/migration.rb:573:in `check_pending!'
+activerecord (5.0.6) lib/active_record/migration.rb:549:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.6) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.6) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.6) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.6) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.6) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.6) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.6) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.6) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (2.4ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (113.9ms)
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsers (20171010221624)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "email" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171010221624"]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to AddIndexToUsersEmail (20171010225656)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171010225656"]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+Migrating to AddPasswordDigestToUsers (20171010231238)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "password_digest" varchar[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171010231238"]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-10-12 03:32:04.476487"], ["updated_at", "2017-10-12 03:32:04.476487"]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+Started GET "/" for 127.0.0.1 at 2017-10-11 20:32:44 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/railties-5.0.6/lib/rails/templates/rails/welcome/index.html.erb (4.4ms)
+Completed 200 OK in 54ms (Views: 13.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2017-10-11 20:32:53 -0700
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (12.8ms)
+Completed 200 OK in 1636ms (Views: 1618.1ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-10-11 20:35:17 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ApplicationController#index as HTML
+  Rendering html template
+  Rendered html template (0.0ms)
+Completed 200 OK in 33ms (Views: 20.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-10-11 20:35:50 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ApplicationController#index as HTML
+  Rendering html template
+  Rendered html template (0.0ms)
+Completed 200 OK in 20ms (Views: 9.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-10-11 20:36:08 -0700
+Processing by ApplicationController#index as HTML
+  Rendering html template
+  Rendered html template (0.1ms)
+Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.0ms)
+
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateRentalposts (20171012035039)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "rentalposts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "content" text, "user_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20171012035039"]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+Started GET "/" for 127.0.0.1 at 2017-10-11 20:51:42 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ApplicationController#index as HTML
+  Rendering html template
+  Rendered html template (0.0ms)
+Completed 200 OK in 29ms (Views: 18.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/rentalpost" for 127.0.0.1 at 2017-10-11 20:51:52 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/rentalpost"):
+  
+actionpack (5.0.6) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.6) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.6) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.6) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.6) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.6ms)
+  Rendered collection of /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/routes/_route.html.erb [17 times] (5.4ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/routes/_table.html.erb (24.5ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.9ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (165.9ms)
+Started GET "/users" for 127.0.0.1 at 2017-10-11 20:52:24 -0700
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (2.6ms)
+Completed 200 OK in 489ms (Views: 479.2ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/rentalposts" for 127.0.0.1 at 2017-10-11 20:52:55 -0700
+Processing by RentalpostsController#index as HTML
+  Rendering rentalposts/index.html.erb within layouts/application
+  [1m[36mRentalpost Load (0.3ms)[0m  [1m[34mSELECT "rentalposts".* FROM "rentalposts"[0m
+  Rendered rentalposts/index.html.erb within layouts/application (2.4ms)
+Completed 200 OK in 34ms (Views: 24.0ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/rentalposts/new" for 127.0.0.1 at 2017-10-11 20:52:58 -0700
+Processing by RentalpostsController#new as HTML
+  Rendering rentalposts/new.html.erb within layouts/application
+  Rendered rentalposts/_form.html.erb (39.2ms)
+  Rendered rentalposts/new.html.erb within layouts/application (42.9ms)
+Completed 200 OK in 84ms (Views: 74.7ms | ActiveRecord: 0.5ms)
+
+
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+Started GET "/" for 127.0.0.1 at 2017-10-12 09:07:27 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ApplicationController#index as HTML
+  Rendering html template
+  Rendered html template (0.0ms)
+Completed 200 OK in 34ms (Views: 20.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2017-10-12 09:07:37 -0700
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (10.1ms)
+Completed 200 OK in 557ms (Views: 522.1ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/users/new" for 127.0.0.1 at 2017-10-12 09:07:43 -0700
+Processing by UsersController#new as HTML
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_form.html.erb (43.2ms)
+  Rendered users/new.html.erb within layouts/application (46.9ms)
+Completed 200 OK in 81ms (Views: 70.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2017-10-12 09:07:57 -0700
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"jJsiQuTrinEklXSG1K0EsHlBGYSH/bL+uRX0XXerm6vrxoaqj61ndP0UXNmZeoFY5O9A/HdnC9hdP+5HGadPJw==", "user"=>{"name"=>"Michael", "email"=>"abc@abc.com"}, "commit"=>"Create User"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Michael"], ["email", "abc@abc.com"], ["created_at", "2017-10-12 16:07:57.142435"], ["updated_at", "2017-10-12 16:07:57.142435"]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/users/1
+Completed 302 Found in 6ms (ActiveRecord: 2.2ms)
+
+
+Started GET "/users/1" for 127.0.0.1 at 2017-10-12 09:07:57 -0700
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/show.html.erb within layouts/application
+  Rendered users/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 34ms (Views: 25.8ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2017-10-12 09:08:00 -0700
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (2.8ms)
+Completed 200 OK in 42ms (Views: 37.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/rentalpost" for 127.0.0.1 at 2017-10-12 09:08:13 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/rentalpost"):
+  
+actionpack (5.0.6) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.6) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.6) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.6) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.6) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.6) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.6) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.3ms)
+  Rendered collection of /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/routes/_route.html.erb [17 times] (27.4ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/routes/_table.html.erb (3.1ms)
+  Rendering /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /Users/michaelzhang/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.6/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (165.2ms)
+Started GET "/rentalposts" for 127.0.0.1 at 2017-10-12 09:08:17 -0700
+Processing by RentalpostsController#index as HTML
+  Rendering rentalposts/index.html.erb within layouts/application
+  [1m[36mRentalpost Load (0.2ms)[0m  [1m[34mSELECT "rentalposts".* FROM "rentalposts"[0m
+  Rendered rentalposts/index.html.erb within layouts/application (2.5ms)
+Completed 200 OK in 54ms (Views: 34.6ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/rentalposts/new" for 127.0.0.1 at 2017-10-12 09:08:18 -0700
+Processing by RentalpostsController#new as HTML
+  Rendering rentalposts/new.html.erb within layouts/application
+  Rendered rentalposts/_form.html.erb (8.0ms)
+  Rendered rentalposts/new.html.erb within layouts/application (12.4ms)
+Completed 200 OK in 49ms (Views: 38.8ms | ActiveRecord: 0.7ms)
+
+
+Started POST "/rentalposts" for 127.0.0.1 at 2017-10-12 09:08:35 -0700
+Processing by RentalpostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"mbSROcxz7YhQVkqEvkPO9AiEMmsqzalOHcuslH8kZ236cnrh6WW1HMsvS4C3Oab0oUqppIXV2AryAEIq4V/5Xg==", "rentalpost"=>{"content"=>"Abc", "user_id"=>"1"}, "commit"=>"Create Rentalpost"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "rentalposts" ("content", "user_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["content", "Abc"], ["user_id", 1], ["created_at", "2017-10-12 16:08:35.106468"], ["updated_at", "2017-10-12 16:08:35.106468"]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/rentalposts/1
+Completed 302 Found in 39ms (ActiveRecord: 2.3ms)
+
+
+Started GET "/rentalposts/1" for 127.0.0.1 at 2017-10-12 09:08:35 -0700
+Processing by RentalpostsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mRentalpost Load (0.3ms)[0m  [1m[34mSELECT  "rentalposts".* FROM "rentalposts" WHERE "rentalposts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering rentalposts/show.html.erb within layouts/application
+  Rendered rentalposts/show.html.erb within layouts/application (0.8ms)
+Completed 200 OK in 31ms (Views: 26.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/rentalposts" for 127.0.0.1 at 2017-10-12 09:08:37 -0700
+Processing by RentalpostsController#index as HTML
+  Rendering rentalposts/index.html.erb within layouts/application
+  [1m[36mRentalpost Load (0.2ms)[0m  [1m[34mSELECT "rentalposts".* FROM "rentalposts"[0m
+  Rendered rentalposts/index.html.erb within layouts/application (2.7ms)
+Completed 200 OK in 40ms (Views: 36.9ms | ActiveRecord: 0.2ms)
+
+

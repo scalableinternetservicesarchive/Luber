@@ -1,2 +1,5 @@
-<h1>Users#new</h1>
-<p>Find me in app/views/users/new.html.erb</p>
+<h1>New User</h1>
+
+<%= render 'form', user: @user %>
+
+<%= link_to 'Back', users_path %>

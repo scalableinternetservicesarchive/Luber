@@ -1,3 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# empty lol wut
+one:
+  name: Michael
+  email: a@a.com
+  password_digest: 123456
+
+two:
+  name: Justin
+  email: b@b.com
+  password_digest: 123456

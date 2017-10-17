@@ -1,0 +1,57 @@
+<%= form_for(rental_post) do |f| %>
+  <% if rental_post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(rental_post.errors.count, "error") %> prohibited this rental_post from being saved:</h2>
+
+      <ul>
+      <% rental_post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :car %>
+    <%= f.number_field :car %>
+  </div>
+
+  <div class="field">
+    <%= f.label :owner %>
+    <%= f.number_field :owner %>
+  </div>
+
+  <div class="field">
+    <%= f.label :renter %>
+    <%= f.number_field :renter %>
+  </div>
+
+  <div class="field">
+    <%= f.label :start_loc %>
+    <%= f.text_field :start_loc %>
+  </div>
+
+  <div class="field">
+    <%= f.label :end_loc %>
+    <%= f.text_field :end_loc %>
+  </div>
+
+  <div class="field">
+    <%= f.label :start_time %>
+    <%= f.datetime_select :start_time %>
+  </div>
+
+  <div class="field">
+    <%= f.label :end_time %>
+    <%= f.datetime_select :end_time %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cost %>
+    <%= f.text_field :cost %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

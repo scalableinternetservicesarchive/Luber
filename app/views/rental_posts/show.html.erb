@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Car:</strong>
+  <%= @rental_post.car %>
+</p>
+
+<p>
+  <strong>Owner:</strong>
+  <%= @rental_post.owner %>
+</p>
+
+<p>
+  <strong>Renter:</strong>
+  <%= @rental_post.renter %>
+</p>
+
+<p>
+  <strong>Start loc:</strong>
+  <%= @rental_post.start_loc %>
+</p>
+
+<p>
+  <strong>End loc:</strong>
+  <%= @rental_post.end_loc %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @rental_post.start_time %>
+</p>
+
+<p>
+  <strong>End time:</strong>
+  <%= @rental_post.end_time %>
+</p>
+
+<p>
+  <strong>Cost:</strong>
+  <%= @rental_post.cost %>
+</p>
+
+<%= link_to 'Edit', edit_rental_post_path(@rental_post) %> |
+<%= link_to 'Back', rental_posts_path %>

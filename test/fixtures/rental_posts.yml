@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  car: 1
+  owner: 1
+  renter: 1
+  start_loc: MyString
+  end_loc: MyString
+  start_time: 2017-10-17 10:30:41
+  end_time: 2017-10-17 10:30:41
+  cost: 1.5
+
+two:
+  car: 1
+  owner: 1
+  renter: 1
+  start_loc: MyString
+  end_loc: MyString
+  start_time: 2017-10-17 10:30:41
+  end_time: 2017-10-17 10:30:41
+  cost: 1.5

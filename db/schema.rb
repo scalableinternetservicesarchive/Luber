@@ -10,7 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171010231238) do
+ActiveRecord::Schema.define(version: 20171017180238) do
+
+  create_table "cars", force: :cascade do |t|
+    t.integer  "owner"
+    t.string   "license_plate"
+    t.string   "model"
+    t.string   "color"
+    t.integer  "year"
+    t.integer  "condition"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "rental_posts", force: :cascade do |t|
+    t.integer  "car"
+    t.integer  "owner"
+    t.integer  "renter"
+    t.string   "start_loc"
+    t.string   "end_loc"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.float    "cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -18,6 +42,7 @@ ActiveRecord::Schema.define(version: 20171010231238) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
+    t.boolean  "isadmin"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

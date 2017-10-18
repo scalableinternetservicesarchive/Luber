@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  plate_num: MyString
+  model: MyString
+  color: MyString
+  year: 1
+
+two:
+  user_id: 1
+  plate_num: MyString
+  model: MyString
+  color: MyString
+  year: 1

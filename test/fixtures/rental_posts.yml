@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# one:
+#   car_id: 1
+#   owner_id: 1
+#   renter_id: 1
+#   start_location: MyString
+#   end_location: MyString
+#   start_time: 2017-10-17 20:20:37
+#   end_time: 2017-10-17 20:20:37
+#   price: 1.5
+#
+# two:
+#   car_id: 1
+#   owner_id: 1
+#   renter_id: 1
+#   start_location: MyString
+#   end_location: MyString
+#   start_time: 2017-10-17 20:20:37
+#   end_time: 2017-10-17 20:20:37
+#   price: 1.5

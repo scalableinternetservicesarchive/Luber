@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CarsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @car = cars(:one)
+    @car = Car.new(user_id: 1, plate_num: "m123", model: "chev", color: "red", year: 1)
   end
 
   test "should get index" do

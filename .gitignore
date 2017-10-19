@@ -4,4 +4,6 @@ config/database.yml
 config/environments/production.rb
 .cache
 .DS_Store
+.idea
 *.sqlite3
+

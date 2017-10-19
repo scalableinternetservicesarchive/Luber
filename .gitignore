@@ -6,3 +6,4 @@ config/environments/production.rb
 .DS_Store
 .idea
 *.sqlite3
+

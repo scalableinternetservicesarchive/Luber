@@ -44,7 +44,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   #   assert_difference('Car.count', -1) do
   #     delete car_url(@car)
   #   end
-
-    assert_redirected_to cars_url
-  end
+  #
+  #   assert_redirected_to cars_url
+  # end
 end

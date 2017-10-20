@@ -1,8 +1,11 @@
 require 'test_helper'
 
 class CarsControllerTest < ActionDispatch::IntegrationTest
+
   setup do
-    @car = Car.new(user_id: 1, plate_num: "m123", model: "chev", color: "red", year: 1)
+    @user = User.create!(name: "Example User", email:"user@example.com",
+                        password: "foobar", password_confirmation: "foobar")
+    @car = Car.create!(user_id: @user.id, plate_num: "m123", model: "chev", color: "red", year: 1)
   end
 
 # Sorry, gotta get Travis CI to stop complaining for today's demo!!1one

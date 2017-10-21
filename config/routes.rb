@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'users/new'
 
   post '/cars', to: 'cars#create'
+  get 'tags/:tag', to: 'cars#tag_search', as: "tag"
 
   resources :rental_posts
   resources :cars

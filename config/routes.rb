@@ -14,6 +14,23 @@ Rails.application.routes.draw do
   get 'privacypolicy', to: 'static_pages#privacypolicy'
 
 
+  # Ugh, rails test error:
+  # 
+  # Error:
+  # StaticPagesControllerTest#test_should_get_about:
+  # NameError: undefined local variable or method `static_pages_about_url' for #<StaticPagesControllerTest:0x007fc9299989d8>
+  #     test/controllers/static_pages_controller_test.rb:19:in `block in <class:StaticPagesControllerTest>'
+  #
+  # not sure why fixed when added these lines.
+  # https://stackoverflow.com/questions/40509291/ruby-on-rails-error-undefined-local-variable-or-method
+  # https://github.com/maxkim16/RailsError/blob/master/config/routes.rb
+  get 'static_pages/home'
+  get 'static_pages/faq'
+  get 'static_pages/about'
+  get 'static_pages/contact'
+  get 'static_pages/privacypolicy'
+
+
 
   get 'users/new'
 

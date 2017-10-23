@@ -1,16 +1,19 @@
 Rails.application.routes.draw do
 
-  get 'static_pages/home'
+  root 'static_pages#home'
+  #  root 'home#index'
 
-  get 'static_pages/faq'
+  get 'home', to: 'static_pages#home'
 
-  get 'static_pages/about'
+  get 'faq', to: 'static_pages#faq'
 
-  get 'static_pages/contact'
+  get 'about', to: 'static_pages#about'
 
-  get 'static_pages/privacypolicy'
+  get 'contact', to: 'static_pages#contact'
 
-  root 'home#index'
+  get 'privacypolicy', to: 'static_pages#privacypolicy'
+
+
 
   get 'users/new'
 

@@ -1,5 +1,5 @@
 # Luber: :oncoming_automobile: A Car-sharing App :oncoming_taxi:
-[![Build Status](https://travis-ci.org/scalableinternetservices/Luber.svg?branch=master)](https://travis-ci.org/scalableinternetservices/Luber) 
+[![Build Status](https://travis-ci.org/scalableinternetservices/Luber.svg?branch=master)](https://travis-ci.org/scalableinternetservices/Luber)
 ==================================
 
 Sharing economy is efficient, environment-friendly and accessible to all. Uber and Airbnb have swept out the traditional rental business in every aspect. It's much faster and more convenient to ask for a ride by Uber or Lyft, however, sometimes a ride is not sufficient for all travelling demand, in case of family trip, long journey or private event. Therefore, We'd like to work on a Uber-like car-sharing app for CS291A project.
@@ -32,5 +32,5 @@ Kyle Carson ([@carsonkk](https://github.com/carsonkk))
 Justin Pearson ([@justinpearson](https://github.com/justinpearson))  
 ![justinpearson photo](http://justinppearson.com/assets/my-face-2.png)
 
-Michael Zhang ([@Heronalps](https://github.com/Heronalps))  
+Michael Zhang & Michael's little helper([@Heronalps](https://github.com/Heronalps))  
 ![Heronalps photo](https://github.com/scalableinternetservices/Luber/blob/master/misc/snapshots/heronalps.jpg)

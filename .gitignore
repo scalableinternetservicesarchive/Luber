@@ -1,3 +1,4 @@
+.bundle/
 tmp/**/*
 log/*
 config/database.yml
@@ -7,3 +8,7 @@ config/environments/production.rb
 .idea
 *.sqlite3
 
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

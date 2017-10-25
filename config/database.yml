@@ -20,7 +20,7 @@ test:
   <<: *default
   database: db/test.sqlite3
 
-production:  
+production:
   adapter: postgresql
   database: <%= ENV['RDS_DB_NAME'] %>
   encoding: unicode

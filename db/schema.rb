@@ -13,36 +13,36 @@
 ActiveRecord::Schema.define(version: 20171018032037) do
 
   create_table "cars", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "plate_num"
-    t.string   "model"
-    t.string   "color"
-    t.integer  "year"
+    t.integer "user_id"
+    t.string "plate_num"
+    t.string "model"
+    t.string "color"
+    t.integer "year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "rental_posts", force: :cascade do |t|
-    t.integer  "car_id"
-    t.integer  "owner_id"
-    t.integer  "renter_id"
-    t.string   "start_location"
-    t.string   "end_location"
+    t.integer "car_id"
+    t.integer "owner_id"
+    t.integer "renter_id"
+    t.string "start_location"
+    t.string "end_location"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.float    "price"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.float "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.string   "password_digest"
-    t.integer  "ssn"
-    t.boolean  "admin"
+    t.string "name"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "password_digest"
+    t.integer "ssn"
+    t.boolean "admin"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

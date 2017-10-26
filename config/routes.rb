@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   get 'privacypolicy', to: 'static_pages#privacypolicy'
 
+  post '/cars', to: 'cars#create'
+  get 'tags/:tag', to: 'cars#tag_search', as: "tag"
 
   # Ugh, rails test error:
   # 

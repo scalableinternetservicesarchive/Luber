@@ -1,80 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= yield(:title) %> | Luber</title>
-    <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
-    <style type="text/css">
-
-      body {
-            max-width: 10in;
-      }
-
-      header {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: center;
-        align-items: center;
-      }
-
-
-
-
-      nav {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: center;
-        padding-bottom: 20px;
-        background-color: #eee;
-        border: 4px solid #b50c81;
-        margin-top: -4px;
-      }
-
-      .nav-link {
-        padding-top: 10px;
-        margin-top: 8px;
-        margin-left: 8px;
-        margin-right: 8px;
-        text-decoration: none;
-        /*color: #2c81a9;*/
-      }
-
-      footer {
-         margin: 2em 0em 1em;
-      }
-
-    </style>
+    <%= render 'layouts/head' %>
   </head>
-
   <body>
-
     <header>
-      <%= image_tag("luber-logo/luber-logo.jpg")%>
+      <%= render 'layouts/header' %>
     </header>
+    <main>
+      <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
 
-
-
-    <nav>
-      <%= link_to('Home', {:controller => 'static_pages', :action => 'home'}, class: 'nav-link' ) %>
-      <%= link_to('FAQ', {:controller => 'static_pages', :action => 'faq'}, class: 'nav-link' ) %>
-      <%= link_to('Contact', {:controller => 'static_pages', :action => 'contact'}, class: 'nav-link' ) %>
-      <%= link_to('About', {:controller => 'static_pages', :action => 'about'}, class: 'nav-link' ) %>
-      <%= link_to('Privacy Policy', {:controller => 'static_pages', :action => 'privacypolicy'}, class: 'nav-link' ) %>
-    </nav>
-
-
-    <% flash.each do |message_type, message| %>
-      <div class="alert alert-<%= message_type %>"><%= message %></div>
-    <% end %>
-    <%= yield %>
-    <%= debug(params) if Rails.env.development? %>
-
-
+      <%= yield %>
+      
+      <%= debug(params) if Rails.env.development? %>
+    </main>
     <footer>
-      © 2017 Luber. All rights reserved.
+      <%= render 'layouts/footer' %>
     </footer>
+    <div hidden>
+      <%= render 'layouts/scripts' %>
+    </div>
   </body>
 </html>

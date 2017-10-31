@@ -35,6 +35,11 @@ gem 'rails-controller-testing'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Use Boostrap to make better CSS
+gem 'bootstrap', '~> 4.0.0.beta2.1'
+# Use Autoprefixer to add vendor-prefixes to CSS at compile time
+gem 'autoprefixer-rails', '~> 7.1.6'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

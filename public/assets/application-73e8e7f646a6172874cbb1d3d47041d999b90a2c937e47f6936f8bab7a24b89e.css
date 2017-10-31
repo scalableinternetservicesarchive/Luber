@@ -1,0 +1,480 @@
+/* line 1, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+body {
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 33px;
+}
+
+/* line 10, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+p, ol, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 33px;
+}
+
+/* line 17, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 11px;
+}
+
+/* line 23, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+a {
+  color: #000;
+}
+/* line 26, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+a:visited {
+  color: #666;
+}
+/* line 30, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+a:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+/* line 36, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+th {
+  padding-bottom: 5px;
+}
+
+/* line 40, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+td {
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* line 47, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+div.field, div.actions {
+  margin-bottom: 10px;
+}
+
+/* line 52, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+#notice {
+  color: green;
+}
+
+/* line 56, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+/* line 62, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+#error_explanation {
+  width: 450px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+/* line 70, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+#error_explanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  margin-bottom: 0;
+  background-color: #c00;
+  color: #fff;
+}
+/* line 81, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+#error_explanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+/* line 87, /home/kyle/Code/0Repos/Luber/app/assets/stylesheets/scaffolds.scss */
+label {
+  display: block;
+}
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+
+
+ */
+
+
+@import "bootstrap-sprockets"
+@import "bootstrap"
+
+// -------------------------
+//
+// Global CSS
+//
+// -------------------------
+
+// Scaffolding
+// -------------------------
+
+html, body {
+  background-color: #f7f7f7;
+  font-size: 1rem;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+main {
+  margin-top: 30px;
+  margin-bottom: 94px;
+}
+
+header {
+  position: relative;
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+}
+
+footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding-top: 16px;
+  background-color: #ffffff;
+}
+
+hr {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+// Text
+// -------------------------
+
+p {
+  z-index: 1;
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+a {
+  color: #557c6f;
+}
+
+a:hover,
+a.hover {
+  color: #26362f;
+}
+
+// Input Fields
+// -------------------------
+
+textarea {
+  resize: vertical;
+}
+
+.form-control.focus, 
+.form-control:focus {
+  border-color: rgba(79, 156, 94, 0.5);
+}
+
+// Content Areas
+// -------------------------
+
+.container-fluid {
+  padding: 0;
+}
+
+.col-sm-1 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.jumbotron {
+  margin-bottom: 0;
+}
+
+.logo-line {
+  img {
+    max-width: 90%;
+  }
+
+  .line-left {
+    margin-left: 4.666665%
+  }
+}
+
+// Buttons
+// -------------------------
+
+.btn {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #4f9c5e;
+  border-color: #4f9c5e;
+}
+
+.btn-primary.active, 
+.btn-primary:active, 
+.btn-primary.hover, 
+.btn-primary:hover {
+  background-color: #557c6f;
+  border-color: #354b42;
+}
+
+.btn-primary.focus, 
+.btn-primary:focus {
+  -webkit-box-shadow: 0 0 0 3px rgba(79, 156, 94, 0.5);
+          box-shadow: 0 0 0 3px rgba(79, 156, 94, 0.5);
+}
+
+.btn-link {
+  color: #557c6f;
+}
+
+.btn-link.active, 
+.btn-link:active, 
+.btn-link.hover, 
+.btn-link:hover, 
+.btn-link.focus, 
+.btn-link:focus {
+  color: #4f9c5e;
+}
+
+// Navbar
+// -------------------------
+
+.nav-wrapper {
+
+  .navbar {
+    border: 0;
+
+    .navbar-brand {
+      padding: 0;
+
+      img {
+        height: 60px;
+      }
+    }
+
+    .navbar-nav {
+      .nav-link {
+        font-weight: 700;
+        padding: 1rem 1.25rem;
+      }
+    }
+  }
+
+  .primary-nav {
+    background-color: #ffffff;
+
+    .fa-bell {
+      color: #26362f;
+    }
+
+    .primary-nav-account {
+      margin: auto;
+    }
+
+    .nav-link {
+      color: #000000;
+    }
+
+    .btn-primary {
+      color: #000;
+      background-color: #fff;
+      border-color: #26362f;
+    }
+
+    .btn-primary.hover, 
+    .btn-primary:hover {
+      -webkit-box-shadow: 0 0 0 3px #557c6f;
+              box-shadow: 0 0 0 3px #557c6f;
+    }
+
+    .btn-primary.focus, 
+    .btn-primary:focus {
+      -webkit-box-shadow: none;
+              box-shadow: none;
+    }
+  }
+
+  .secondary-nav {
+    background-color: #557c6f;
+    padding: 0;
+
+    .navbar-nav {
+      border-left: 1px solid #354b42;
+    }
+
+    .nav-link {
+      color: #ffffff;
+      border-right: 1px solid #354b42;
+      -webkit-transition: color 0.3s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+      transition: color 0.3s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .nav-link:hover {
+      background-color: #354b42; 
+    }
+  }
+
+  .account-nav {
+    background-color: #4f9c5e;
+    padding: 0;
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.footer-nav-wrapper {
+  .footer-nav {
+    .row {
+      width: 100%;
+    }
+  }
+}
+
+// Alerts
+// -------------------------
+
+.alert {
+  margin-top: 20px;
+}
+
+// Thumbnails
+// -------------------------
+
+.thumbnail {
+  padding: 0;
+  border-radius: 0;
+  -webkit-box-shadow: 0 0 5px #ccc, inset 0 0 0 #000000;
+          box-shadow: 0 0 5px #ccc, inset 0 0 0 #000000;
+}
+
+// Font Icons
+// -------------------------
+
+.fa {
+  margin-right: 6px;
+}
+
+// -------------------------
+//
+// Home (/) CSS
+//
+// -------------------------
+
+#page-home {
+  main {
+    margin-top: 0;
+    margin-bottom: 64px;
+  }
+
+  .jumbotron {
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  #hero-logo {
+    background-image: -webkit-gradient(linear, left top, right bottom, from(rgba(79, 156, 94, 0.5)), to(rgba(44, 165, 157, 0.5))), url(/images/4.jpg);
+    background-image: linear-gradient(to bottom right, rgba(79, 156, 94, 0.5), rgba(44, 165, 157, 0.5)), url(/images/4.jpg);
+  }
+
+  #hero-about {
+    background-color: #f7f7f7;
+
+    p {
+      margin-top: 2rem;
+    }
+  }
+
+  #hero-how-it-works {
+    background-color: #4f9c5e;
+
+    p {
+      padding: 0.5rem 1rem;
+    }
+
+    img {
+      width: 100%;
+      padding: 2rem 1rem;
+    }
+  }
+
+  #hero-services {
+    background-color: #f7f7f7;
+
+    p {
+      margin-top: 1rem;
+    }
+  }
+
+  #hero-getting-started { 
+    background-color: #26362f;
+    color: #fff;
+
+    p {
+      margin-top: 1rem;
+    }
+  }
+
+  #hero-learn-more {
+    background-color: #f7f7f7;
+
+    p {
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+// -------------------------
+//
+// FAQ (/faq) CSS
+//
+// -------------------------
+
+#page-faq {
+  
+}
+
+// -------------------------
+//
+// Login (/login) CSS
+//
+// -------------------------
+
+#page-login {
+  padding-bottom: 12rem;
+
+  main {
+    margin: 0;
+  }
+
+  .hero-logo {
+    
+
+    img {
+      width: 50%;
+    }
+  }
+
+  .login-form {
+    width: 50%;
+  }
+}

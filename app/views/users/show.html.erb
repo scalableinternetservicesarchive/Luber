@@ -4,3 +4,117 @@
   <%= gravatar_for @user %>
   <%= @user.name %>
 </h1>
+
+<% if session[:user_id] == @user.id %>
+
+  <h1>
+      My cars
+  </h1>    
+
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Plate num</th>
+        <th>Model</th>
+        <th>Color</th>
+        <th>Year</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @my_cars.each do |car| %>
+        <tr>
+          <td><%= car.user_id %></td>
+          <td><%= car.plate_num %></td>
+          <td><%= car.model %></td>
+          <td><%= car.color %></td>
+          <td><%= car.year %></td>
+          <td><%= link_to 'Show', car %></td>
+          <td><%= link_to 'Edit', edit_car_path(car) %></td>
+          <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to( 'Add car', new_car_path) %>
+
+  <h1>
+    Rides I sold
+  </h1>    
+
+  <table>
+    <thead>
+      <tr>
+        <th>Car</th>
+        <th>Owner</th>
+        <th>Renter</th>
+        <th>Start location</th>
+        <th>End location</th>
+        <th>Start time</th>
+        <th>End time</th>
+        <th>Price</th>
+        <th colspan="3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @rides_sold.each do |rental_post| %>
+        <tr>
+          <td><%= rental_post.car_id %></td>
+          <td><%= rental_post.owner_id %></td>
+          <td><%= rental_post.renter_id %></td>
+          <td><%= rental_post.start_location %></td>
+          <td><%= rental_post.end_location %></td>
+          <td><%= rental_post.start_time %></td>
+          <td><%= rental_post.end_time %></td>
+          <td><%= rental_post.price %></td>
+          <td><%= link_to 'Show', rental_post %></td>
+          <td><%= link_to 'Edit', edit_rental_post_path(rental_post) %></td>
+          <td><%= link_to 'Destroy', rental_post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+    <h1>
+        Rides I ordered 
+    </h1>    
+
+    <table>
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Owner</th>
+          <th>Renter</th>
+          <th>Start location</th>
+          <th>End location</th>
+          <th>Start time</th>
+          <th>End time</th>
+          <th>Price</th>
+          <th colspan="3">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @rides_bought.each do |rental_post| %>
+          <tr>
+            <td><%= rental_post.car_id %></td>
+            <td><%= rental_post.owner_id %></td>
+            <td><%= rental_post.renter_id %></td>
+            <td><%= rental_post.start_location %></td>
+            <td><%= rental_post.end_location %></td>
+            <td><%= rental_post.start_time %></td>
+            <td><%= rental_post.end_time %></td>
+            <td><%= rental_post.price %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+
+<% else %>
+  (You are logged in as <%= User.find(session[:user_id]).name %>.)
+<% end %>
+

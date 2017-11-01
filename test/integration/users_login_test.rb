@@ -3,9 +3,21 @@ require 'test_helper'
 class UsersLoginTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = User.new(name: "Rick Sanchez", email: "rick@sanchez.com",
-                     password: "password", password_confirmation: "password")
-    @user.save!
+    # @user = User.new(name: "Rick Sanchez", email: "rick@sanchez.com",
+    #                  password: "password", password_confirmation: "password")
+    # @user.save!
+
+
+    User.create!(
+      name: "Rick Sanchez",
+      email: "rick@sanchez.com",
+      password: "password", 
+      ssn: "1234",
+      admin: false )
+
+    @user = User.where(name: "Rick Sanchez").take
+
+
   end
 
   teardown do

@@ -24,9 +24,11 @@ cd Luber
 ```
 3. Setup the project and test that the server starts succesfully
 ```sh
-bundle install
+bundle install --without production
+# If you're on linux you may need to do the following to increase your number of watchers
+# echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 rails db:migrate
-rails server
+rails s
 # By default the server should start on http://localhost:3000/
 ```
 

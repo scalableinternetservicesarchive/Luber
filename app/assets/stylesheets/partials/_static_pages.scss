@@ -9,6 +9,10 @@ main {
   .jumbotron {
     background-size: cover;
     background-repeat: no-repeat;
+  
+    .container {
+      margin: auto;
+    }
   }
 
   #hero-background {

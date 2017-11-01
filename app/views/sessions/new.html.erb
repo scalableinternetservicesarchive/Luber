@@ -1,17 +1,18 @@
-<% provide(:title, "Lube In") %>
-<h1>Lube In</h1>
+<% provide(:title, "Login") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<div class="row">
-  <%= form_for(:session, url: login_path) do |f| %>
+<section class="container align-slef-center" id="login-section">
+    <h1 class="text-center">Login</h1>
+    <%= form_for(:session, url: login_path) do |f| %>
+      <div class="form-group">
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control', placeholder: 'Email' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :password %>
+        <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
+      </div>
+      <%= f.submit "Login", class: "btn btn-lg btn-base" %>
+    <% end %>
+</section>
 
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' %>
-
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
-
-      <%= f.submit "LUBERICATE ME", class: 'btn btn-primary' %>
-
-  <% end %>
-  <p>Are you a NUBE-loser? <%= link_to "Sign up now!", signup_path %></p>
-</div>

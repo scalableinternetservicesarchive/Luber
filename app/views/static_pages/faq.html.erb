@@ -1,13 +1,45 @@
 <% provide(:title, "FAQ") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<h1>FAQ</h1>
-
-<h2>What is Luber?</h2>
-
-<p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
-
-<h2>Is it legal?</h2>
-
-<p>Please send notices about litigation or cease-and-decist letters to <a href="mailto:shred@luber.com">contact@luber.com</a>.</p>
-
-<p>Find me in app/views/static_pages/faq.html.erb</p>
+<section class="container">
+  <h1>FAQ</h1>
+  <p class="lead">Everything you ever wanted to know about Luber</p>
+  <hr>
+  <div id="accordion" role="tablist">
+    <div class="card">
+      <div class="card-header" role="tab" id="question-one">
+        <h5 class="mb-0">
+          <a class="faq-question collapsed" data-toggle="collapse" href="#collapse-one" aria-expanded="false" aria-controls="collapse-one">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>What is Luber?
+          </a>
+        </h5>
+      </div>
+      <div id="collapse-one" class="collapse" role="tabpanel" aria-labelledby="question-one" data-parent="#accordion">
+        <div class="card-body">
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+          <p>Luber is a car-sharing app whose name is legally distinct from "Lyft" and "Uber".</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" role="tab" id="question-two">
+        <h5 class="mb-0">
+          <a class="faq-question collapsed" data-toggle="collapse" href="#collapse-two" aria-expanded="false" aria-controls="collapse-two">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>Is it legal?
+          </a>
+        </h5>
+      </div>
+      <div id="collapse-two" class="collapse" role="tabpanel" aria-labelledby="question-two" data-parent="#accordion">
+        <div class="card-body">
+          <p>Please send notices about litigation or cease-and-decist letters to <%= link_to 'shred@luber.com', 'mailto:shred@luber.com' %>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

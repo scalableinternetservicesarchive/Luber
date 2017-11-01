@@ -1,14 +1,15 @@
 <% provide(:title, "Home") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<section class="jumbotron jumbotron-fluid" id="hero-background">
-  <div class="container">
-    <div id="hero-content">
-      <h1>Introducing, Luber</h1>
-      <p>The easy way to do long-distance rideshare</p>
+<section class="jumbotron jumbotron-fluid d-flex" id="hero-background">
+  <div class="container align-self-center">
+    <div class="row flex-column" id="hero-content">
+      <h1 class="col-12 text-center display-1">Introducing, Luber</h1>
+      <p class="col-12 text-center ">The easy way to do long-distance rideshare</p>
+      <div class="col-12 d-flex justify-content-center">
+        <%= link_to 'Get Started', signup_path, class: 'btn btn-lg btn-base', role: 'button' %>
+        <%= link_to 'Learn More', about_path, class: 'btn btn-lg btn-base', role: 'button' %>
+      </div>
     </div>
   </div>
 </section>
-
-<hr>
-
-<p>Find me in app/views/static_pages/home.html.erb</p>

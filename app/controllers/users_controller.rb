@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
+    @my_cars = Car.where(user_id: @user.id)
+    @rides_sold = RentalPost.where(owner_id: @user.id)
+    @rides_bought = RentalPost.where(renter_id: @user.id)
   end
 
   def new

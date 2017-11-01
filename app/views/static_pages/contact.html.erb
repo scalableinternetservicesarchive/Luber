@@ -1,9 +1,11 @@
-<% provide(:title, "Contact") %>
+<% provide(:title, "Contact Us") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<h1>Contact</h1>
-
-<p>Please send questions about employment or press to <a href="mailto:contact@luber.com">contact@luber.com</a>.</p>
-
-<p>Please send notices about litigation or cease-and-decist letters to <a href="mailto:shred@luber.com">contact@luber.com</a>.</p>
-
-<p>Find me in app/views/static_pages/contact.html.erb</p>
+<section class="container">
+  <h1>Contact Us</h1>
+  <p class="lead">Drop us a line below</p>
+  <hr>
+  <p>Please send questions about employment or press to <%= link_to 'contact@luber.com', 'mailto:contact@luber.com' %>.</p>
+  <p>Please send notices about litigation or cease-and-decist letters to <%= link_to 'shred@luber.com', 'mailto:shred@luber.com' %>.</p>
+  <p>For website errors, please open an issue on <%= link_to 'GitHub', 'https://github.com/scalableinternetservices/Luber/issues', target: '_blank'%>.</p>
+</section>

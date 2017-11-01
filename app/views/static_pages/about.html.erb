@@ -1,7 +1,9 @@
 <% provide(:title, "About") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<h1>About</h1>
-
-<p>Luber began as a class project at UC Santa Barbara for CS 291: "Scalable Internet Services", taught by the esteemed and handsome professor Dr. Bryce Boe.</p>
-
-<p>Find me in app/views/static_pages/about.html.erb</p>
+<section class="container">
+  <h1>About</h1>
+  <p class="lead">Additional information about the website</p>
+  <hr>
+  <p>Luber began as a class project at UC Santa Barbara for CS 291: "Scalable Internet Services", taught by the esteemed and handsome professor Dr. Bryce Boe.</p>
+</section>

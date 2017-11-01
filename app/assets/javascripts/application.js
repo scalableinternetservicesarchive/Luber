@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
 //= require popper
@@ -18,6 +19,29 @@
 //= require_tree .
 
 $(function(){
-  var footer_height = $('footer').height()
-  $('main').css('margin-bottom', footer_height)
+  // Set a dynamic footer height since rails debug may/may not be showing
+  var footer_height = $('footer').height();
+  $('main').css('margin-bottom', footer_height + 36);
+
+  // Get rid of the top and bottom margin on the homepage only
+  if($('#hero-background').length) {
+    $('main').css('margin-top', '0px');
+    $('main').css('margin-bottom', footer_height);
+  }
+
+  // Set dynamic dropdown carets for FAQ entries
+  var prevQuestion;
+  $('.faq-question').on('click', function() {
+    if($(this).children().hasClass('fa-caret-right')) {
+      $(this).children().removeClass('fa-caret-right').addClass('fa-caret-down');
+      if(prevQuestion != null) {
+        prevQuestion.children().removeClass('fa-caret-down').addClass('fa-caret-right');
+      }
+      prevQuestion = $(this);
+    }
+    else {
+      $(this).children().removeClass('fa-caret-down').addClass('fa-caret-right');
+      prevQuestion = null;
+    }
+  });
 });

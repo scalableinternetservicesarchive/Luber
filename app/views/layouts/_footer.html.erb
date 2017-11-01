@@ -1,12 +1,62 @@
-<div class="container">
-  <div class="row">
-    <div class="col-6">
-      <p>© 2017 Luber. All rights reserved.</p>
-      <p>GitHub</p>
-      <p>Issues</p>
+<div class="footer-nav-wrapper">
+  <nav class="footer-nav">
+    <div class="container">
+      <div class="row">
+        <div class="col-6">
+          <p>Sitemap</p>
+        </div>
+        <div class="col-6">
+          <p>Development</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <ul>
+            <li>
+              <%= link_to home_path, class: 'footer-entry' do %>
+                <%= icon('home') %> Home
+              <% end %>
+            </li>
+            <li>
+              <%= link_to about_path, class: 'footer-entry' do %>
+                <%= icon('comments-o') %> About
+              <% end %>
+            </li>
+            <li>
+              <%= link_to faq_path, class: 'footer-entry' do %>
+                <%= icon('question-circle') %> FAQ
+              <% end %>
+            </li>
+            <li>
+              <%= link_to contact_path, class: 'footer-entry' do %>
+                <%= icon('envelope') %> Contact Us
+              <% end %>
+            </li>
+            <li>
+              <%= link_to privacy_path, class: 'footer-entry' do %>
+                <%= icon('user-circle') %> Privacy Policy
+              <% end %>
+            </li>
+          </ul>
+        </div>
+        <div class="col-6">
+          <ul>
+            <li>
+              <%= link_to 'https://github.com/scalableinternetservices/Luber', class: 'footer-entry', target: '_blank' do %>
+                <%= icon('github') %> GitHub
+              <% end %>
+            </li>
+            <li>
+              <%= link_to 'https://github.com/scalableinternetservices/Luber/issues', class: 'footer-entry', target: '_blank' do %>
+                <%= icon('exclamation-triangle') %> Issues
+              <% end %>
+            </li>
+            <li>
+              <p class="footer-entry"><%= icon('copyright') %> 2017 Luber. All rights reserved.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="col-6">
-      
-    </div>
-  </div>
+  </nav>
 </div>

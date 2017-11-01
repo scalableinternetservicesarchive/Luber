@@ -12,8 +12,7 @@ html {
 }
 
 main {
-  margin-top: 30px;
-  margin-bottom: 494px;
+  margin-top: 0px;
 }
 
 hr {
@@ -36,7 +35,7 @@ a {
 
 a:hover,
 a.hover {
-  color: $dark-accent;
+  color: $darker-accent;
   text-decoration: none;
 }
 
@@ -103,7 +102,7 @@ footer {
   position: absolute;
   width: 100%;
   bottom: 0;
-  background-color: $dark-accent;
+  background-color: $darker-accent;
 
   .debug-wrapper {
     color: black;
@@ -117,8 +116,13 @@ footer {
     }
 
     .debug-entry {
+      margin: 20px 0px;
       padding: 10px 0px 10px 20px;
       border-left: 2px solid black;
+
+      pre {
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -164,22 +168,32 @@ footer {
   cursor: pointer;
 }
 
-.btn-primary {
-  //background-color: #4f9c5e;
-  //border-color: #4f9c5e;
+.btn-base {
+  color: white;
+  background-color: $primary;
+  border-color: $primary;
+}
+ 
+.btn-base.hover, 
+.btn-base:hover {
+  color: white;
+  background-color: $dark-accent;
+  border-color: $darker-accent;
 }
 
-.btn-primary.active, 
-.btn-primary:active, 
-.btn-primary.hover, 
-.btn-primary:hover {
-  //background-color: #557c6f;
-  //border-color: #354b42;
+.btn-base.active, 
+.btn-base:active {
+  color: white;
+  background-color: $darker-accent;
+  border-color: $light-accent;
 }
 
-.btn-primary.focus, 
-.btn-primary:focus {
-  //box-shadow: 0 0 0 3px rgba(79, 156, 94, 0.5);
+.btn-base.active, 
+.btn-base:active,
+.btn-base.focus, 
+.btn-base:focus {
+  color: white;
+  box-shadow: 0 0 0 3px $primary-shadow;
 }
 
 .btn-link {

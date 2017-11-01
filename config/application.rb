@@ -11,5 +11,11 @@ module LuberApp
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    # Attempting to prevent scaffold.scss from being generated
+    # https://stackoverflow.com/questions/5966776/rails-scaffold-without-the-css-file
+    config.generators do |g|
+      g.scaffold_stylesheet false
+    end
   end
 end

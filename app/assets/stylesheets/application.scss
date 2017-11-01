@@ -13,22 +13,25 @@
  *= require_tree .
  *= require_self
  */
-
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
+// Colors
 // -------------------------
-//
-// Global CSS
-//
-// -------------------------
+
+$primary: #785098;
+$secondary: #98506E;
+$dark-accent: #4A3857;
+$light-accent: #B393CC;
+$light-base: #F7F7F7;
+$dark-base: #CDCDCD;
 
 // Scaffolding
 // -------------------------
 
 html, body {
-  background-color: #f7f7f7;
+  background-color: $light-base;
   font-size: 1rem;
 }
 
@@ -57,12 +60,13 @@ p {
 }
 
 a {
-  color: #557c6f;
+  color: $primary;
 }
 
 a:hover,
 a.hover {
-  color: #26362f;
+  color: $dark-accent;
+  text-decoration: none;
 }
 
 // Input Fields
@@ -74,7 +78,7 @@ textarea {
 
 .form-control.focus, 
 .form-control:focus {
-  border-color: rgba(79, 156, 94, 0.5);
+  //border-color: rgba(79, 156, 94, 0.5);
 }
 
 // Content Areas
@@ -98,6 +102,7 @@ textarea {
 
 header {
   position: relative;
+  background-color: white;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
 
   .nav-wrapper {
@@ -111,6 +116,11 @@ header {
           height: 50px;
         }
       }
+
+      .nav-link {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
     }
   }
 }
@@ -123,13 +133,37 @@ footer {
   width: 100%;
   bottom: 0;
   padding-top: 16px;
-  background-color: #ffffff;
+  padding-bottom: 16px;
+  background-color: $dark-accent;
 
   .footer-nav-wrapper {
-    .footer-nav {
-      .row {
-        width: 100%;
-      }
+    a {
+      color: $light-base;
+    }
+
+    a:hover,
+    a.hover {
+      color: $dark-base;
+      text-decoration: none;
+    }
+
+    p {
+      font-size: 1.3rem;
+      color: $light-base;
+    }
+
+    ul {
+      border-left: 2px solid $light-accent;
+    }
+
+    li {
+      list-style-type: none;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    .footer-entry {
+      font-size: 1rem;
     }
   }
 }
@@ -142,25 +176,25 @@ footer {
 }
 
 .btn-primary {
-  background-color: #4f9c5e;
-  border-color: #4f9c5e;
+  //background-color: #4f9c5e;
+  //border-color: #4f9c5e;
 }
 
 .btn-primary.active, 
 .btn-primary:active, 
 .btn-primary.hover, 
 .btn-primary:hover {
-  background-color: #557c6f;
-  border-color: #354b42;
+  //background-color: #557c6f;
+  //border-color: #354b42;
 }
 
 .btn-primary.focus, 
 .btn-primary:focus {
-  box-shadow: 0 0 0 3px rgba(79, 156, 94, 0.5);
+  //box-shadow: 0 0 0 3px rgba(79, 156, 94, 0.5);
 }
 
 .btn-link {
-  color: #557c6f;
+  //color: #557c6f;
 }
 
 .btn-link.active, 
@@ -169,58 +203,12 @@ footer {
 .btn-link:hover, 
 .btn-link.focus, 
 .btn-link:focus {
-  color: #4f9c5e;
-}
-
-// Alerts
-// -------------------------
-
-.alert {
-  margin-top: 20px;
-}
-
-// Thumbnails
-// -------------------------
-
-.thumbnail {
-  padding: 0;
-  border-radius: 0;
-  box-shadow: 0 0 5px #ccc, inset 0 0 0 #000000;
+  //color: #4f9c5e;
 }
 
 // Font Icons
 // -------------------------
 
 .fa {
-  margin-right: 6px;
-}
-
-// -------------------------
-//
-// Home (/) CSS
-//
-// -------------------------
-
-#page-home {
-  main {
-    margin-top: 0;
-    margin-bottom: 64px;
-  }
-
-  .jumbotron {
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-
-  #hero-logo {
-    background-image: linear-gradient(to bottom right, rgba(79, 156, 94, 0.5), rgba(44, 165, 157, 0.5)), url(/images/4.jpg);
-  }
-
-  #hero-about {
-    background-color: #f7f7f7;
-
-    p {
-      margin-top: 2rem;
-    }
-  }
+  margin-right: 4px;
 }

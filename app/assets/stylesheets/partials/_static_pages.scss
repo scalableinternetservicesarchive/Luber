@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+<<<<<<< 8a7e5e0507e77579d4cd0f0de33cfce3f99f3525
 
 // Home (/)
 // -------------------------
@@ -32,4 +33,24 @@ main {
       }
     }
   }
+=======
+// -------------------------
+//
+// Home (/) CSS
+//
+// -------------------------
+
+main {
+  margin-top: 0;
+  margin-bottom: 64px;
+}
+
+.jumbotron {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#hero-background {
+  background-image: linear-gradient(to bottom right, rgba(120, 80, 152, 0.5), rgba(152, 80, 110, 0.5)), url(/hero.png);
+>>>>>>> reorganized css compilation order, began homepage
 }

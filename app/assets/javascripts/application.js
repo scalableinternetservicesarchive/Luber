@@ -16,3 +16,8 @@
 //= require popper
 //= require bootstrap
 //= require_tree .
+
+$(function(){
+  var footer_height = $('footer').height()
+  $('main').css('margin-bottom', footer_height)
+});

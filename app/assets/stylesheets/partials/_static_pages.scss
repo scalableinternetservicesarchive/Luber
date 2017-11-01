@@ -2,27 +2,38 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-// -------------------------
-//
-// Home (/) CSS
-//
+
+// Home (/)
 // -------------------------
 
 main {
-  margin-top: 0;
-  margin-bottom: 464px;
-
   .jumbotron {
     background-size: cover;
     background-repeat: no-repeat;
+  
+    .container {
+      margin: auto;
+    }
   }
 
   #hero-background {
     min-height: 100vh;
-    background-image: linear-gradient(to bottom right, rgba(120, 80, 152, 0.5), rgba(152, 80, 110, 0.5)), url(/hero.png);
+    background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), url(/hero.png);
   
     #hero-content {
       color: white;
+
+      p {
+        font-size: 1.7rem;
+      }
+      
+      .justify-content-center {
+        margin-top: 30px;
+
+        .btn-base {
+          margin: 16px;
+        }
+      }
     }
   }
 }

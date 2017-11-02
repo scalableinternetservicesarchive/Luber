@@ -8,9 +8,16 @@
         <ul class="navbar-nav ml-auto">
           <% if session[:user_id] %>
             <!-- Logged in -->
+
+            <li>
+              <%= link_to new_rental_post_path, class: "btn btn-info btn-lg" do %>
+                <span class="glyphicon glyphicon-plus"></span> Rent a car 
+              <% end %>
+            </li>
+
             <li>
               <%= link_to user_path(session[:user_id]), class: 'nav-link' do %>
-                <%= icon('user-o') %> Profile
+                <%= icon('user-o') %> <%= User.find(session[:user_id]).name %>
               <% end %>
             </li>
             <li>

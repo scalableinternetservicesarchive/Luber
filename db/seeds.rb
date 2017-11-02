@@ -11,8 +11,11 @@
 # http://www.xyzpub.com/en/ruby-on-rails/3.2/seed_rb.html
 # https://davidmles.com/seeding-database-rails/
 # https://stackoverflow.com/questions/27931101/password-cant-be-blank-error-when-seeding-database
+#
+# Bryce says: use db:reset at rails console instead of destroying things manually in this file.
+# https://piazza.com/class/j789lo09yai5qx?cid=56
 
-User.destroy_all
+# User.destroy_all
 (1..10).to_a.each do |i|
   User.create!(
     name: "User#{i}",
@@ -22,12 +25,19 @@ User.destroy_all
     ssn: "1234",
     admin: false )
 end
+
+User.create!(
+  name: "admin",
+  email: "a@a.com",
+  # password_digest: "#{User.digest('foobarbaz')}", # no.
+  password: "foobar", # yes.
+  ssn: "1234",
+  admin: true )
+
 p "Created #{User.count} users"
 
 
-
-
-Car.destroy_all
+# Car.destroy_all
 User.all.each do |u|
   p "Making a car for user #{u.name}"
   Car.create!(
@@ -43,7 +53,7 @@ p "Created #{Car.count} cars"
 
 
 
-RentalPost.destroy_all
+# RentalPost.destroy_all
 User.all.each do |u|
     # Each user sold a few RPs to random other users.
     c = Car.where(user_id: u.id).take
@@ -64,7 +74,7 @@ end
 p "Created #{RentalPost.count} rental posts"
 
 
-Tag.destroy_all
+# Tag.destroy_all
 all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-road']
 all_tags.each do |t|
     Tag.create!(name: t)
@@ -72,7 +82,7 @@ end
 p "Created #{Tag.count} tags"
 
 
-Tagging.destroy_all
+# Tagging.destroy_all
 Car.all.each do |c|
   # Each car has a couple random tags.
   2.times do

@@ -6,4 +6,48 @@ main {
   #signup-section {
     width: 30%;
   }
+
+  #profile-header {
+    color: white;
+    background-color: $secondary;
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+    #header-info {
+      margin-left: 20px;
+    }
+  }
+
+  #profile-nav {
+    border-top: 2px solid $dark-accent;
+    font-weight: bold;
+
+    .nav-tabs {
+      border-bottom: none;
+
+      .nav-item {
+        margin-top: -2px;
+        margin-bottom: 0px;
+
+        .nav-link {
+          border: 2px solid transparent;
+          border-bottom-left-radius: 0.25rem;
+          border-bottom-right-radius: 0.25rem;
+          border-top-left-radius: 0rem;
+          border-top-right-radius: 0rem;
+        }
+
+        .nav-link.active,
+        .nav-link.active:hover {
+          color: white;
+          background-color: $secondary;
+          border-color: $secondary $dark-accent $dark-accent;
+        }
+
+        .nav-link:hover {
+          border-color: $dark-accent;
+        }
+      }
+    }
+  }
 }

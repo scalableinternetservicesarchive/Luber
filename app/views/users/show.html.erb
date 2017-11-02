@@ -1,11 +1,41 @@
 <% provide(:title, 'My Account') %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<h1>
-  <%= gravatar_for @user %>
-  <%= @user.name %>
-</h1>
-<%= @user.created_at %>
+<section class="container-fluid" id="profile-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-1">
+        <%= gravatar_for @user %>
+      </div>
+      <div class="col" id="header-info">
+        <h1><%= @user.name %></h1>
+        <p class="lead">A member since <%= @user.created_at.strftime("%B %e, %Y") %></p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="container-fluid" id="profile-nav">
+  <nav class="container">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">My Rentals</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">My Cars</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Settings</a>
+      </li>
+    </ul>
+  </nav>
+</section>
+
 <% if session[:user_id] == @user.id %>
 
   <h1>

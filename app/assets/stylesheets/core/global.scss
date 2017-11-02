@@ -39,28 +39,11 @@ a.hover {
   text-decoration: none;
 }
 
-// Input Fields
-// -------------------------
-
-textarea {
-  resize: vertical;
-}
-
-.form-control.focus, 
-.form-control:focus {
-  //border-color: rgba(79, 156, 94, 0.5);
-}
-
 // Content Areas
 // -------------------------
 
 .container-fluid {
   padding: 0;
-}
-
-.col-sm-1 {
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .jumbotron {
@@ -127,6 +110,7 @@ footer {
   }
 
   .footer-nav-wrapper {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
     padding-top: 16px;
     padding-bottom: 16px;
 

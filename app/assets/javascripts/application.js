@@ -24,7 +24,7 @@ $(function(){
   $('main').css('margin-bottom', footer_height + 36);
 
   // Get rid of the top and bottom margin on the homepage only
-  if($('#hero-background').length) {
+  if($('#hero-background').length || $('#profile-header').length) {
     $('main').css('margin-top', '0px');
     $('main').css('margin-bottom', footer_height);
   }

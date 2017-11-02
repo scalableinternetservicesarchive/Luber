@@ -11,7 +11,13 @@
       <th>Color</th>
       <th>Year</th>
       <th>Tags</th>
-      <th colspan="3"></th>
+      <% if session[:user_id] %>
+        <% if User.find(session[:user_id]).name == 'admin' %>
+          <th colspan="3"></th>
+        <% else %>
+          <th>Rent??</th>
+        <% end %>
+      <% end %>
     </tr>
   </thead>
 
@@ -24,9 +30,24 @@
         <td><%= car.color %></td>
         <td><%= car.year %></td>
         <td><%= raw tag_links(car.all_tags) %></td>
-        <td><%= link_to 'Show', car %></td>
-        <td><%= link_to 'Edit', edit_car_path(car) %></td>
-        <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+        <% if session[:user_id] %>
+          <% if User.find(session[:user_id]).name == 'admin' %>
+            <td><%= link_to 'Show', car %></td>
+            <td><%= link_to 'Edit', edit_car_path(car) %></td>
+            <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% else %>
+            <td>
+              <%= link_to new_rental_post_path(:car_id => car.id), class: "btn btn-info btn-med"  do %>
+                Rent
+              <% end %>
+            </td>
+          <% end %>
+        <% end %>
+
+
+
+
       </tr>
     <% end %>
   </tbody>

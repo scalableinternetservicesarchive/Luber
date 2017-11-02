@@ -15,6 +15,11 @@ class RentalPostsController < ApplicationController
   # GET /rental_posts/new
   def new
     @rental_post = RentalPost.new
+    if params[:car_id] and session[:user_id]
+      @rental_post.car_id = params[:car_id]
+      @rental_post.owner_id = Car.find(params[:car_id]).user_id
+      @rental_post.renter_id = session[:user_id]
+    end
   end
 
   # GET /rental_posts/1/edit

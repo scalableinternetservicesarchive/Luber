@@ -1,0 +1,48 @@
+<div class="nav-wrapper">
+  <nav class="navbar navbar-expand-sm">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <%= image_tag "luber-logo/luber-logo.jpg", :class => "d-inline-block align-top", :alt => "Luber" %>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <% if session[:user_id] %>
+            <!-- Logged in -->
+
+            <li>
+              <%= link_to new_rental_post_path, class: "btn btn-info btn-lg" do %>
+                <span class="glyphicon glyphicon-plus"></span> Rent a car 
+              <% end %>
+            </li>
+
+            <li>
+              <%= link_to user_path(session[:user_id]), class: 'nav-link' do %>
+                <%= icon('user-o') %> <%= User.find(session[:user_id]).name %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to logout_path, class: 'nav-link', method: :delete do %>
+                <%= icon('sign-out') %> Logout
+              <% end %>
+            </li>
+
+          <% else %>
+            <!-- not logged in -->
+            <li>
+              <%= link_to signup_path, class: 'nav-link' do %>
+                <%= icon('user-o') %> Signup
+              <% end %>
+            </li>
+            <li>
+              <%= link_to login_path, class: 'nav-link' do %>
+                <%= icon('sign-in') %> Login
+              <% end %>
+            </li>
+          <% end %>
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>

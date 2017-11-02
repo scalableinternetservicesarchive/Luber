@@ -11,6 +11,6 @@ class StaticPagesController < ApplicationController
   def contact
   end
 
-  def privacypolicy
+  def privacy
   end
 end

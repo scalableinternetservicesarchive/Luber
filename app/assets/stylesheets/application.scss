@@ -10,6 +10,19 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
  *= require_self
  */
+
+// Boostrap 4
+@import "bootstrap";
+
+// Font Awesome
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+// Core SCSS files including variables/mixins and the primary stylesheet
+@import "core/mixins.scss";
+@import "core/global.scss";
+
+// Partial SCSS files for controller-specific styling
+@import "partials/*";

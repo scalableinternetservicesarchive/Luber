@@ -38,8 +38,8 @@
             <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% else %>
             <td>
-              <%= link_to new_rental_post_path(:car_id => car.id), class: "btn btn-info btn-med"  do %>
-                Rent
+              <%= link_to rental_posts_path(:car_id => car.id), class: "btn btn-info btn-med"  do %>
+                View posts for this car
               <% end %>
             </td>
           <% end %>

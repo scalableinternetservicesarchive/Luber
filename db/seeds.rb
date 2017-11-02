@@ -55,21 +55,40 @@ p "Created #{Car.count} cars"
 
 # RentalPost.destroy_all
 User.all.each do |u|
-    # Each user sold a few RPs to random other users.
-    c = Car.where(user_id: u.id).take
-    p "User #{u.name} owns car id: #{c.id}"
-    3.times do 
-      RentalPost.create!(
-        car_id:             c.id,
-        owner_id:           u.id,
-        renter_id:          User.all.sample.id,
-        start_location:     "goleta",
-        end_location:       "sb",
-        start_time:         "2017-10-31 20:00:00", 
-        end_time:           "2017-10-31 21:00:00",
-        price:              "123"
-        )
+
+  c = Car.where(user_id: u.id).take
+  p "User #{u.name} owns car id: #{c.id}"
+
+  # Available rentals:
+  2.times do 
+    RentalPost.create!(
+      car_id:             c.id,
+      owner_id:           u.id,
+      renter_id:          nil,
+      start_location:     "goleta",
+      end_location:       "sb",
+      start_time:         "2017-10-31 20:00:00", 
+      end_time:           "2017-10-31 21:00:00",
+      price:              "999"
+      )
   end
+
+
+  # Completed rentals:
+  2.times do 
+    RentalPost.create!(
+      car_id:             c.id,
+      owner_id:           u.id,
+      renter_id:          User.all.sample.id,
+      start_location:     "goleta",
+      end_location:       "sb",
+      start_time:         "2017-10-31 20:00:00", 
+      end_time:           "2017-10-31 21:00:00",
+      price:              "123"
+      )
+  end
+
+
 end
 p "Created #{RentalPost.count} rental posts"
 

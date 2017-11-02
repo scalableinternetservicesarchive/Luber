@@ -5,6 +5,8 @@ class RentalPostsController < ApplicationController
   # GET /rental_posts.json
   def index
     @rental_posts = RentalPost.all
+    @available_rental_posts = RentalPost.where(:renter_id => nil)
+    @filled_rental_posts = RentalPost.all.find_all {|rp| rp.renter_id}
   end
 
   # GET /rental_posts/1
@@ -15,11 +17,6 @@ class RentalPostsController < ApplicationController
   # GET /rental_posts/new
   def new
     @rental_post = RentalPost.new
-    if params[:car_id] and session[:user_id]
-      @rental_post.car_id = params[:car_id]
-      @rental_post.owner_id = Car.find(params[:car_id]).user_id
-      @rental_post.renter_id = session[:user_id]
-    end
   end
 
   # GET /rental_posts/1/edit
@@ -45,15 +42,37 @@ class RentalPostsController < ApplicationController
   # PATCH/PUT /rental_posts/1
   # PATCH/PUT /rental_posts/1.json
   def update
-    respond_to do |format|
-      if @rental_post.update(rental_post_params)
-        format.html { redirect_to @rental_post, notice: 'Rental post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @rental_post }
-      else
-        format.html { render :edit }
-        format.json { render json: @rental_post.errors, status: :unprocessable_entity }
-      end
-    end
+
+    # if params[:car_id] and session[:user_id]
+    #   @rental_post.car_id = params[:car_id]
+    #   @rental_post.owner_id = Car.find(params[:car_id]).user_id
+    #   @rental_post.renter_id = session[:user_id]
+    # end
+
+    # debugger 
+
+    # @rental_post = RentalPost.find(params[:id])
+    # @rental_post.renter_id = session[:user_id]
+    # @rental_post.save!
+
+    # Original:
+    # respond_to do |format|
+    #   if @rental_post.update(rental_post_params)
+    #     format.html { redirect_to @rental_post, notice: 'Rental post was successfully updated.' }
+    #     format.json { render :show, status: :ok, location: @rental_post }
+    #   else
+    #     format.html { render :edit }
+    #     format.json { render json: @rental_post.errors, status: :unprocessable_entity }
+    #   end
+    # end
+
+    # Hack: how to PATCH without needing to re-send a whole rental_post? 
+    # The rental_post_params keeps getting me in trouble.
+    @rental_post.renter_id = session[:user_id]
+    @rental_post.save!
+
+    flash[:success] = "Rented RP #{@rental_post.id} !"
+    redirect_to @rental_post
   end
 
   # DELETE /rental_posts/1

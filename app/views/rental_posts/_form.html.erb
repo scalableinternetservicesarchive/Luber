@@ -12,6 +12,7 @@
   <% end %>
 
 
+  <!-- If not logged in, don't show the details. -->
   <% if !session[:user_id] %>
     <div class="field">
       <%= f.label :car_id %>

@@ -13,6 +13,7 @@
       <th>Start time</th>
       <th>End time</th>
       <th>Price</th>
+      <th>Owner terms</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -28,6 +29,7 @@
         <td><%= rental_post.start_time %></td>
         <td><%= rental_post.end_time %></td>
         <td><%= rental_post.price %></td>
+        <td><%= rental_post.terms %></td>
         <td><%= link_to 'Show', rental_post %></td>
         <td><%= link_to 'Edit', edit_rental_post_path(rental_post) %></td>
         <td><%= link_to 'Destroy', rental_post, method: :delete, data: { confirm: 'Are you sure?' } %></td>

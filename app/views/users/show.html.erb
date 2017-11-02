@@ -1,10 +1,11 @@
-<% provide(:title, @user.name) %>
+<% provide(:title, 'My Account') %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
 <h1>
   <%= gravatar_for @user %>
   <%= @user.name %>
 </h1>
-
+<%= @user.created_at %>
 <% if session[:user_id] == @user.id %>
 
   <h1>

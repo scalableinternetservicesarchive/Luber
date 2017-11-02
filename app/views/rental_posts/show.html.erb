@@ -40,5 +40,10 @@
   <%= @rental_post.price %>
 </p>
 
+<p>
+  <strong>Owner terms:</strong>
+  <%= @rental_post.terms %>
+</p>
+
 <%= link_to 'Edit', edit_rental_post_path(@rental_post) %> |
 <%= link_to 'Back', rental_posts_path %>

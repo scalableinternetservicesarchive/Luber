@@ -5,6 +5,8 @@ class RentalPostsController < ApplicationController
   # GET /rental_posts.json
   def index
     @rental_posts = RentalPost.all
+    @available_rental_posts = RentalPost.where(:renter_id => nil)
+    @filled_rental_posts = RentalPost.all.find_all {|rp| rp.renter_id}
   end
 
   # GET /rental_posts/1
@@ -49,6 +51,7 @@ class RentalPostsController < ApplicationController
         format.json { render json: @rental_post.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # DELETE /rental_posts/1

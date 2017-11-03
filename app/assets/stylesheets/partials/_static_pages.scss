@@ -19,7 +19,7 @@ main {
 
   #hero-background {
     min-height: 100vh;
-    background-image: linear-gradient(to bottom right, rgba(120, 80, 152, 0.5), rgba(152, 80, 110, 0.5)), url(/hero.png);
+    background-image: linear-gradient(to bottom right, rgba(120, 80, 152, 0.5), rgba(152, 80, 110, 0.5)), image-url("/hero.png");
   
     #hero-content {
       color: white;

@@ -11,20 +11,25 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :car_id %>
-    <%= f.number_field :car_id %>
-  </div>
 
-  <div class="field">
-    <%= f.label :owner_id %>
-    <%= f.number_field :owner_id %>
-  </div>
+  <!-- If not logged in, don't show the details. -->
+  <% if !session[:user_id] %>
+    <div class="field">
+      <%= f.label :car_id %>
+      <%= f.number_field :car_id %>
+    </div>
 
-  <div class="field">
-    <%= f.label :renter_id %>
-    <%= f.number_field :renter_id %>
-  </div>
+    <div class="field">
+      <%= f.label :owner_id %>
+      <%= f.number_field :owner_id %>
+    </div>
+
+    <div class="field">
+      <%= f.label :renter_id %>
+      <%= f.number_field :renter_id %>
+    </div>
+  <% end %>
+
 
   <div class="field">
     <%= f.label :start_location %>

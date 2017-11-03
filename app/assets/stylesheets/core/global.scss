@@ -39,6 +39,21 @@ a.hover {
   text-decoration: none;
 }
 
+<<<<<<< HEAD
+=======
+// Input Fields
+// -------------------------
+
+textarea {
+  resize: vertical;
+}
+
+.form-control.focus, 
+.form-control:focus {
+  //border-color: rgba(79, 156, 94, 0.5);
+}
+
+>>>>>>> ebee523753af0f45f15f0907bb4951807733a89c
 // Content Areas
 // -------------------------
 
@@ -46,6 +61,14 @@ a.hover {
   padding: 0;
 }
 
+<<<<<<< HEAD
+=======
+.col-sm-1 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+>>>>>>> ebee523753af0f45f15f0907bb4951807733a89c
 .jumbotron {
   margin-bottom: 0;
 }
@@ -110,7 +133,10 @@ footer {
   }
 
   .footer-nav-wrapper {
+<<<<<<< HEAD
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+=======
+>>>>>>> ebee523753af0f45f15f0907bb4951807733a89c
     padding-top: 16px;
     padding-bottom: 16px;
 

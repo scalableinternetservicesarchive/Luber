@@ -38,7 +38,7 @@
             <td><%= link_to 'Destroy', rp, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% else %>
             <td>
-              <%= link_to rental_post_path(rp.id), :method => :patch, class: "btn btn-info btn-med"  do %>
+              <%= link_to rental_post_path(rp.id, params: {rental_post: {renter_id: session[:user_id]}}), method: :patch, class: "btn btn-info btn-med"  do %>
                 Rent
               <% end %>
             </td>

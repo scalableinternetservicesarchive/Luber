@@ -9,7 +9,15 @@ Rails.application.routes.draw do
 
   resources :rental_posts
   resources :cars
-  resources :users
+  resources :users do
+    member do
+      get 'overview'
+      get 'rentals'
+      get 'cars'
+      get 'history'
+      get 'settings'
+    end
+  end
 
   get 'tags/:tag', to: 'cars#tag_search', as: "tag"
 

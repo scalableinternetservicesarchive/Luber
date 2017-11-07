@@ -1,0 +1,14 @@
+<section class="container-fluid banner">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-auto">
+        <%= gravatar_for @user %>
+      </div>
+      <div class="col">
+        <%# @user.username %>
+        <h1>(Username)</h1>
+        <p class="lead">A member since <%= @user.created_at.strftime("%B %e, %Y") %></p>
+      </div>
+    </div>
+  </div>
+</section>

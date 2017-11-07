@@ -5,21 +5,22 @@
         <%= image_tag "luber-logo/luber-logo.jpg", :class => "d-inline-block align-top", :alt => "Luber" %>
       </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
+        <%= link_to 'Post a new Rental', new_rental_post_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
+        <ul class="navbar-nav">
           <% if logged_in? %>
             <li>
               <%= link_to rental_posts_path, class: 'nav-link' do %>
-                <%= icon('car') %> Rentals
+                <%= icon('exchange') %> Rentals
               <% end %>
             </li>
             <li>
               <%= link_to current_user, class: 'nav-link' do %>
-                <%= icon('user') %> Profile
+                <%= icon('user-circle') %> Profile
               <% end %>
             </li>
             <li>
               <%= link_to logout_path, method: :delete, class: 'nav-link' do %>
-                <%= icon('sign-in') %> Logout
+                <%= icon('sign-out') %> Logout
               <% end %>
             </li>
           <% else %>

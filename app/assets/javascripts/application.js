@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
 //= require popper
@@ -20,13 +19,11 @@
 
 $(function(){
   // Set a dynamic footer height since rails debug may/may not be showing
-  var footer_height = $('footer').height();
-  $('main').css('margin-bottom', footer_height + 36);
+  $('main').css('margin-bottom', $('footer').height() + 36);
 
   // Get rid of the top and bottom margin on the homepage only
-  if($('#hero-background').length || $('#profile-header').length) {
-    $('main').css('margin-top', '0px');
-    $('main').css('margin-bottom', footer_height);
+  if($('#hero-background').length) {
+    $('main').css('margin-bottom', $('footer').height());
   }
 
   // Set dynamic dropdown carets for FAQ entries

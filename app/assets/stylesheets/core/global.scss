@@ -11,12 +11,8 @@ html {
   min-height: 100%;
 }
 
-main {
-  margin-top: 30px;
-}
-
 hr {
-  margin-top: 1.75rem;
+  margin-top: 0.75rem;
   margin-bottom: 1.75rem;
 }
 
@@ -39,21 +35,6 @@ a.hover {
   text-decoration: none;
 }
 
-<<<<<<< HEAD
-=======
-// Input Fields
-// -------------------------
-
-textarea {
-  resize: vertical;
-}
-
-.form-control.focus, 
-.form-control:focus {
-  //border-color: rgba(79, 156, 94, 0.5);
-}
-
->>>>>>> ebee523753af0f45f15f0907bb4951807733a89c
 // Content Areas
 // -------------------------
 
@@ -61,14 +42,6 @@ textarea {
   padding: 0;
 }
 
-<<<<<<< HEAD
-=======
-.col-sm-1 {
-  padding-left: 0;
-  padding-right: 0;
-}
-
->>>>>>> ebee523753af0f45f15f0907bb4951807733a89c
 .jumbotron {
   margin-bottom: 0;
 }
@@ -79,7 +52,7 @@ textarea {
 header {
   position: relative;
   background-color: white;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 6px $material-shadow;
 
   .nav-wrapper {
     .navbar {
@@ -133,10 +106,7 @@ footer {
   }
 
   .footer-nav-wrapper {
-<<<<<<< HEAD
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
-=======
->>>>>>> ebee523753af0f45f15f0907bb4951807733a89c
+    box-shadow: 0 0 6px $material-shadow;
     padding-top: 16px;
     padding-bottom: 16px;
 
@@ -206,22 +176,58 @@ footer {
   box-shadow: 0 0 0 3px $primary-shadow;
 }
 
-.btn-link {
-  //color: #557c6f;
-}
-
-.btn-link.active, 
-.btn-link:active, 
-.btn-link.hover, 
-.btn-link:hover, 
-.btn-link.focus, 
-.btn-link:focus {
-  //color: #4f9c5e;
+a.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 // Font Icons
 // -------------------------
 
 .fa {
+  margin-left: 4px;
   margin-right: 4px;
+}
+
+// Misc
+// -------------------------
+
+.banner {
+  color: white;
+  background: $secondary;
+  box-shadow: 0 0 6px $material-shadow;
+  padding-top: 36px;
+  padding-bottom: 26px;
+}
+
+.account-access-link {
+  display: block;
+  margin-top: 8px;
+}
+
+.m-top {
+  margin-top: 36px;
+}
+
+.badge-tag {
+  border: 2px solid black;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.card-wrapper {
+  .card {
+    margin-bottom: 16px;
+
+    .card-header {
+      color: white;
+      background: linear-gradient(to bottom right, $primary, $secondary);
+    }
+
+    .card-body {
+      .col-desc {
+        margin-left: -34px;
+      }
+    }
+  }
 }

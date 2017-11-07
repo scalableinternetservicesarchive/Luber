@@ -18,14 +18,16 @@
         </div>
         <div class="form-group">
           <%= f.label :password %>
-          <%= f.password_field :password, class: 'form-control', placeholder: 'Pick a secure password' %>
+          <%= f.password_field :password, class: 'form-control', placeholder: 'Pick a secure Password' %>
         </div>
         <div class="form-group">
           <%= f.label :password_confirmation, "Confirm Password" %>
-          <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Type the same password' %>
+          <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Type the same Password' %>
         </div>
-        <%= f.submit "Create Account", class: "btn btn-lg btn-base" %>
-        <%= link_to 'Already have an Account? Login here', login_path, class: 'account-access-link' %>
+        <div class="text-center">
+          <%= f.submit 'Create Account', class: 'btn btn-lg btn-base mt-3' %>
+          <%= link_to 'Already have an Account? Login here!', signup_path, class: 'account-access-link mt-4' %>
+        </div>
       <% end %>
     </div>
     <div class="col"></div>

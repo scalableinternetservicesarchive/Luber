@@ -15,8 +15,10 @@
           <%= f.label :password %>
           <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
         </div>
-        <%= f.submit "Login", class: "btn btn-lg btn-base" %>
-        <%= link_to 'Don\'t have an Account? Signup here', signup_path, class: 'account-access-link' %>
+        <div class="text-center">
+          <%= f.submit 'Login', class: 'btn btn-lg btn-base mt-3' %>
+          <%= link_to 'Don\'t have an Account? Signup here!', signup_path, class: 'account-access-link mt-4' %>
+        </div>
       <% end %>
     </div>
     <div class="col"></div>

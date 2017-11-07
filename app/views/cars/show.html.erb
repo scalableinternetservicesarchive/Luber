@@ -1,34 +1,53 @@
+<% provide(:title, "Car") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+
+<section class="container-fluid banner">
+  <div class="container">
+    <h1>Car</h1>
+  </div>
+</section>
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>User:</strong>
-  <%= @car.user_id %>
-</p>
-
-<p>
-  <strong>Plate num:</strong>
-  <%= @car.plate_num %>
-</p>
-
-<p>
-  <strong>Model:</strong>
-  <%= @car.model %>
-</p>
-
-<p>
-  <strong>Color:</strong>
-  <%= @car.color %>
-</p>
-
-<p>
-  <strong>Year:</strong>
-  <%= @car.year %>
-</p>
-
-<p>
-  <strong>Tags:</strong>
-  <%= @car.all_tags %>
-</p>
-
-<%= link_to 'Edit', edit_car_path(@car) %> |
-<%= link_to 'Back', cars_path %>
+<section class="container m-top card-wrapper">
+  <div class="card">
+    <div class="card-header">
+      <%# @car.make %> <%# @car.model %>
+      <h3>(Make) <%= @car.model %></h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-1">
+          <h5 class="text-center"><%= icon('calendar') %></h5>
+          <h5 class="text-center"><%= icon('paint-brush') %></h5>
+          <h5 class="text-center"><%= icon('barcode') %></h5>
+          <h5 class="text-center"><%= icon('tags') %></h5>
+        </div>
+        <div class="col col-desc">
+          <h5>Year: <%= @car.year %></h5>
+          <h5>Color: <%= @car.color %></h5>
+          <h5>License Plate: <%= @car.plate_num %></h5>
+          <div class="row">
+            <div class="col">
+              <h5>Tags:
+                <% @car.tags.each do |tag_group| %>
+                  <% tag_group.name.split(' ').each do |tag| %>
+                    <span class="badge badge-tag"><%= tag %></span>
+                  <% end %>
+                <% end %>
+              </h5>
+            </div>
+            <div class="col-md-auto">
+              <div class="btn-group" role="group" aria-label="Change Car">
+                <%= link_to edit_car_path(@car), class: 'btn btn-outline-success', role: 'button' do %>
+                  <%= icon('pencil') %> Edit
+                <% end %>
+                <%= link_to @car, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' do %>
+                  <%= icon('times') %> Delete
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

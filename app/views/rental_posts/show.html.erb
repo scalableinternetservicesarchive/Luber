@@ -19,6 +19,10 @@
   <strong>Start location:</strong>
   <%= @rental_post.start_location %>
 </p>
+<p class="start-lat" hidden="true"><%= @rental_post.start_latitude %></p>
+<p class="start-lng" hidden="true"><%= @rental_post.start_longitude %></p>
+
+<div id="map" style="height:400px;width:400px"></div>
 
 <p>
   <strong>End location:</strong>

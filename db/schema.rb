@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026223308) do
+ActiveRecord::Schema.define(version: 20171103021049) do
 
   create_table "cars", force: :cascade do |t|
     t.integer "user_id"
@@ -34,6 +34,10 @@ ActiveRecord::Schema.define(version: 20171026223308) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "terms"
+    t.float "start_latitude"
+    t.float "start_longitude"
+    t.float "end_latitude"
+    t.float "end_longitude"
   end
 
   create_table "taggings", force: :cascade do |t|

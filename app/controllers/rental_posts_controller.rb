@@ -10,6 +10,7 @@ class RentalPostsController < ApplicationController
   # GET /rental_posts/1
   # GET /rental_posts/1.json
   def show
+     @rental_post = RentalPost.find(params[:id])
   end
 
   # GET /rental_posts/new

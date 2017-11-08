@@ -65,6 +65,7 @@
       <%= link_to('Privacy Policy', {:controller => 'static_pages', :action => 'privacypolicy'}, class: 'nav-link' ) %>
     </nav>
 
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzTwUYnqKcx9uh6hMKUv335E1DenBgcgQ&callback=initMap"></script>
 
     <% flash.each do |message_type, message| %>
       <div class="alert alert-<%= message_type %>"><%= message %></div>

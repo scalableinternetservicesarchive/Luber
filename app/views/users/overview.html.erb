@@ -1,0 +1,52 @@
+<% if session[:user_id] == @user.id %>
+  <% provide(:title, "My Overview") %>
+<% else %>
+  <%# provide(:title, "#{@user.username}\'s Profile") %>
+  <% provide(:title, "#{@user.id}\'s Profile") %>
+<% end %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+
+<%= render 'users/banner' %>
+<% if session[:user_id] == @user.id %>
+  <%= render 'users/nav' %>
+<% end %>
+<section class="container m-top card-wrapper">
+  <% if session[:user_id] == @user.id %>
+    <h2>My Info</h2>
+  <% else %>
+    <h2>Info</h2>
+  <% end %>
+  <hr>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-1">
+          <h5 class="text-center"><%= icon('id-card-o') %></h5>
+          <h5 class="text-center"><%= icon('envelope-o') %></h5>
+          <h5 class="text-center"><%= icon('globe') %></h5>
+          <% if session[:user_id] == @user.id %>
+            <h5 class="text-center"><%= icon('user-secret') %></h5>
+          <% end %>
+        </div>
+        <div class="col col-desc">
+          <h5><%= @user.name %></h5>
+          <h5><%= @user.email %></h5>
+          <h5>(Location)<%# @user.location %></h5>
+          <% if session[:user_id] == @user.id %>
+            <h5>(SSN)<%= @user.ssn %></h5>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% if session[:user_id] == @user.id %>
+  <section class="container m-top card-wrapper">
+    <h2>My Recent Rentals</h2>
+    <hr>
+  </section>
+  <section class="container m-top card-wrapper">
+    <h2>My Recent Listings</h2>
+    <hr>
+  </section>
+<% end %>

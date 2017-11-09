@@ -11,13 +11,8 @@ html {
   min-height: 100%;
 }
 
-main {
-  margin-top: 30px;
-  margin-bottom: 494px;
-}
-
 hr {
-  margin-top: 1.75rem;
+  margin-top: 0.75rem;
   margin-bottom: 1.75rem;
 }
 
@@ -36,20 +31,8 @@ a {
 
 a:hover,
 a.hover {
-  color: $dark-accent;
+  color: $darker-accent;
   text-decoration: none;
-}
-
-// Input Fields
-// -------------------------
-
-textarea {
-  resize: vertical;
-}
-
-.form-control.focus, 
-.form-control:focus {
-  //border-color: rgba(79, 156, 94, 0.5);
 }
 
 // Content Areas
@@ -57,11 +40,6 @@ textarea {
 
 .container-fluid {
   padding: 0;
-}
-
-.col-sm-1 {
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .jumbotron {
@@ -74,7 +52,7 @@ textarea {
 header {
   position: relative;
   background-color: white;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 6px $material-shadow;
 
   .nav-wrapper {
     .navbar {
@@ -103,7 +81,7 @@ footer {
   position: absolute;
   width: 100%;
   bottom: 0;
-  background-color: $dark-accent;
+  background-color: $darker-accent;
 
   .debug-wrapper {
     color: black;
@@ -117,12 +95,18 @@ footer {
     }
 
     .debug-entry {
+      margin: 20px 0px;
       padding: 10px 0px 10px 20px;
       border-left: 2px solid black;
+
+      pre {
+        margin-bottom: 0;
+      }
     }
   }
 
   .footer-nav-wrapper {
+    box-shadow: 0 0 6px $material-shadow;
     padding-top: 16px;
     padding-bottom: 16px;
 
@@ -164,40 +148,86 @@ footer {
   cursor: pointer;
 }
 
-.btn-primary {
-  //background-color: #4f9c5e;
-  //border-color: #4f9c5e;
+.btn-base {
+  color: white;
+  background-color: $primary;
+  border-color: $primary;
+}
+ 
+.btn-base.hover, 
+.btn-base:hover {
+  color: white;
+  background-color: $dark-accent;
+  border-color: $darker-accent;
 }
 
-.btn-primary.active, 
-.btn-primary:active, 
-.btn-primary.hover, 
-.btn-primary:hover {
-  //background-color: #557c6f;
-  //border-color: #354b42;
+.btn-base.active, 
+.btn-base:active {
+  color: white;
+  background-color: $darker-accent;
+  border-color: $light-accent;
 }
 
-.btn-primary.focus, 
-.btn-primary:focus {
-  //box-shadow: 0 0 0 3px rgba(79, 156, 94, 0.5);
+.btn-base.active, 
+.btn-base:active,
+.btn-base.focus, 
+.btn-base:focus {
+  color: white;
+  box-shadow: 0 0 0 3px $primary-shadow;
 }
 
-.btn-link {
-  //color: #557c6f;
-}
-
-.btn-link.active, 
-.btn-link:active, 
-.btn-link.hover, 
-.btn-link:hover, 
-.btn-link.focus, 
-.btn-link:focus {
-  //color: #4f9c5e;
+a.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 // Font Icons
 // -------------------------
 
 .fa {
+  margin-left: 4px;
   margin-right: 4px;
+}
+
+// Misc
+// -------------------------
+
+.banner {
+  color: white;
+  background: $secondary;
+  box-shadow: 0 0 6px $material-shadow;
+  padding-top: 36px;
+  padding-bottom: 26px;
+}
+
+.account-access-link {
+  display: block;
+  margin-top: 8px;
+}
+
+.m-top {
+  margin-top: 36px;
+}
+
+.badge-tag {
+  border: 2px solid black;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.card-wrapper {
+  .card {
+    margin-bottom: 16px;
+
+    .card-header {
+      color: white;
+      background: linear-gradient(to bottom right, $primary, $secondary);
+    }
+
+    .card-body {
+      .col-desc {
+        margin-left: -34px;
+      }
+    }
+  }
 }

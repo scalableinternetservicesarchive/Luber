@@ -1,0 +1,31 @@
+<section class="container-fluid" id="profile-nav">
+  <nav class="container">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <%= link_to overview_user_path, class: action_name == 'overview' ? 'nav-link active' : 'nav-link' do %>
+          <%= icon('info-circle') %> Overview
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to rentals_user_path, class: action_name == 'rentals' ? 'nav-link active' : 'nav-link' do %>
+          <%= icon('exchange') %> My Rentals
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to cars_user_path, class: action_name == 'cars' ? 'nav-link active' : 'nav-link' do %>
+          <%= icon('car') %> My Cars
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to history_user_path, class: 'nav-link disabled' do %>
+          <%= icon('history') %> History
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to settings_user_path, class: action_name == 'settings' ? 'nav-link active' : 'nav-link' do %>
+          <%= icon('cog') %> Settings
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+</section>

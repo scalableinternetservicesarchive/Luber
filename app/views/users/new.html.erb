@@ -1,20 +1,35 @@
 <% provide(:title, "Sign Up") %>
-<h1>Sign Up!</h1>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<%= form_for(@user, url: signup_path) do |f| %>
-    <%= render 'shared/error_messages' %>
-
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-
-    <%= f.label :email %>
-    <%= f.email_field :email %>
-
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-
-    <%= f.label :password_confirmation, "Confirmation" %>
-    <%= f.password_field :password_confirmation %>
-
-    <%= f.submit "Create my account!", class: "btn btn-primary" %>
-<% end %>
+<section class="container align-slef-center m-top">
+  <h1 class="text-center">Sign Up Today!</h1>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      <%= form_for(@user, url: signup_path) do |f| %>
+        <%= render 'shared/error_messages' %>
+        <div class="form-group">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: 'form-control', placeholder: 'Bob Smith' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :email %>
+          <%= f.email_field :email, class: 'form-control', placeholder: 'bobsmith@gmail.com' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :password %>
+          <%= f.password_field :password, class: 'form-control', placeholder: 'Pick a secure Password' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :password_confirmation, "Confirm Password" %>
+          <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Type the same Password' %>
+        </div>
+        <div class="text-center">
+          <%= f.submit 'Create Account', class: 'btn btn-lg btn-base mt-3' %>
+          <%= link_to 'Already have an Account? Login here!', signup_path, class: 'account-access-link mt-4' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col"></div>
+  </div>
+</section>

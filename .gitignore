@@ -8,6 +8,8 @@ config/environments/production.rb
 .idea
 *.sqlite3
 
+.byebug*
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

@@ -1,9 +1,9 @@
 <% provide(:title, "Privacy Policy") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<h1>Luber Privacy Policy</h1>
-
-Luber has the highest regard for your valuable and marketable personal information.
-
-<hr>
-
-<p>Find me in app/views/static_pages/privacypolicy.html.erb</p>
+<section class="container m-top">
+  <h1>Privacy Policy</h1>
+  <p class="lead">Your data is our data</p>
+  <hr>
+  <p>Luber has the highest regard for your valuable and marketable personal information.</p>
+</section>

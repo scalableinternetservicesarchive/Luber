@@ -1,0 +1,126 @@
+<% provide(:title, "My Settings") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+
+<%= render 'users/banner' %>
+<% if session[:user_id] == @user.id %>
+  <%= render 'users/nav' %>
+<% end %>
+<section class="container m-top card-wrapper">
+  <h2>Account Information</h2>
+  <hr>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-1">
+          <h5 class="text-center"><%= icon('id-card-o') %></h5>
+          <h5 class="text-center"><%= icon('id-card-o') %></h5>
+          <h5 class="text-center"><%= icon('map-signs') %></h5>
+          <h5 class="text-center"><%= icon('map-o') %></h5>
+          <h5 class="text-center"><%= icon('user-secret') %></h5>
+        </div>
+        <div class="col col-desc">
+          <h5>First Name:</h5>
+          <h5>Last Name:</h5>
+          <h5>City:</h5>
+          <h5>State:</h5>
+          <h5>SSN:</h5>
+        </div>
+        <div class="col">
+          <%# @user.first_name %>
+          <h5 class="text-right"><%= @user.name %></h5>
+          <%# @user.last_name %>
+          <h5 class="text-right"><%= @user.name %></h5>
+          <h5 class="text-right">(City)<%# @user.city %></h5>
+          <h5 class="text-right">(State)<%# @user.state %></h5>
+          <h5 class="text-right">(SSN)<%= @user.ssn %></h5>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-1">
+          <h5 class="text-center"><%= icon('user') %></h5>
+          <h5 class="text-center"><%= icon('envelope-o') %></h5>
+          <h5 class="text-center"><%= icon('lock') %></h5>
+          <h5 class="text-center"><%= icon('clone') %></h5>
+        </div>
+        <div class="col col-desc">
+          <h5>Username:</h5>
+          <h5>Email:</h5>
+          <h5>Password:</h5>
+          <h5>Account Type:</h5>
+        </div>
+        <div class="col">
+          <h5 class="text-right">(Username) <%# @user.username %></h5>
+          <h5 class="text-right"><%= @user.email %></h5>
+          <h5 class="text-right">(Password)</h5>
+          <% if @user.admin == true %>
+            <h5 class="text-right">Admin User</h5>
+          <% else %>
+            <h5 class="text-right">Standard User</h5>
+          <% end %>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-1">
+          <h5 class="text-center"><%= icon('car') %></h5>
+          <h5 class="text-center"><%= icon('mobile') %></h5>
+          <h5 class="text-center"><%= icon('key') %></h5>
+        </div>
+        <div class="col col-desc">
+          <h5>Cars:</h5>
+          <h5>Posts as Renter:</h5>
+          <h5>Posts as Owner:</h5>
+        </div>
+        <div class="col">
+          <h5 class="text-right"><%= @cars.length %></h5>
+          <h5 class="text-right"><%= @rides_bought.length %></h5>
+          <h5 class="text-right"><%= @rides_sold.length %></h5>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-1">
+          <h5 class="text-center"><%= icon('birthday-cake') %></h5>
+          <h5 class="text-center"><%= icon('refresh') %></h5>
+          <h5 class="text-center"><%= icon('sign-in') %></h5>
+        </div>
+        <div class="col col-desc">
+          <h5>Created On:</h5>
+          <h5>Last Updated On:</h5>
+          <h5>Last Logged In On:</h5>
+        </div>
+        <div class="col">
+          <h5 class="text-right"><%= @user.created_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M%p") %></h5>
+          <h5 class="text-right"><%= @user.updated_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M%p") %></h5>
+          <h5 class="text-right">(Logged in at)</h5>
+        </div>
+      </div>
+      <div class="btn-group mt-4 float-right" role="group" aria-label="Edit Account Information">
+        <%= link_to edit_user_path, class: 'btn btn-success', role: 'button' do %>
+          <%= icon('pencil') %> Edit
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="container m-top card-wrapper">
+  <h2>Danger Zone</h2>
+  <hr>
+  <div class="card">
+    <div class="card-body">
+      <%= link_to about_path, class: 'btn btn-danger', role: 'button' do %>
+        <%= icon('times') %> Delete All Cars
+      <% end %>
+      <p class="mt-2 mb-4">This will permanently delete all of your cars. Watch them go 100 to 0 real quick.</p>
+      <%= link_to about_path, class: 'btn btn-danger', role: 'button' do %>
+        <%= icon('times') %> Delete All Rental Posts
+      <% end %>
+      <p class="mt-2 mb-4">This will permanently delete all of the rental posts you've made as the owner. If a post was <span class="badge badge-primary">Available</span>, it will be taken off the market. Otherwise, it will be considered <span class="badge badge-danger">Cancelled</span>, and the renter will no longer have access to it.</p>
+      <%= link_to @user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', role: 'button' do %>
+        <%= icon('times') %> Delete Account
+      <% end %>
+      <p class="mt-2">This will permanently delete your account. There's no going back from this...</p>
+    </div>
+  </div>
+</section>

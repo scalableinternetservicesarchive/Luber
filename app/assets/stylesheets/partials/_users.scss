@@ -1,3 +1,47 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+main {
+  .gravatar {
+    box-shadow: -2px 2px 3px $material-shadow;
+  }
+
+  #profile-nav {
+    border-top: 2px solid #ccc;
+
+    .nav-tabs {
+      border-bottom: none;
+
+      .nav-item {
+        margin-top: -2px;
+      }
+
+      .nav-link {
+        border: 1px solid transparent;
+        border-top-left-radius: 0rem;
+        border-top-right-radius: 0rem;
+        border-bottom-left-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+      }
+
+      .nav-link.active {
+        color: white;
+        background-color: $secondary;
+        border-color: $secondary #ccc #ccc;
+      }
+
+      .nav-link.disabled {
+        border: none;
+      }
+
+      .nav-link:focus, .nav-link:hover {
+        border-color: #ccc;
+      }
+
+      .nav-link.active:focus, .nav-link.active:hover {
+        border-color: $secondary #ccc #ccc;
+      }
+    }
+  }
+}

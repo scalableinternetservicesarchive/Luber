@@ -1,6 +1,18 @@
-<h1>Editing Rental Post</h1>
+<% provide(:title, "Update Rental Post ##{params[:id]}") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+<% provide(:submit_label, "Update Rental Post") %>
 
-<%= render 'form', rental_post: @rental_post %>
-
-<%= link_to 'Show', @rental_post %> |
-<%= link_to 'Back', rental_posts_path %>
+<section class="container-fluid banner">
+  <div class="container">
+    <h1>Update Rental Post #<%= params[:id] %></h1>
+  </div>
+</section>
+<section class="container align-slef-center m-top">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      <%= render 'form', rental_post: @rental_post %>
+    </div>
+    <div class="col"></div>
+  </div>
+</section>

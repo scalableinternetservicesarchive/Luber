@@ -7,15 +7,15 @@
   </div>
 </section>
 <section class="container m-top card-wrapper">
-  <% @rental_posts.each do |rental_post| %>
+  <% @rentals.each do |rental| %>
     <div class="card">
       <div class="card-header">
         <div class="row">
           <div class="col">
-            <h3 class="mb-0"><span class="badge <%= rental_post.get_status_class %> mr-3"><%= rental_post.get_status_label %></span><%= rental_post.start_location %> <%= icon('arrow-right') %> <%= rental_post.end_location %></h3>
+            <h3 class="mb-0"><span class="badge <%= rental.get_status_class %> mr-3"><%= rental.get_status_label %></span><%= rental.start_location %> <%= icon('arrow-right') %> <%= rental.end_location %></h3>
           </div>
           <div class="col-md-auto">
-            <h3 class="mb-0 font-weight-bold">$<%= rental_post.price %></h3>
+            <h3 class="mb-0 font-weight-bold">$<%= rental.price %></h3>
           </div>
         </div>
       </div>
@@ -24,21 +24,21 @@
           <div class="col-1">
             <h5 class="text-center"><%= icon('clock-o') %></h5>
             <h5 class="text-center"><%= icon('user') %></h5>
-            <%# if rental_post.renter_id != nil %>
+            <%# if rental.renter_id != nil %>
               <h5 class="text-center"><%= icon('user') %></h5>
             <%# end %>
             <h5 class="text-center"><%= icon('car') %></h5>
             <h5 class="text-center"><%= icon('tags') %></h5>
           </div>
           <div class="col col-desc">
-            <h5>From <%= rental_post.start_time.strftime("%l:%M%p") %> on <%= rental_post.start_time.strftime("%A, %b. %-d") %> until <%= rental_post.end_time.strftime("%l:%M%p") %> on <%= rental_post.end_time.strftime("%A, %b. %-d") %></h5>
-            <%# link_to User.find_by_id(rental_post.owner_id).username user_path(rental_post.owner_id) %>
-            <h5>Owner: <%= link_to '(Username)', user_path(rental_post.owner_id) %></h5>
-            <%# if rental_post.renter_id != nil %>
-              <%# link_to User.find_by_id(rental_post.renter_id).username user_path(rental_post.renter_id) %>
-              <h5>Renter: <%= link_to '(Username)', user_path(rental_post.renter_id) %></h5>
+            <h5>From <%= rental.start_time.strftime("%l:%M%p") %> on <%= rental.start_time.strftime("%A, %b. %-d") %> until <%= rental.end_time.strftime("%l:%M%p") %> on <%= rental.end_time.strftime("%A, %b. %-d") %></h5>
+            <%# link_to User.find_by_id(rental.owner_id).username user_path(rental.owner_id) %>
+            <h5>Owner: <%= link_to '(Username)', user_path(rental.owner_id) %></h5>
+            <%# if rental.renter_id != nil %>
+              <%# link_to User.find_by_id(rental.renter_id).username user_path(rental.renter_id) %>
+              <h5>Renter: <%= link_to '(Username)', user_path(rental.renter_id) %></h5>
             <%# end %>
-            <% rental_car = Car.find_by_id(rental_post.car_id) %>
+            <% rental_car = Car.find_by_id(rental.car_id) %>
             <%# rental_car.color %> <%# rental_car.year %> <%# rental_car.make %> <%# rental_car.model %>
             <h5><%= rental_car.color %> <%= rental_car.year %> (Make) <%= rental_car.model %></h5>
             <div class="row">
@@ -52,21 +52,21 @@
                 </h5>
               </div>
               <div class="col-md-auto">
-                <% if session[:user_id] == rental_post.owner_id %>
+                <% if session[:user_id] == rental.owner_id %>
                   <div class="btn-group" role="group" aria-label="Change Post">
-                    <%= link_to edit_rental_post_path(rental_post), class: 'btn btn-outline-success', role: 'button' do %>
+                    <%= link_to edit_rental_path(rental), class: 'btn btn-outline-success', role: 'button' do %>
                       <%= icon('pencil') %> Edit
                     <% end %>
-                    <%= link_to rental_post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' do %>
+                    <%= link_to rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' do %>
                       <%= icon('times') %> Delete
                     <% end %>
                   </div>
                 <% else %>
-                  <%# if rental_post.status == 0 (where 0 is available which indicates no renter yet) %>
+                  <%# if rental.status == 0 (where 0 is available which indicates no renter yet) %>
                   <% if true %>
-                    <%= link_to 'Rent', rental_post, class: 'btn btn-base', role: 'button' %>
-                  <% elsif session[:user_id] == rental_post.renter_id %>
-                    <%= link_to 'View', rental_post, class: 'btn btn-base', role: 'button' %>
+                    <%= link_to 'Rent', rental, class: 'btn btn-base', role: 'button' %>
+                  <% elsif session[:user_id] == rental.renter_id %>
+                    <%= link_to 'View', rental, class: 'btn btn-base', role: 'button' %>
                   <% end %>
                 <% end %>
               </div>
@@ -78,5 +78,5 @@
   <% end %>
 </section>
 <section class="container text-right">
-  <%= link_to 'Post a new Rental', new_rental_post_path, class: 'btn btn-base', role: 'button' %>
+  <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
 </section>

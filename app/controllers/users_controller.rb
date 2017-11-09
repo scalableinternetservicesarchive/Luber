@@ -24,14 +24,14 @@ class UsersController < ApplicationController
 
   def overview
     @user = User.find(params[:id])
-    @rides_sold = RentalPost.where(owner_id: @user.id)
-    @rides_bought = RentalPost.where(renter_id: @user.id)
+    @rides_sold = Rental.where(owner_id: @user.id)
+    @rides_bought = Rental.where(renter_id: @user.id)
   end
 
   def rentals
     @user = User.find(params[:id])
-    @rides_sold = RentalPost.where(owner_id: @user.id)
-    @rides_bought = RentalPost.where(renter_id: @user.id)
+    @rides_sold = Rental.where(owner_id: @user.id)
+    @rides_bought = Rental.where(renter_id: @user.id)
   end
 
   def cars
@@ -42,15 +42,15 @@ class UsersController < ApplicationController
   def history
     @user = User.find(params[:id])
     @cars = Car.where(user_id: @user.id)
-    @rides_sold = RentalPost.where(owner_id: @user.id)
-    @rides_bought = RentalPost.where(renter_id: @user.id)
+    @rides_sold = Rental.where(owner_id: @user.id)
+    @rides_bought = Rental.where(renter_id: @user.id)
   end
 
   def settings
     @user = User.find(params[:id])
     @cars = Car.where(user_id: @user.id)
-    @rides_sold = RentalPost.where(owner_id: @user.id)
-    @rides_bought = RentalPost.where(renter_id: @user.id)
+    @rides_sold = Rental.where(owner_id: @user.id)
+    @rides_bought = Rental.where(renter_id: @user.id)
   end
 
   private

@@ -52,13 +52,13 @@ User.all.each do |u|
 end
 p "Created #{Car.count} cars"
 
-# RentalPost.destroy_all
+# Rental.destroy_all
 User.all.each do |u|
   # Each user sold a few RPs to random other users.
   c = Car.where(user_id: u.id).take
   p "User #{u.username} owns car id: #{c.id}"
   3.times do
-    RentalPost.create!(
+    Rental.create!(
       owner_id: u.id,
       renter_id: User.all.sample.id,
       car_id: c.id,
@@ -71,7 +71,7 @@ User.all.each do |u|
       terms: "Be nice" )
   end
 end
-p "Created #{RentalPost.count} rental posts"
+p "Created #{Rental.count} rental posts"
 
 # Tag.destroy_all
 all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-road']

@@ -27,8 +27,8 @@ main {
 
       .nav-link.active {
         color: white;
-        background-color: $secondary;
-        border-color: $secondary #ccc #ccc;
+        background-color: $darker-accent;
+        border-color: $darker-accent #ccc #ccc;
       }
 
       .nav-link.disabled {
@@ -40,7 +40,7 @@ main {
       }
 
       .nav-link.active:focus, .nav-link.active:hover {
-        border-color: $secondary #ccc #ccc;
+        border-color: $darker-accent #ccc #ccc;
       }
     }
   }

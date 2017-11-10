@@ -7,8 +7,14 @@ Rails.application.routes.draw do
   get 'contact', to: 'static_pages#contact'
   get 'privacy', to: 'static_pages#privacy'
 
-  resources :rental_posts
-  resources :cars
+  get '/signup', to: 'users#new'
+  post '/signup', to: 'users#create'
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
+  resources :rentals
+  resources :cars, :except => [:index]
   resources :users do
     member do
       get 'overview'
@@ -20,11 +26,5 @@ Rails.application.routes.draw do
   end
 
   get 'tags/:tag', to: 'cars#tag_search', as: "tag"
-
-  get '/signup', to: 'users#new'
-  post '/signup', to: 'users#create'
-
-  get    '/login',   to: 'sessions#new'
-  post   '/login',   to: 'sessions#create'
-  delete '/logout',  to: 'sessions#destroy'
+  
 end

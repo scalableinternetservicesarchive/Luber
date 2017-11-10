@@ -3,14 +3,8 @@ require 'test_helper'
 class CarsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
-    @user = User.create!(name: "Example User", email:"user@example.com",
-                        password: "foobar", password_confirmation: "foobar")
-    @car = Car.create!(user_id: @user.id, plate_num: "m123", model: "chev", color: "red", year: 1)
-  end
-
-  test "should get index" do
-    get cars_url
-    assert_response :success
+    @user = User.create!(username: "Example User", email:"user@example.com", password: "foobar", password_confirmation: "foobar")
+    @car = Car.create!(user_id: @user.id, make: "Ford", model: "Mustang", year: 2000, color: "red", plate_number: "m123")
   end
 
   test "should get new" do
@@ -20,7 +14,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create car" do
     assert_difference('Car.count') do
-      post cars_url, params: { car: { color: @car.color, model: @car.model, plate_num: @car.plate_num, user_id: @car.user_id, year: @car.year } }
+      post cars_url, params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, plate_number: @car.plate_number } }
     end
 
     assert_redirected_to car_url(Car.last)
@@ -37,7 +31,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update car" do
-    patch car_url(@car), params: { car: { color: @car.color, model: @car.model, plate_num: @car.plate_num, user_id: @car.user_id, year: @car.year } }
+    patch car_url(@car), params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, plate_number: @car.plate_number } }
     assert_redirected_to car_url(@car)
   end
 

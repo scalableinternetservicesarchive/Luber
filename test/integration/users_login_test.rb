@@ -7,17 +7,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     #                  password: "password", password_confirmation: "password")
     # @user.save!
 
-
-    User.create!(
-      name: "Rick Sanchez",
-      email: "rick@sanchez.com",
-      password: "password", 
-      ssn: "1234",
-      admin: false )
-
-    @user = User.where(name: "Rick Sanchez").take
-
-
+    User.create!(username: "RickSanchez", email: "rick@sanchez.com", password: "foobar", password_confirmation: "foobar")
+    @user = User.where(username: "RickSanchez").take
   end
 
   teardown do
@@ -26,12 +17,12 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with valid information followed by logout" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
-                                          password: 'password'}}
+    post login_path, params: { session: { email: @user.email, password: 'foobar'}}
     assert is_logged_in?
     assert_redirected_to @user
     follow_redirect!
-    assert_template 'users/show'
+    follow_redirect!
+    assert_template 'users/overview'
     assert_select "a[href=?]", login_path, count: 0
     assert_select "a[href=?]", logout_path
     assert_select "a[href=?]", user_path(@user)

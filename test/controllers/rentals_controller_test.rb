@@ -2,15 +2,13 @@ require 'test_helper'
 
 class RentalsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user1 = User.create!(name: "Michael", email:"michael@example.com",
-                          password: "foobar", password_confirmation: "foobar")
-    @user2 = User.create!(name: "Justin", email:"justin@example.com",
-                          password: "foobar", password_confirmation: "foobar")
+    @user1 = User.create!(username: "Michael", email:"michael@example.com", password: "foobar", password_confirmation: "foobar")
+    @user2 = User.create!(username: "Justin", email:"justin@example.com", password: "foobar", password_confirmation: "foobar")
 
-    @car = Car.create!(user_id: @user1.id, plate_num: "m123", model: "chev", color: "red", year: 1)
+    @car = Car.create!(user_id: @user1.id, make: "Ford", model: "Mustang", year: 2000, color: "red", plate_number: "m123")
 
-    @rental = Rental.create!(car_id: @car.id, owner_id: @user1.id, renter_id: @user2.id, start_location: "Santa Barbara", end_location: "Mountain View",
-        start_time: "2017-10-17 20:20:37", end_time: "2017-10-18 20:20:37", price: 1.5)
+    @rental = Rental.create!(owner_id: @user1.id, renter_id: @user2.id, car_id: @car.id, start_location: "Santa Barbara", end_location: "Mountain View",
+        start_time: "2017-10-17 20:20:37", end_time: "2017-10-18 20:20:37", price: 1.53, status: 0, terms: "My terms")
   end
 
   test "should get index" do
@@ -25,7 +23,9 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create rental" do
     assert_difference('Rental.count') do
-      post rentals_url, params: { rental: { car_id: @rental.car_id, end_location: @rental.end_location, end_time: @rental.end_time, owner_id: @rental.owner_id, price: @rental.price, renter_id: @rental.renter_id, start_location: @rental.start_location, start_time: @rental.start_time } }
+      post rentals_url, params: { rental: { owner_id: @rental.owner_id, renter_id: @rental.renter_id, car_id: @rental.car_id, 
+        start_location: @rental.start_location, end_location: @rental.end_location, start_time: @rental.start_time, end_time: @rental.end_time, 
+        price: @rental.price, status: @rental.status, terms: @rental.terms } }
     end
 
     assert_redirected_to rental_url(Rental.last)
@@ -42,7 +42,9 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update rental" do
-    patch rental_url(@rental), params: { rental: { car_id: @rental.car_id, end_location: @rental.end_location, end_time: @rental.end_time, owner_id: @rental.owner_id, price: @rental.price, renter_id: @rental.renter_id, start_location: @rental.start_location, start_time: @rental.start_time } }
+    patch rental_url(@rental), params: { rental: { owner_id: @rental.owner_id, renter_id: @rental.renter_id, car_id: @rental.car_id, 
+        start_location: @rental.start_location, end_location: @rental.end_location, start_time: @rental.start_time, end_time: @rental.end_time, 
+        price: @rental.price, status: @rental.status, terms: @rental.terms } }
     assert_redirected_to rental_url(@rental)
   end
 

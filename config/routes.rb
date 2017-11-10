@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
   resources :rentals
-  resources :cars
+  resources :cars, :except => [:index]
   resources :users do
     member do
       get 'overview'

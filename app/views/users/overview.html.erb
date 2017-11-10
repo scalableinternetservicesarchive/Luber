@@ -1,8 +1,7 @@
 <% if session[:user_id] == @user.id %>
   <% provide(:title, "My Overview") %>
 <% else %>
-  <%# provide(:title, "#{@user.username}\'s Profile") %>
-  <% provide(:title, "#{@user.id}\'s Profile") %>
+  <% provide(:title, "#{@user.username}\'s Profile") %>
 <% end %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
@@ -29,11 +28,11 @@
           <% end %>
         </div>
         <div class="col col-desc">
-          <h5><%= @user.name %></h5>
+          <h5><%= @user.username %></h5>
           <h5><%= @user.email %></h5>
-          <h5>(Location)<%# @user.location %></h5>
+          <h5><%= @user.city %>, <%= @user.state %></h5>
           <% if session[:user_id] == @user.id %>
-            <h5>(SSN)<%= @user.ssn %></h5>
+            <h5><%= @user.ssn %></h5>
           <% end %>
         </div>
       </div>

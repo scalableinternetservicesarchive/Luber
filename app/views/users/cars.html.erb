@@ -16,8 +16,7 @@
     <% @cars.each do |car| %>
       <div class="card">
         <div class="card-header">
-          <%# car.make %> <%# car.model %>
-          <h3>(Make) <%= car.model %></h3>
+          <h3><% car.make %> <% car.model %></h3>
         </div>
         <div class="card-body">
           <div class="row">

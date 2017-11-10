@@ -21,18 +21,18 @@
     last_name: "Jones",
     city: "Goleta",
     state: "CA",
-    ssn: "123456789",
     username: "skater4#{i}",
     email: "user#{i}@boo.com",
     password: "foobar",
-    admin: false )
+    admin: false,
+    logged_in_at: "2017-11-01 20:00:00", 
+    logged_out_at: "2017-11-01 20:00:00" )
 end
 User.create!(
   first_name: "Mister",
   last_name: "Admn",
   city: "Goleta",
   state: "CA",
-  ssn: "123456789",
   username: "WaTcher53",
   email: "a@a.com",
   password: "foobar",

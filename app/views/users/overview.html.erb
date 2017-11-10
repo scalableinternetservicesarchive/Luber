@@ -21,18 +21,18 @@
       <div class="row">
         <div class="col-1">
           <h5 class="text-center"><%= icon('id-card-o') %></h5>
-          <h5 class="text-center"><%= icon('envelope-o') %></h5>
           <h5 class="text-center"><%= icon('globe') %></h5>
-          <% if session[:user_id] == @user.id %>
-            <h5 class="text-center"><%= icon('user-secret') %></h5>
-          <% end %>
+          <h5 class="text-center"><%= icon('envelope-o') %></h5>
+          <h5 class="text-center"><%= icon('clone') %></h5>
         </div>
         <div class="col col-desc">
-          <h5><%= @user.username %></h5>
-          <h5><%= @user.email %></h5>
+          <h5><%= @user.first_name %> <%= @user.last_name %></h5>
           <h5><%= @user.city %>, <%= @user.state %></h5>
-          <% if session[:user_id] == @user.id %>
-            <h5><%= @user.ssn %></h5>
+          <h5><%= @user.email %></h5>
+          <% if @user.admin == true %>
+            <h5>Admin User</h5>
+          <% else %>
+            <h5>Standard User</h5>
           <% end %>
         </div>
       </div>

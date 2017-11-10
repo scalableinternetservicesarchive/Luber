@@ -16,23 +16,18 @@
           <h5 class="text-center"><%= icon('id-card-o') %></h5>
           <h5 class="text-center"><%= icon('map-signs') %></h5>
           <h5 class="text-center"><%= icon('map-o') %></h5>
-          <h5 class="text-center"><%= icon('user-secret') %></h5>
         </div>
         <div class="col col-desc">
           <h5>First Name:</h5>
           <h5>Last Name:</h5>
           <h5>City:</h5>
           <h5>State:</h5>
-          <h5>SSN:</h5>
         </div>
         <div class="col">
-          <%# @user.first_name %>
-          <h5 class="text-right"><%= @user.name %></h5>
-          <%# @user.last_name %>
-          <h5 class="text-right"><%= @user.name %></h5>
-          <h5 class="text-right">(City)<%# @user.city %></h5>
-          <h5 class="text-right">(State)<%# @user.state %></h5>
-          <h5 class="text-right">(SSN)<%= @user.ssn %></h5>
+          <h5 class="text-right"><%= @user.first_name %></h5>
+          <h5 class="text-right"><%= @user.last_name %></h5>
+          <h5 class="text-right"><%= @user.city %></h5>
+          <h5 class="text-right"><%= @user.state %></h5>
         </div>
       </div>
       <hr>
@@ -50,9 +45,9 @@
           <h5>Account Type:</h5>
         </div>
         <div class="col">
-          <h5 class="text-right">(Username) <%# @user.username %></h5>
+          <h5 class="text-right"><%= @user.username %></h5>
           <h5 class="text-right"><%= @user.email %></h5>
-          <h5 class="text-right">(Password)</h5>
+          <h5 class="text-right">******</h5>
           <% if @user.admin == true %>
             <h5 class="text-right">Admin User</h5>
           <% else %>
@@ -93,7 +88,7 @@
         <div class="col">
           <h5 class="text-right"><%= @user.created_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M%p") %></h5>
           <h5 class="text-right"><%= @user.updated_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M%p") %></h5>
-          <h5 class="text-right">(Logged in at)</h5>
+          <h5 class="text-right"><%= @user.logged_in_at.strftime("%A, %B %-d %Y") %> at <%= @user.logged_in_at.strftime("%l:%M%p") %></h5>
         </div>
       </div>
       <div class="btn-group mt-4 float-right" role="group" aria-label="Edit Account Information">

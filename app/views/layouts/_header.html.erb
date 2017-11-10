@@ -2,18 +2,18 @@
   <nav class="navbar navbar-expand-sm">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <%= image_tag "luber-logo/luber-logo.jpg", :class => "d-inline-block align-top", :alt => "Luber" %>
+        <%= image_tag "luber-logo.png", :class => "d-inline-block align-top", :alt => "Luber" %>
       </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <% if logged_in? %>
-            <%= link_to 'Post a new Rental', new_rental_post_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
+            <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
         <% else %>
             <%= link_to 'Login or signup to start posting!', login_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
         <% end %>
         <ul class="navbar-nav">
           <% if logged_in? %>
             <li>
-              <%= link_to rental_posts_path, class: 'nav-link' do %>
+              <%= link_to rentals_path, class: 'nav-link' do %>
                 <%= icon('exchange') %> Rentals
               <% end %>
             </li>

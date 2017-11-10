@@ -1,9 +1,9 @@
-<%= form_for(rental_post) do |f| %>
-  <% if rental_post.errors.any? %>
+<%= form_for(rental) do |f| %>
+  <% if rental.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(rental_post.errors.count, "error") %> prohibited this rental_post from being saved:</h2>
+      <h2><%= pluralize(rental.errors.count, "error") %> prohibited this rental from being saved:</h2>
       <ul>
-        <% rental_post.errors.full_messages.each do |message| %>
+        <% rental.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>

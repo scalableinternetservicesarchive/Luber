@@ -1,12 +1,14 @@
-<% provide(:title, "Car") %>
+<% provide(:title, 'Rentals') %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
 <section class="container-fluid banner">
   <div class="container">
-    <h1>Car</h1>
+    <h1>Available Rentals</h1>
   </div>
 </section>
-<p id="notice"><%= notice %></p>
 <section class="container m-top card-wrapper">
-  <%= render @car %>
+  <%= render @rentals %>
+</section>
+<section class="container text-right">
+  <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
 </section>

@@ -71,4 +71,11 @@ class UserTest < ActiveSupport::TestCase
     @user.password = @user.password_confirmation = "a"*5
     assert_not @user.valid?
   end
+
+  test "db seed file: each user should have 2 avail and 2 purchased rentals" do
+    Rails.application.load_seed
+    User.all.each do |u|
+      assert_equal Rental.where(owner_id: u.id).count, 4
+    end
+  end
 end

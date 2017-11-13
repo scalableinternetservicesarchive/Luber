@@ -24,6 +24,7 @@
           <h5 class="text-center"><%= icon('globe') %></h5>
           <h5 class="text-center"><%= icon('envelope-o') %></h5>
           <h5 class="text-center"><%= icon('clone') %></h5>
+          <h5 class="text-center"><%= icon('clock-o') %></h5>
         </div>
         <div class="col col-desc">
           <h5><%= @user.first_name %> <%= @user.last_name %></h5>
@@ -34,6 +35,7 @@
           <% else %>
             <h5>Standard User</h5>
           <% end %>
+          <h5>Last logged in on <%= @user.logged_in_at.strftime("%A, %B %-d") %> at <%= @user.logged_in_at.strftime("%l:%M%p") %></h5>
         </div>
       </div>
     </div>

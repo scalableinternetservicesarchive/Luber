@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in @user
       flash[:success] = 'Welcome to Luber!'
-      redirect_to overview_user_path
+      redirect_to controller: 'users', action: 'overview', id: user.id, logged_in_at: Time.now.to_datetime
     else
       render 'new'
     end
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       # handle successful update
-      flash[:success] = "Profile updated"
+      flash[:success] = "Profile successfully updated"
       redirect_to overview_user_path
     else
       render 'edit'
@@ -38,6 +38,7 @@ class UsersController < ApplicationController
 
   def overview
     @user = User.find(params[:id])
+    @user.update_attribute(:logged_in_at, params[:logged_in_at])
     @rides_sold = Rental.where(owner_id: @user.id)
     @rides_bought = Rental.where(renter_id: @user.id)
   end
@@ -76,7 +77,7 @@ class UsersController < ApplicationController
   # before filters for authorization
   def logged_in_user
     unless logged_in?
-      flash[:danger] = "Please log in first."
+      flash[:danger] = "Please login first."
       redirect_to login_path
     end
   end

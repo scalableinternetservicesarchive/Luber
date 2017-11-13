@@ -40,12 +40,49 @@
   </div>
 </section>
 <% if session[:user_id] == @user.id %>
+  <% now = Time.now.to_datetime %>
   <section class="container m-top card-wrapper">
-    <h2>My Recent Rentals</h2>
+    <h2>Recent Rentals as an Owner</h2>
     <hr>
+    <% if @rides_sold.length == 0 %>
+      <div class="text-center">
+        <p>Looks like you haven't rented out your car to anyone recently.</p>
+        <p>-insert joke here-</p>
+        <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% else %>
+      <% @rides_sold.each do |r| %>
+        <% if r.start_time > now or r.end_time > now - 7.days %>
+          <%= render r %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if @rides_sold.length > 0 %>
+      <div class="text-right">
+        <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% end %>
   </section>
   <section class="container m-top card-wrapper">
-    <h2>My Recent Listings</h2>
+    <h2>Recent Rentals as a Renter</h2>
     <hr>
+    <% if @rides_bought.length == 0 %>
+      <div class="text-center">
+        <p>Looks like you haven't rented anyone else's car recently.</p>
+        <p>-insert joke here-</p>
+        <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% else %>
+      <% @rides_bought.each do |r| %>
+        <% if r.start_time > now or r.end_time > now - 7.days %>
+          <%= render r %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if @rides_bought.length > 0 %>
+      <div class="text-right">
+        <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% end %>
   </section>
 <% end %>

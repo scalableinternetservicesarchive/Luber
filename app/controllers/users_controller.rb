@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in @user
       flash[:success] = 'Welcome to Luber!'
-      redirect_to @user
+      redirect_to overview_user_path
     else
       render 'new'
     end
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(user_params)
       # handle successful update
       flash[:success] = "Profile updated"
-      redirect_to @user
+      redirect_to overview_user_path
     else
       render 'edit'
     end
@@ -70,22 +70,21 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :email, :password,
-                                 :password_confirmation)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation)
   end
 
   # before filters for authorization
   def logged_in_user
     unless logged_in?
       flash[:danger] = "Please log in first."
-      redirect_to login_url
+      redirect_to login_path
     end
   end
 
   # confirms the correct user
   def correct_user
     @user = User.find(params[:id])
-    redirect_to(root_url) unless current_user?(@user)
+    redirect_to(root_path) unless current_user?(@user)
   end
 
 end

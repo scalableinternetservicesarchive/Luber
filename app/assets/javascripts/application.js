@@ -17,7 +17,8 @@
 //= require bootstrap
 //= require_tree .
 
-$(function(){
+  
+$(document).on('turbolinks:load', function () { 
   // Set a dynamic footer height since rails debug may/may not be showing
   $('main').css('margin-bottom', $('footer').height() + 36);
 
@@ -26,13 +27,14 @@ $(function(){
     $('main').css('margin-bottom', $('footer').height());
   }
 
-  // Set dynamic dropdown carets for FAQ entries
+  // Set dynamic dropdown carets and add responsive collapsing for FAQ entries
   var prevQuestion;
   $('.faq-question').on('click', function() {
     if($(this).children().hasClass('fa-caret-right')) {
       $(this).children().removeClass('fa-caret-right').addClass('fa-caret-down');
       if(prevQuestion != null) {
         prevQuestion.children().removeClass('fa-caret-down').addClass('fa-caret-right');
+        $(prevQuestion.attr('href')).collapse('hide');
       }
       prevQuestion = $(this);
     }

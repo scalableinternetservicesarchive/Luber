@@ -17,11 +17,13 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
+    log_in_as(@user1, password: "foobar")
     get new_rental_url
     assert_response :success
   end
 
   test "should create rental" do
+    log_in_as(@user1, password: "foobar")
     assert_difference('Rental.count') do
       post rentals_url, params: { rental: { owner_id: @rental.owner_id, renter_id: @rental.renter_id, car_id: @rental.car_id, 
         start_location: @rental.start_location, end_location: @rental.end_location, start_time: @rental.start_time, end_time: @rental.end_time, 
@@ -37,11 +39,13 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
+    log_in_as(@user1, password: "foobar")
     get edit_rental_url(@rental)
     assert_response :success
   end
 
   test "should update rental" do
+    log_in_as(@user1, password: "foobar")
     patch rental_url(@rental), params: { rental: { owner_id: @rental.owner_id, renter_id: @rental.renter_id, car_id: @rental.car_id, 
         start_location: @rental.start_location, end_location: @rental.end_location, start_time: @rental.start_time, end_time: @rental.end_time, 
         price: @rental.price, status: @rental.status, terms: @rental.terms } }
@@ -49,11 +53,39 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy rental" do
+    log_in_as(@user1, password: "foobar")
     assert_difference('Rental.count', -1) do
       delete rental_url(@rental)
     end
 
     assert_redirected_to rentals_url
+  end
+
+  # :show, :new, :create, :edit, :update, :destroy
+  test 'should redirect when not authenticated to access rental posts' do
+    get new_rental_url
+    assert_not flash.empty?
+    assert_redirected_to login_url
+
+    post rentals_url, params: { rental: { owner_id: @rental.owner_id, renter_id: @rental.renter_id, car_id: @rental.car_id,
+                                          start_location: @rental.start_location, end_location: @rental.end_location, start_time: @rental.start_time, end_time: @rental.end_time,
+                                          price: @rental.price, status: @rental.status, terms: @rental.terms } }
+    assert_not flash.empty?
+    assert_redirected_to login_url
+
+    get edit_rental_url(@rental)
+    assert_not flash.empty?
+    assert_redirected_to login_url
+
+    patch rental_url(@rental), params: { rental: { owner_id: @rental.owner_id, renter_id: @rental.renter_id, car_id: @rental.car_id,
+                                                   start_location: @rental.start_location, end_location: @rental.end_location, start_time: @rental.start_time, end_time: @rental.end_time,
+                                                   price: @rental.price, status: @rental.status, terms: @rental.terms } }
+    assert_not flash.empty?
+    assert_redirected_to login_url
+
+    delete rental_url(@rental)
+    assert_not flash.empty?
+    assert_redirected_to login_url
   end
 
 end

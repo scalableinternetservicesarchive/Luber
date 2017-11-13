@@ -5,7 +5,11 @@
         <%= image_tag "luber-logo.png", :class => "d-inline-block align-top", :alt => "Luber" %>
       </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
+        <% if logged_in? %>
+            <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
+        <% else %>
+            <%= link_to 'Login or signup to start posting!', login_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
+        <% end %>
         <ul class="navbar-nav">
           <% if logged_in? %>
             <li>

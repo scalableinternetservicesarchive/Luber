@@ -6,6 +6,8 @@ class RentalsController < ApplicationController
   # GET /rentals.json
   def index
     @rentals = Rental.all
+    @available_rentals = Rental.where(:renter_id => nil)
+    @filled_rentals = Rental.all.find_all {|r| r.renter_id}
   end
 
   # GET /rentals/1

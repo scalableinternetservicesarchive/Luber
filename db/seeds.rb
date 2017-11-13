@@ -54,10 +54,28 @@ p "Created #{Car.count} cars"
 
 # Rental.destroy_all
 User.all.each do |u|
-  # Each user sold a few RPs to random other users.
   c = Car.where(user_id: u.id).take
   p "User #{u.username} owns car id: #{c.id}"
-  3.times do
+
+  # This user posted a few rentals, some of which have been purchased:
+
+  # Available rentals:
+  2.times do
+    Rental.create!(
+      owner_id: u.id,
+      renter_id: nil,
+      car_id: c.id,
+      start_location: "Los Angeles",
+      end_location: "San Francisco",
+      start_time: "2018-10-30 20:00:00", 
+      end_time: "2018-10-31 02:00:00",
+      price: "200.43",
+      status: "1",  # how to ints map to what the statuses mean?
+      terms: "Be nice" )
+  end
+
+  # Purchased rentals:
+  2.times do
     Rental.create!(
       owner_id: u.id,
       renter_id: User.all.sample.id,

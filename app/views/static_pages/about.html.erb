@@ -1,9 +1,25 @@
 <% provide(:title, "About") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
+<section class="container-fluid banner">
+  <div class="container">
+    <h1>About</h1>
+    <p class="lead">What even is this?</p>
+  </div>
+</section>
 <section class="container m-top">
-  <h1>About</h1>
-  <p class="lead">Additional information about the website</p>
+  <h2>From Humble Beginnings</h2>
   <hr>
-  <p>Luber began as a class project at UC Santa Barbara for CS 291: "Scalable Internet Services", taught by the esteemed and handsome professor Dr. Bryce Boe.</p>
+  <p>Luber began as a class project at the University of California, Santa Barbara for CS 291A: "Scalable Internet Services", taught by the esteemed and handsome professor Dr. Bryce Boe. While wholeheartedly pedagogical in its nature, Luber's purpose is to fill in the gaps created by companies such as <%= link_to 'Uber', 'https://www.uber.com/', target: '_blank' %> and <%= link_to 'Lyft', 'https://www.lyft.com/', target: '_blank' %> when it comes to modren transportation needs.
+  <h2 class="m-top">Motivations</h2>
+  <hr>
+  <p class="font-italic">(For a simple explanation of what Luber's function is, see the <%= link_to 'FAQ', faq_path %> section)</p>
+  <p>With the services aformentioned  above, only short distance rides in highly populated urban-cityscapes are truly feasible. Areas which are suburban, rural, or just less populated overall tend to have less demand for taxi-like services, thus making those rides that are available increasingly expensive. Furthermore, even in locations where these services are available, going any long distance becomes expensive quickly, so much so that it just stops making sense economically.</p>
+  <p>With Luber however, the renter has the freedom to take the owner's car wherever they please, as long as they meet the requirements set out by:</p>
+  <ul>
+    <li>The start and end locations</li>
+    <li>The start and end times</li>
+    <li>The terms explicitly set by the owner</li>
+  </ul>
+  <p>This makes long distance travel much more viable, while simultaneously benefitting the car owner in that they need not be present for the duration of the rental, but only for the drop-off and pick-up of their vechile.</p>
 </section>

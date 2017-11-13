@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-header" role="tab" id="question-<%= n %>">
+    <h5 class="mb-0">
+      <a class="faq-question collapsed" data-toggle="collapse" href="#collapse-<%= n %>" aria-expanded="false" aria-controls="collapse-<%= n %>">
+        <i class="fa fa-caret-right" aria-hidden="true"></i><%= q %>
+      </a>
+    </h5>
+  </div>
+  <div id="collapse-<%= n %>" class="collapse" role="tabpanel" aria-labelledby="question-<%= n %>" data-parent="#accordion">
+    <div class="card-body">
+      <p><%= a %></p>
+    </div>
+  </div>
+</div>

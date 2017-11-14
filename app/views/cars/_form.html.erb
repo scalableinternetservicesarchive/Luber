@@ -9,31 +9,29 @@
       </ul>
     </div>
   <% end %>
-  <% if !session[:user_id] %>
-    <div class="form-group">
-      <%= f.label :user_id %>
-      <%= f.number_field :user_id, class: 'form-control', placeholder: 'Owner' %>
-    </div>
-  <% end %>
   <div class="form-group">
-    <%= f.label 'License Plate Number' %>
-    <%= f.text_field :plate_number, class: 'form-control', placeholder: 'License Plate Number' %>
+    <%= f.label :make %>
+    <%= f.text_field :make, class: 'form-control', placeholder: 'Ford' %>
   </div>
   <div class="form-group">
     <%= f.label :model %>
-    <%= f.text_field :model, class: 'form-control', placeholder: 'Model' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :color %>
-    <%= f.text_field :color, class: 'form-control', placeholder: 'Color' %>
+    <%= f.text_field :model, class: 'form-control', placeholder: 'Mustang' %>
   </div>
   <div class="form-group">
     <%= f.label :year %>
-    <%= f.number_field :year, class: 'form-control', placeholder: 'Year' %>
+    <%= f.number_field :year, class: 'form-control', placeholder: '2015' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :color %>
+    <%= f.text_field :color, class: 'form-control', placeholder: 'Blue' %>
+  </div>
+  <div class="form-group">
+    <%= f.label 'License Plate Number' %>
+    <%= f.text_field :plate_number, class: 'form-control', placeholder: '1234567' %>
   </div>
   <div class="form-group">
     <%= f.label :tags %>
-    <%= f.text_field :all_tags, class: 'form-control', placeholder: 'Tags' %>
+    <%= f.text_field :all_tags, class: 'form-control', placeholder: 'Sporty, Trendy, Off-road' %>
   </div>
   <div class="text-center">
     <%= f.submit yield(:submit_label), class: 'btn btn-lg btn-base mt-3' %>

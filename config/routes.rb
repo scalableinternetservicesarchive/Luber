@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   resources :rentals 
   resources :cars, :except => [:index]
-  resources :users do
+  resources :users, :except => [:index, :new, :create] do
     member do
       get 'overview'
       get 'rentals'

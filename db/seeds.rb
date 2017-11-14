@@ -48,15 +48,19 @@ p "Created #{User.count} users"
 # CARS
 ###############################################
 
+car_models = ['TOYOTA','HOLDEN','FORD','NISSAN','BMW','MAZDA','MERCEDES-BENZ','VOLKSWAGEN','AUDI','KIA','PEUGEOT','HYUNDAI']
+car_makes = ['Civic','CR-V','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','RAV4','Pilot','Tacoma','CX-5','Outback','Challenger','Cherokee','Forester','Equinox','Explorer','Sorento','Mustang','Camaro','Crosstrek','Rogue','Sonata','Tucson','Odyssey','Compass','Silverado 1500','RX 350','Escape','4Runner','Traverse','XC90','Colorado','Santa Fe','Corolla','Edge','Ridgeline','Tahoe','Pacifica','Acadia','Fusion','Charger']
+car_colors = ['red','orange','yellow','green','blue','purple','black','white','gray','silver']
+
 # Car.destroy_all
 User.all.each do |u|
   p "Making a car for user #{u.username}"
   Car.create!(
     user_id: u.id,
-    make: "Ford",
-    model: "Bronco",
-    year: "1981",
-    color: "Blue",
+    make: car_makes.sample,
+    model: car_models.sample,
+    year: (1960..2017).to_a.sample,
+    color: car_colors.sample,
     plate_number: "#{u.username}ZZ" )
 end
 p "Created #{Car.count} cars"
@@ -110,7 +114,7 @@ p "Created #{Rental.count} rental posts"
 ###############################################
 
 # Tag.destroy_all
-all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'red','white','black','atomic-blue']
+all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'moon-roof', 'smoking', 'tinted', 'fold-down-seats', 'curtains','cup-holders','arm-rests','bed','fridge','leather','stereo','backseat-tv','satellite-dish']
 all_tags.each do |t|
     Tag.create!(name: t)
 end
@@ -128,3 +132,4 @@ Car.all.each do |c|
   end
 end
 p "Created #{Tagging.count} taggings"
+

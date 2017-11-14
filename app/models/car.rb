@@ -3,9 +3,6 @@ class Car < ApplicationRecord
     has_many :taggings
     has_many :tags, through: :taggings
 
-    # https://stackoverflow.com/questions/923796/how-do-you-validate-uniqueness-of-a-pair-of-ids-in-ruby-on-rails
-    # validates_uniqueness_of :id, :scope => [:tag_id]
-
 
     def all_tags=(names)
       self.tags = names.split(",").map do |name|

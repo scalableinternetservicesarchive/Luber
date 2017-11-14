@@ -10,16 +10,36 @@
     </div>
   <% end %>
   <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: 'form-control', placeholder: 'Bob' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: 'form-control', placeholder: 'Smith' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :city %>
+    <%= f.text_field :city, class: 'form-control', placeholder: 'Los Angeles' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :state %>
+    <%= f.select :state, options_for_select(us_states), {}, class: 'form-control' %>
+  </div>
+  <div class="form-group">
     <%= f.label :username %>
-    <%= f.text_field :username, class: 'form-control', placeholder: 'Name' %>
+    <%= f.text_field :username, class: 'form-control', placeholder: 'bsmith1989' %>
   </div>
   <div class="form-group">
     <%= f.label :email %>
-    <%= f.email_field :email, class: 'form-control', placeholder: 'Email' %>
+    <%= f.email_field :email, class: 'form-control', placeholder: 'bsmith@gmail.com' %>
   </div>
   <div class="form-group">
     <%= f.label :password %>
-    <%= f.password_field :password_digest, class: 'form-control', placeholder: 'Password' %>
+    <%= f.password_field :password, class: 'form-control', placeholder: '******' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, class: 'form-control', placeholder: '******' %>
   </div>
   <div class="text-center">
     <%= f.submit yield(:submit_label), class: 'btn btn-lg btn-base mt-3' %>

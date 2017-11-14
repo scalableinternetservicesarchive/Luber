@@ -148,7 +148,15 @@ footer {
   cursor: pointer;
 }
 
-.btn-base {
+.btn-base-outline {
+  color: $primary;
+  background-color: transparent;
+  border-color: $primary;
+}
+
+.btn-base,
+.btn-base-outline.hover, 
+.btn-base-outline:hover {
   color: white;
   background-color: $primary;
   border-color: $primary;
@@ -162,17 +170,16 @@ footer {
 }
 
 .btn-base.active, 
-.btn-base:active {
+.btn-base:active,
+.btn-base.focus, 
+.btn-base:focus,
+.btn-base-outline.active, 
+.btn-base-outline:active,
+.btn-base-outline.focus, 
+.btn-base-outline:focus {
   color: white;
   background-color: $darker-accent;
   border-color: $light-accent;
-}
-
-.btn-base.active, 
-.btn-base:active,
-.btn-base.focus, 
-.btn-base:focus {
-  color: white;
   box-shadow: 0 0 0 3px $primary-shadow;
 }
 

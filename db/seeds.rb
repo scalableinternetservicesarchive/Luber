@@ -48,8 +48,8 @@ p "Created #{User.count} users"
 # CARS
 ###############################################
 
-car_models = ['TOYOTA','HOLDEN','FORD','NISSAN','BMW','MAZDA','MERCEDES-BENZ','VOLKSWAGEN','AUDI','KIA','PEUGEOT','HYUNDAI']
-car_makes = ['Civic','CR-V','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','RAV4','Pilot','Tacoma','CX-5','Outback','Challenger','Cherokee','Forester','Equinox','Explorer','Sorento','Mustang','Camaro','Crosstrek','Rogue','Sonata','Tucson','Odyssey','Compass','Silverado 1500','RX 350','Escape','4Runner','Traverse','XC90','Colorado','Santa Fe','Corolla','Edge','Ridgeline','Tahoe','Pacifica','Acadia','Fusion','Charger']
+car_makes = ['TOYOTA','HOLDEN','FORD','NISSAN','BMW','MAZDA','MERCEDES-BENZ','VOLKSWAGEN','AUDI','KIA','PEUGEOT','HYUNDAI']
+car_models = ['Civic','CR-V','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','RAV4','Pilot','Tacoma','CX-5','Outback','Challenger','Cherokee','Forester','Equinox','Explorer','Sorento','Mustang','Camaro','Crosstrek','Rogue','Sonata','Tucson','Odyssey','Compass','Silverado 1500','RX 350','Escape','4Runner','Traverse','XC90','Colorado','Santa Fe','Corolla','Edge','Ridgeline','Tahoe','Pacifica','Acadia','Fusion','Charger']
 car_colors = ['red','orange','yellow','green','blue','purple','black','white','gray','silver']
 
 # Car.destroy_all
@@ -86,7 +86,7 @@ User.all.each do |u|
       end_location: "San Francisco",
       start_time: "2018-10-30 20:00:00", 
       end_time: "2018-10-31 02:00:00",
-      price: "200.43",
+      price: "999.99",
       status: "1",  # how to ints map to what the statuses mean?
       terms: "Be nice" )
   end
@@ -101,7 +101,7 @@ User.all.each do |u|
       end_location: "San Francisco",
       start_time: "2018-10-30 20:00:00", 
       end_time: "2018-10-31 02:00:00",
-      price: "200.43",
+      price: "111.11",
       status: "0",
       terms: "Be nice" )
   end

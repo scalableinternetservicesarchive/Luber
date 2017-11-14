@@ -20,6 +20,7 @@ class RentalsController < ApplicationController
 
   # GET /rentals/1/edit
   def edit
+    @cars = Car.where(user_id: Rental.find(params[:id]).owner_id)
   end
 
   # POST /rentals

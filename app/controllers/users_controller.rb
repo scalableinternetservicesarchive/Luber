@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in @user
       flash[:success] = 'Welcome to Luber!'
-      redirect_to controller: 'users', action: 'overview', id: user.id, logged_in_at: Time.now.to_datetime
+      redirect_to controller: 'users', action: 'overview', id: @user.id
     else
       render 'new'
     end
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(user_params)
       # handle successful update
       flash[:success] = "Profile successfully updated"
-      redirect_to overview_user_path
+      redirect_to controller: 'users', action: 'overview', id: @user.id
     else
       render 'edit'
     end

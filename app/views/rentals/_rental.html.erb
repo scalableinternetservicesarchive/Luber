@@ -56,9 +56,9 @@
               </div>
             <% else %>
               <% if rental.status == 0 %>
-                <%= link_to 'Rent', rental, class: 'btn btn-base', role: 'button' %>
+                <%= link_to 'Rent', rental, class: 'btn btn-base-outline', role: 'button' %>
               <% elsif session[:user_id] == rental.renter_id %>
-                <%= link_to 'View', rental, class: 'btn btn-base', role: 'button' %>
+                <%= link_to 'View', rental, class: 'btn btn-base-outline', role: 'button' %>
               <% end %>
             <% end %>
           </div>

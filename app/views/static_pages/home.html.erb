@@ -6,9 +6,51 @@
     <div class="row flex-column" id="hero-content">
       <h1 class="col-12 text-center display-1">Introducing, Luber</h1>
       <p class="col-12 text-center ">The easy way to do long-distance rideshare</p>
-      <div class="col-12 d-flex justify-content-center">
-        <%= link_to 'Get Started', signup_path, class: 'btn btn-lg btn-base', role: 'button' %>
-        <%= link_to 'Learn More', about_path, class: 'btn btn-lg btn-base', role: 'button' %>
+      <div class="col-12 d-flex justify-content-center mt-4">
+        <%= link_to 'Get Started', signup_path, class: 'btn btn-lg btn-base m-4', role: 'button' %>
+        <%= link_to 'Learn More', about_path, class: 'btn btn-lg btn-base m-4', role: 'button' %>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="jumbotron jumbotron-fluid d-flex" id="using-luber-background">
+  <div class="container align-self-center">
+    <div class="row">
+      <h1 class="col text-center mb-5">Using Luber is simple</h1>
+    </div>
+    <div class="row text-center mb-4">
+      <div class="col">
+        <%= image_tag 'luber-step-1.png', alt: 'Step 1' %>
+      </div>
+      <div class="col">
+        <%= image_tag 'luber-step-2.png', alt: 'Step 2' %>
+      </div>
+      <div class="col">
+        <%= image_tag 'luber-step-3.png', alt: 'Step 3' %>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col">
+        <p>Create an account and make a rental post offering your car up for others to use</p>
+      </div>
+      <div class="col">
+        <p>Once your car has been rented, leave it at the designated location during the time you selected</p>
+      </div>
+      <div class="col">
+        <p>Retrieve your car once the rental is complete and automagically receive your earnings</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="jumbotron jumbotron-fluid d-flex" id="promo-video-background">
+  <div class="container align-self-center">
+    <div class="row">
+      <div class="col">
+        <iframe src="https://player.vimeo.com/video/144076317" width="640" height="271" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      </div>
+      <div class="col">
+        <h1>Experience the insight behind Luber</h1>
+        <p>Ignore the "Turo" stuff, we're uhh... we're in the middle of rebranding</p>
       </div>
     </div>
   </div>

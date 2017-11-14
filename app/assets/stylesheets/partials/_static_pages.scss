@@ -10,22 +10,37 @@ main {
 
   #hero-background {
     min-height: 100vh;
+    color: white;
     background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), url(/hero.png);
   
-    #hero-content {
-      color: white;
+    p {
+      font-size: 1.7rem;
+    }
+  }
 
-      p {
-        font-size: 1.7rem;
-      }
-      
-      .justify-content-center {
-        margin-top: 30px;
+  #using-luber-background {
+    position: relative;
+    min-height: 60vh;
+    color: white;
+    background-color: $primary;
+    box-shadow: 0 0 6px $material-shadow;
+    
+    img {
+      width: 225px;
+      height: auto;
+    }
 
-        .btn-base {
-          margin: 16px;
-        }
-      }
+    p {
+      font-size: 1.4rem;
+    }
+  }
+
+  #promo-video-background {
+    min-height: 50vh;
+    background-color: $light-base;
+
+    p {
+      font-size: 1.4rem;
     }
   }
 }

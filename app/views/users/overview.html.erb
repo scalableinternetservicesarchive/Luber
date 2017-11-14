@@ -27,15 +27,31 @@
           <h5 class="text-center"><%= icon('clock-o') %></h5>
         </div>
         <div class="col col-desc">
-          <h5><%= @user.first_name %> <%= @user.last_name %></h5>
-          <h5><%= @user.city %>, <%= @user.state %></h5>
+          <% if @user.first_name.to_s.length == 0 and @user.last_name.to_s.length == 0 %>
+            <h5 class="font-italic">This user has not provided a first or last name</h5>
+          <% elsif @user.first_name.to_s.length != 0 and @user.last_name.to_s.length == 0 %>
+            <h5><%= @user.first_name %></h5>
+          <% elsif @user.first_name.to_s.length == 0 and @user.last_name.to_s.length != 0 %>
+            <h5><%= @user.last_name %></h5>
+          <% else %>
+            <h5><%= @user.first_name %> <%= @user.last_name %></h5>
+          <% end %>
+          <% if @user.city.to_s.length == 0 and @user.state.to_s.length == 0 %>
+            <h5 class="font-italic">This user has not provided a city or state</h5>
+          <% elsif @user.city.to_s.length != 0 and @user.state.to_s.length == 0 %>
+            <h5><%= @user.city %></h5>
+          <% elsif @user.city.to_s.length == 0 and @user.state.to_s.length != 0 %>
+            <h5><%= @user.state %></h5>
+          <% else %>
+            <h5><%= @user.city %>, <%= @user.state %></h5>
+          <% end %>
           <h5><%= @user.email %></h5>
           <% if @user.admin == true %>
             <h5>Admin User</h5>
           <% else %>
             <h5>Standard User</h5>
           <% end %>
-          <h5>Last logged in on <%= @user.logged_in_at.strftime("%A, %B %-d") %> at <%= @user.logged_in_at.strftime("%l:%M%p") %></h5>
+          <h5>Last logged in on <%# @user.logged_in_at.strftime("%A, %B %-d") %> at <%# @user.logged_in_at.strftime("%l:%M%p") %></h5>
         </div>
       </div>
     </div>
@@ -49,7 +65,7 @@
     <% if @rides_sold.length == 0 %>
       <div class="text-center">
         <p>Looks like you haven't rented out your car to anyone recently.</p>
-        <p>-insert joke here-</p>
+        <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
         <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
       </div>
     <% else %>
@@ -71,7 +87,7 @@
     <% if @rides_bought.length == 0 %>
       <div class="text-center">
         <p>Looks like you haven't rented anyone else's car recently.</p>
-        <p>-insert joke here-</p>
+        <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>
         <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
       </div>
     <% else %>

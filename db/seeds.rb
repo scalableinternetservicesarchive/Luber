@@ -14,6 +14,10 @@
 # Bryce says: use db:reset at rails console instead of destroying things manually in this file.
 # https://piazza.com/class/j789lo09yai5qx?cid=56
 
+###############################################
+# USERS
+###############################################
+
 # User.destroy_all
 (1..10).to_a.each do |i|
   User.create!(
@@ -39,6 +43,11 @@ User.create!(
   admin: true )
 p "Created #{User.count} users"
 
+
+###############################################
+# CARS
+###############################################
+
 # Car.destroy_all
 User.all.each do |u|
   p "Making a car for user #{u.username}"
@@ -51,6 +60,10 @@ User.all.each do |u|
     plate_number: "#{u.username}ZZ" )
 end
 p "Created #{Car.count} cars"
+
+###############################################
+# Rentals
+###############################################
 
 # Rental.destroy_all
 User.all.each do |u|
@@ -91,20 +104,27 @@ User.all.each do |u|
 end
 p "Created #{Rental.count} rental posts"
 
+
+###############################################
+# TAGS
+###############################################
+
 # Tag.destroy_all
-all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-road']
+all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'red','white','black','atomic-blue']
 all_tags.each do |t|
     Tag.create!(name: t)
 end
 p "Created #{Tag.count} tags"
 
+###############################################
+# TAGGINGS
+###############################################
+
 # Tagging.destroy_all
 Car.all.each do |c|
-  # Each car has a couple random tags.
-  2.times do
-    Tagging.create!(
-      car_id: c.id,
-      tag_id: Tag.all.sample.id )
+  # Each car has a couple random non-duplicate tags.
+  Tag.all.sample(2).each do |t|
+    Tagging.create!( car_id: c.id, tag_id: t.id )
   end
 end
 p "Created #{Tagging.count} taggings"

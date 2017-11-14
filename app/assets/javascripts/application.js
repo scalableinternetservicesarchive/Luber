@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require popper
+//= require bootstrap
 //= require_tree .
 function initMap() {
   var start_lat = $('.start-lat').text();
@@ -31,3 +33,29 @@ function initMap() {
   map.setZoom(12);
   map.panTo(marker.position);
 }
+
+$(function(){
+  // Set a dynamic footer height since rails debug may/may not be showing
+  $('main').css('margin-bottom', $('footer').height() + 36);
+
+  // Get rid of the top and bottom margin on the homepage only
+  if($('#hero-background').length) {
+    $('main').css('margin-bottom', $('footer').height());
+  }
+
+  // Set dynamic dropdown carets for FAQ entries
+  var prevQuestion;
+  $('.faq-question').on('click', function() {
+    if($(this).children().hasClass('fa-caret-right')) {
+      $(this).children().removeClass('fa-caret-right').addClass('fa-caret-down');
+      if(prevQuestion != null) {
+        prevQuestion.children().removeClass('fa-caret-down').addClass('fa-caret-right');
+      }
+      prevQuestion = $(this);
+    }
+    else {
+      $(this).children().removeClass('fa-caret-down').addClass('fa-caret-right');
+      prevQuestion = null;
+    }
+  });
+});

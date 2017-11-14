@@ -1,0 +1,34 @@
+// Place all the styles related to the StaticPages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Home (/)
+// -------------------------
+
+main {
+  .jumbotron {
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  #hero-background {
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), url(/hero.png);
+  
+    #hero-content {
+      color: white;
+
+      p {
+        font-size: 1.7rem;
+      }
+      
+      .justify-content-center {
+        margin-top: 30px;
+
+        .btn-base {
+          margin: 16px;
+        }
+      }
+    }
+  }
+}

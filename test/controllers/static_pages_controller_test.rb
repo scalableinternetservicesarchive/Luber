@@ -3,32 +3,31 @@ require 'test_helper'
 class StaticPagesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get home" do
-    get static_pages_home_url
+    get home_url
     assert_response :success
     assert_select "title", "Home | Luber"
-
   end
 
   test "should get faq" do
-    get static_pages_faq_url
+    get faq_url
     assert_response :success
     assert_select "title", "FAQ | Luber"
   end
 
   test "should get about" do
-    get static_pages_about_url
+    get about_url
     assert_response :success
     assert_select "title", "About | Luber"
   end
 
   test "should get contact" do
-    get static_pages_contact_url
+    get contact_url
     assert_response :success
-    assert_select "title", "Contact | Luber"
+    assert_select "title", "Contact Us | Luber"
   end
 
-  test "should get privacypolicy" do
-    get static_pages_privacypolicy_url
+  test "should get privacy" do
+    get privacy_url
     assert_response :success
     assert_select "title", "Privacy Policy | Luber"
   end

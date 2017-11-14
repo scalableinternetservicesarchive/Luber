@@ -1,0 +1,18 @@
+<% provide(:title, "Create Rental Post") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+<% provide(:submit_label, "Create Rental Post") %>
+
+<section class="container-fluid banner">
+  <div class="container">
+    <h1>Create Rental Post</h1>
+  </div>
+</section>
+<section class="container align-slef-center m-top">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      <%= render 'form', rental: @rental %>
+    </div>
+    <div class="col"></div>
+  </div>
+</section>

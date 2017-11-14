@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name: "Example User", email:"user@example.com",
+    @user = User.new(username: "Example User", email:"user@example.com",
                       password: "foobar", password_confirmation: "foobar")
   end
 
@@ -11,7 +11,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "name should be present" do
-    @user.name = "        "
+    @user.username = "        "
     assert_not @user.valid?
   end
 
@@ -21,7 +21,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "name should not be too long" do
-    @user.name = "a"*51
+    @user.username = "a"*33
     assert_not @user.valid?
   end
 
@@ -70,5 +70,12 @@ class UserTest < ActiveSupport::TestCase
   test "password should have a minimum length" do
     @user.password = @user.password_confirmation = "a"*5
     assert_not @user.valid?
+  end
+
+  test "db seed file: each user should have 2 avail and 2 purchased rentals" do
+    Rails.application.load_seed
+    User.all.each do |u|
+      assert_equal Rental.where(owner_id: u.id).count, 4
+    end
   end
 end

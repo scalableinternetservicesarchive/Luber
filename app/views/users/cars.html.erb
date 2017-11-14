@@ -1,0 +1,23 @@
+<% provide(:title, "My Cars") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+
+<%= render 'users/banner' %>
+<% if session[:user_id] == @user.id %>
+  <%= render 'users/nav' %>
+<% end %>
+<section class="container m-top card-wrapper">
+  <% if @cars.length == 0 %>
+    <div class="text-center">
+      <p>Looks like you haven't added a car yet.</p>
+      <p>Wanna make some extra cash with your mom's old minivan?</p>
+      <%= link_to 'Add a Car today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
+    </div>
+  <% else %>
+    <%= render @cars %>
+  <% end %>
+</section>
+<% if @cars.length > 0 %>
+  <section class="container text-right">
+    <%= link_to 'Add a new Car', new_car_path, class: 'btn btn-base', role: 'button' %>
+  </section>
+<% end %>

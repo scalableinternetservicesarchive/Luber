@@ -2,46 +2,40 @@
   <% if car.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(car.errors.count, "error") %> prohibited this car from being saved:</h2>
-
       <ul>
-      <% car.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% car.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.number_field :user_id %>
+  <% if !session[:user_id] %>
+    <div class="form-group">
+      <%= f.label :user_id %>
+      <%= f.number_field :user_id, class: 'form-control', placeholder: 'Owner' %>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= f.label 'License Plate Number' %>
+    <%= f.text_field :plate_number, class: 'form-control', placeholder: 'License Plate Number' %>
   </div>
-
-  <div class="field">
-    <%= f.label :plate_num %>
-    <%= f.text_field :plate_num %>
-  </div>
-
-  <div class="field">
+  <div class="form-group">
     <%= f.label :model %>
-    <%= f.text_field :model %>
+    <%= f.text_field :model, class: 'form-control', placeholder: 'Model' %>
   </div>
-
-  <div class="field">
+  <div class="form-group">
     <%= f.label :color %>
-    <%= f.text_field :color %>
+    <%= f.text_field :color, class: 'form-control', placeholder: 'Color' %>
   </div>
-
-  <div class="field">
+  <div class="form-group">
     <%= f.label :year %>
-    <%= f.number_field :year %>
+    <%= f.number_field :year, class: 'form-control', placeholder: 'Year' %>
   </div>
-
-  <div class="field">
+  <div class="form-group">
     <%= f.label :tags %>
-    <%= f.text_field :all_tags %>
+    <%= f.text_field :all_tags, class: 'form-control', placeholder: 'Tags' %>
   </div>
-
-  <div class="actions">
-    <%= f.submit %>
+  <div class="text-center">
+    <%= f.submit yield(:submit_label), class: 'btn btn-lg btn-base mt-3' %>
   </div>
 <% end %>

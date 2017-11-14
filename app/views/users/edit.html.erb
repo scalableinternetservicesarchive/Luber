@@ -1,0 +1,18 @@
+<% provide(:title, "Update My Profile") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+<% provide(:submit_label, "Update My Profile") %>
+
+<section class="container-fluid banner">
+  <div class="container">
+    <h1>Update My Profile</h1>
+  </div>
+</section>
+<section class="container align-slef-center m-top">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      <%= render 'form', user: @user %>
+    </div>
+    <div class="col"></div>
+  </div>
+</section>

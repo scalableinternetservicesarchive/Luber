@@ -34,6 +34,10 @@ class CarsController < ApplicationController
   def create
     @car = Car.new(car_params)
 
+    if session[:user_id]
+      @car.user_id = session[:user_id]
+    end
+
     respond_to do |format|
       if @car.save!
         format.html { redirect_to @car, notice: 'Car was successfully created.' }

@@ -13,6 +13,8 @@
       <div class="row">
         <div class="col">
           <h3 class="mb-0"><span class="badge <%= @rental.get_status_class %> mr-3"><%= @rental.get_status_label %></span><%= @rental.start_location %> <%= icon('arrow-right') %> <%= @rental.end_location %></h3>
+          <p class="start-lat" hidden="true"><%= @rental.start_latitude %></p>
+          <p class="start-lng" hidden="true"><%= @rental.start_longitude %></p>
         </div>
         <div class="col-md-auto">
           <h3 class="mb-0 font-weight-bold">$<%= @rental.price %></h3>
@@ -82,6 +84,9 @@
               <% end %>
             </div>
           </div>
+          <div class="row">
+                <div id="map" style="height:400px;width:400px"></div>
+            </div>
         </div>
       </div>
     </div>

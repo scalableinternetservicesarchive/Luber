@@ -35,7 +35,7 @@
             <% end %>
             
           </h5>
-          <h5>Renterzzz:
+          <h5>Renter:
             <% if rental.renter_id == nil %>
               Available!
             <% else %>
@@ -85,7 +85,8 @@
               <!-- You're logged in but neither the owner nor renter. -->
               <!-- If it's available, you can rent it. -->
               <% if rental.renter_id.nil? %>
-                <%= link_to 'Rent', rental_path(@rental, params: {:rental => {:renter_id => session[:user_id]}}), method: :patch, class: 'btn btn-base', role: 'button' %>
+                <%# link_to 'Rent', rental_path(rental.id), class: 'btn btn-base', role: 'button' %>
+                <%= link_to 'Rent', rental_path(rental, params: {:rental => {:renter_id => session[:user_id]}}), method: :patch, class: 'btn btn-base', role: 'button' %>
               <% end %>
 
             <% end %>

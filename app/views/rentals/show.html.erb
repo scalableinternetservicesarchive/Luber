@@ -32,15 +32,26 @@
         </div>
         <div class="col col-desc">
           <h5>From <%= @rental.start_time.strftime("%l:%M%p") %> on <%= @rental.start_time.strftime("%A, %b. %-d") %> until <%= @rental.end_time.strftime("%l:%M%p") %> on <%= @rental.end_time.strftime("%A, %b. %-d") %></h5>
-          <%# link_to User.find_by_id(@rental.owner_id).username user_path(@rental.owner_id) %>
-          <h5>Owner: <%= link_to '(Username)', user_path(@rental.owner_id) %></h5>
-          <%# if @rental.renter_id != nil %>
-            <%# link_to User.find_by_id(@rental.renter_id).username user_path(@rental.renter_id) %>
-            <h5>Renter: <%= link_to '(Username)', user_path(@rental.renter_id) %></h5>
-          <%# end %>
+          
+          <h5>
+            Owner: <%= link_to User.find_by_id(@rental.owner_id).username, user_path(@rental.owner_id) %>
+            <% if session[:user_id] && @rental.owner_id == session[:user_id] %>
+            (you)
+            <% end %>
+            
+          </h5>
+          <h5>Renteryyy:
+            <% if @rental.renter_id == nil %>
+              Available!
+            <% else %>
+              <%= link_to User.find_by_id(@rental.renter_id).username, user_path(@rental.renter_id) %>
+              <% if session[:user_id] && @rental.renter_id == session[:user_id] %>
+              (you)
+              <% end %>
+            <% end %>
+          </h5>
           <% rental_car = Car.find_by_id(@rental.car_id) %>
-          <%# rental_car.color %> <%# rental_car.year %> <%# rental_car.make %> <%# rental_car.model %>
-          <h5><%= rental_car.color %> <%= rental_car.year %> (Make) <%= rental_car.model %></h5>
+          <h5><%= rental_car.color %> <%= rental_car.year %> <%= rental_car.make %> <%= rental_car.model %></h5>
           <div class="row">
             <div class="col">
               <h5>Tags:
@@ -62,9 +73,9 @@
                   <% end %>
                 </div>
               <% else %>
-                <%# if @rental.status == 0 (where 0 is available which indicates no renter yet) %>
-                <% if true %>
-                  <%= link_to 'Rent', @rental, class: 'btn btn-base', role: 'button' %>
+              <!-- (where 0 is available which indicates no renter yet) -->
+                <% if @rental.status == 0 %>
+                  <%= link_to 'Rent', rental_path(@rental, params: {:rental => {:renter_id => session[:user_id]}}), method: :patch, class: 'btn btn-base', role: 'button' %>
                 <% elsif session[:user_id] == @rental.renter_id %>
                   <%= link_to 'View', @rental, class: 'btn btn-base', role: 'button' %>
                 <% end %>

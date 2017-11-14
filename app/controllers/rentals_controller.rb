@@ -6,6 +6,8 @@ class RentalsController < ApplicationController
   # GET /rentals.json
   def index
     @rentals = Rental.all
+    @available_rentals = Rental.where(:renter_id => nil)
+    @filled_rentals = Rental.all.find_all {|r| r.renter_id}
   end
 
   # GET /rentals/1
@@ -50,6 +52,16 @@ class RentalsController < ApplicationController
         format.json {render json: @rental.errors, status: :unprocessable_entity}
       end
     end
+  end
+
+  def rent
+    @rental.renter_id = session[:user_id]
+    redirect_to @rental, notice: "Congrats, you are renting this car!"
+  end
+
+  def unrent
+    @rental.renter_id = nil
+    redirect_to @rental, notice: "You have un-rented this car."
   end
 
   # DELETE /rentals/1

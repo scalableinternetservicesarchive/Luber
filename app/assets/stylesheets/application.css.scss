@@ -21,8 +21,8 @@
 @import "font-awesome";
 
 // Core SCSS files including variables/mixins and the primary stylesheet
-@import "core/mixins.scss";
-@import "core/global.scss";
+@import "core/mixins.css.scss";
+@import "core/global.css.scss";
 
 // Partial SCSS files for controller-specific styling
 @import "partials/*";

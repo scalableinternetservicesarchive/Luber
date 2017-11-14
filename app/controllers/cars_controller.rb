@@ -1,12 +1,6 @@
 class CarsController < ApplicationController
   before_action :set_car, only: [:show, :edit, :update, :destroy]
 
-  # GET /cars
-  # GET /cars.json
-  def index
-    @cars = Car.all
-  end
-
   def tag_search
     if params[:tag]
       @cars = Car.tagged_with(params[:tag])
@@ -81,6 +75,6 @@ class CarsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def car_params
-      params.require(:car).permit(:user_id, :plate_num, :model, :color, :year, :all_tags)
+      params.require(:car).permit(:user_id, :plate_number, :model, :color, :year, :all_tags)
     end
 end

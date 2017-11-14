@@ -19,10 +19,12 @@ class RentalsController < ApplicationController
   # GET /rentals/new
   def new
     @rental = Rental.new
+    @cars = Car.where(user_id: session[:user_id])
   end
 
   # GET /rentals/1/edit
   def edit
+    @cars = Car.where(user_id: Rental.find(params[:id]).owner_id)
   end
 
   # POST /rentals

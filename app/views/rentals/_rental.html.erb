@@ -35,7 +35,7 @@
             <% end %>
             
           </h5>
-          <h5>Renterzzz:
+          <h5>Renter:
             <% if rental.renter_id == nil %>
               Available!
             <% else %>
@@ -60,12 +60,12 @@
           <div class="col-md-auto">
 
 
-
+            <!-- Lower-right button ('Rent', 'Edit', etc) varies depending on whether -->
+            <!--  you're logged in & whether you're participating in the rental. -->
             <% case session[:user_id]
                when nil %>            
               <!-- If not logged in, can view. -->
               <%= link_to 'View', rental, class: 'btn btn-base', role: 'button' %>
-
             <% when rental.owner_id %>
               <!-- You created the rental, so you can edit/delete it. -->
               <div class="btn-group" role="group" aria-label="Change Post">
@@ -76,20 +76,26 @@
                   <%= icon('times') %> Delete
                 <% end %>
               </div>
-
             <% when rental.renter_id %>
               <!-- You're renting it, so you can un-rent it. -->
               <%= link_to "Unrent", {:controller => :rental, :action => :unrent} %>
-
             <% else %>
-              <!-- You're logged in but neither the owner nor renter. -->
+              <!-- You're logged in but you're neither the owner nor the renter. -->
               <!-- If it's available, you can rent it. -->
               <% if rental.renter_id.nil? %>
-                <%= link_to 'Rent', rental_path(@rental, params: {:rental => {:renter_id => session[:user_id]}}), method: :patch, class: 'btn btn-base', role: 'button' %>
+              <%# if rental.status == 0 %>  <!-- (another way to see if rented:) -->
+                <%# link_to 'Rent', rental_path(rental.id), class: 'btn btn-base', role: 'button' %> <!-- old -->
+                <%= link_to 'Rent', rental_path(rental, params: {:rental => {:renter_id => session[:user_id]}}), method: :patch, class: 'btn btn-base', role: 'button' %>
+              <% else %>
+                <!-- Not available. Display nothing. -->
               <% end %>
-
             <% end %>
           </div>
+        </div>
+        <p class="start-lat" hidden="true"><%= @rental.start_latitude %></p>
+        <p class="start-lng" hidden="true"><%= @rental.start_longitude %></p>
+        <div class="row">
+            <div id="map" style="height:400px;width:400px"></div>
         </div>
       </div>
     </div>

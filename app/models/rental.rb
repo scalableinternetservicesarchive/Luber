@@ -33,7 +33,7 @@ class Rental < ApplicationRecord
     when 4
       return 'badge-danger'
     else
-      retun 'Error: Invalid Status'
+      return 'Error: Invalid Status'
     end
   end
 end

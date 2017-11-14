@@ -19,7 +19,7 @@
             </li>
             <li>
               <%= link_to current_user, class: 'nav-link' do %>
-                <%= icon('user-circle') %> Profile
+                <%= icon('user-circle') %> <%= current_user.username %>
               <% end %>
             </li>
             <li>

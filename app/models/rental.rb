@@ -3,6 +3,10 @@ class Rental < ApplicationRecord
   has_one :user, through: :renter_id
   has_one :car
 
+  VALID_PRICE_REGEX = /\A\d+(\.\d\d)?\z/
+  validates :price, presence: true, format: {with: VALID_PRICE_REGEX}
+
+
   def get_status_label
     case self.status
     when 0

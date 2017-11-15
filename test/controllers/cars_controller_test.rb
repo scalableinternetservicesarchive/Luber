@@ -4,7 +4,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = User.create!(username: "Example User", email:"user@example.com", password: "foobar", password_confirmation: "foobar")
-    @car = Car.create!(user_id: @user.id, make: "Ford", model: "Mustang", year: 2000, color: "red", plate_number: "m123")
+    @car = Car.create!(user_id: @user.id, make: "Ford", model: "Mustang", year: 2000, color: "red", plate_number: "8DEF234")
   end
 
   test "should get new" do

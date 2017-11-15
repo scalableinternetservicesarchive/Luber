@@ -61,7 +61,7 @@ User.all.each do |u|
     model: car_models.sample,
     year: (1960..2017).to_a.sample,
     color: car_colors.sample,
-    plate_number: "#{u.username}ZZ" )
+    plate_number: "6ABC123" )
 end
 p "Created #{Car.count} cars"
 

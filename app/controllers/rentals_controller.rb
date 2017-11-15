@@ -1,6 +1,7 @@
 class RentalsController < ApplicationController
   before_action :set_rental, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /rentals
   # GET /rentals.json
@@ -13,6 +14,7 @@ class RentalsController < ApplicationController
   # GET /rentals/1
   # GET /rentals/1.json
   def show
+    @rental = Rental.find(params[:id])
   end
 
   # GET /rentals/new
@@ -92,6 +94,16 @@ class RentalsController < ApplicationController
     unless logged_in?
       flash[:danger] = "Please log in before accessing rental posts."
       redirect_to login_url
+    end
+  end
+
+  # confirms the correct user
+  def correct_user
+    @rental = Rental.find(params[:id])
+    @user = User.find(@rental.owner_id)
+    unless current_user?(@user)
+      flash[:danger] = "You are not the owner of this rental post."
+      redirect_to(@rental)
     end
   end
 end

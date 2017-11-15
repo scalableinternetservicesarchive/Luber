@@ -88,4 +88,27 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
   end
 
+  test 'should redirect when not owner of rentalpost EDIT' do
+    log_in_as(@user2, password: "foobar")
+    get edit_rental_url(@rental)
+    assert_not flash.empty?
+    assert_redirected_to @rental
+  end
+
+  test 'should redirect when not owner of rentalpost UPDATE' do
+    log_in_as(@user2, password: "foobar")
+    patch rental_url(@rental), params: { rental: { owner_id: @rental.owner_id, renter_id: @rental.renter_id, car_id: @rental.car_id,
+                                                   start_location: @rental.start_location, end_location: @rental.end_location, start_time: @rental.start_time, end_time: @rental.end_time,
+                                                   price: @rental.price, status: @rental.status, terms: @rental.terms } }
+    assert_not flash.empty?
+    assert_redirected_to @rental
+  end
+
+  test 'should redirect when not owner of rentalpost DELETE' do
+    log_in_as(@user2, password: "foobar")
+    delete rental_url(@rental)
+    assert_not flash.empty?
+    assert_redirected_to @rental
+  end
+
 end

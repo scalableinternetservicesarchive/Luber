@@ -13,6 +13,7 @@ class RentalsController < ApplicationController
   # GET /rentals/1
   # GET /rentals/1.json
   def show
+    @rental = Rental.find(params[:id])
   end
 
   # GET /rentals/new

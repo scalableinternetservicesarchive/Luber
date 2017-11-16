@@ -16,6 +16,23 @@
 //= require popper
 //= require bootstrap
 //= require_tree .
+function initMap() {
+  var start_lat = $('.start-lat').text();
+  var start_lng = $('.start-lng').text();
+  var myLatLng = {lat: parseFloat(start_lat), lng: parseFloat(start_lng)};
+  
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 8,
+    center: myLatLng
+  });
+
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map
+  });
+  map.setZoom(12);
+  map.panTo(marker.position);
+}
 
   
 $(document).on('turbolinks:load', function () { 

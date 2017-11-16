@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 20171115174054) do
     t.string "terms"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "start_latitude"
+    t.float "start_longitude"
   end
 
   create_table "taggings", force: :cascade do |t|

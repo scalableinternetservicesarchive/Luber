@@ -29,9 +29,10 @@
     email: "user#{i}@boo.com",
     password: "foobar",
     admin: false,
-    logged_in_at: "2017-11-01 20:00:00", 
-    logged_out_at: "2017-11-01 20:00:00" )
+    logged_in_at: DateTime.now, 
+    logged_out_at: DateTime.now )
 end
+
 User.create!(
   first_name: "Mister",
   last_name: "Admn",
@@ -40,9 +41,11 @@ User.create!(
   username: "WaTcher53",
   email: "a@a.com",
   password: "foobar",
-  admin: true )
-p "Created #{User.count} users"
+  admin: true,
+  logged_in_at: DateTime.now, 
+  logged_out_at: DateTime.now )
 
+p "Created #{User.count} users"
 
 ###############################################
 # CARS
@@ -63,6 +66,7 @@ User.all.each do |u|
     color: car_colors.sample,
     plate_number: "6ABC123" )
 end
+
 p "Created #{Car.count} cars"
 
 ###############################################
@@ -106,8 +110,8 @@ User.all.each do |u|
       terms: "Be nice" )
   end
 end
-p "Created #{Rental.count} rental posts"
 
+p "Created #{Rental.count} rental posts"
 
 ###############################################
 # TAGS
@@ -118,6 +122,7 @@ all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-roa
 all_tags.each do |t|
     Tag.create!(name: t)
 end
+
 p "Created #{Tag.count} tags"
 
 ###############################################
@@ -131,5 +136,5 @@ Car.all.each do |c|
     Tagging.create!( car_id: c.id, tag_id: t.id )
   end
 end
-p "Created #{Tagging.count} taggings"
 
+p "Created #{Tagging.count} taggings"

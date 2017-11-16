@@ -6,7 +6,21 @@
     <h1>Rental Post #<%= params[:id] %></h1>
   </div>
 </section>
-<p id="notice"><%= notice %></p>
 <section class="container m-top card-wrapper">
+  <h2>Listing</h2>
+  <hr>
 <%= render @rental %>
+</section>
+<section class="container m-top card-wrapper">
+  <h2>Car</h2>
+  <hr>
+</section>
+<section class="container m-top">
+  <h2>Location</h2>
+  <hr>
+  <p class="start-lat" hidden><%= @rental.start_latitude %></p>
+  <p class="start-lng" hidden><%= @rental.start_longitude %></p>
+  <div class="row">
+      <div id="map" style="min-height:300px;width:300px"></div>
+  </div>
 </section>

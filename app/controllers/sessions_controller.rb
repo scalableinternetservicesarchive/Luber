@@ -6,12 +6,27 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       # log in and redirect to profile
+      
+      #user.logged_in_at = Time.now
+      #user.save!
+
+      #user.logged_in_at = DateTime.now
+      #user.save!
+
+      #user.update_attribute(:logged_in_at, Time.now)
+
+      #user.update_attribute(:logged_in_at, DateTime.now)
+      
+      #user.update_attribute(:logged_in_at, DateTime.now.strftime("%Y-%m-%d %H:%M:%S"))
+      
+      #user.touch(:logged_in_at)
+
       log_in user
       flash[:success] = 'You have successfully logged in.'
       redirect_to controller: 'users', action: 'overview', id: user.id
     else
       # create an error message
-      flash.now[:danger] = "Yo ass goofed hommie! Da email/password you provided is invalid!"
+      flash.now[:danger] = 'Yo ass goofed hommie! Da email/password you provided is invalid!'
       render 'new'
     end
   end

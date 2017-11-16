@@ -36,10 +36,11 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy car" do
+    log_in_as(@user, password: "foobar")
     assert_difference('Car.count', -1) do
       delete car_url(@car)
     end
 
-    assert_redirected_to cars_url
+    assert_redirected_to controller: 'users', action: 'cars', id: @user.id
   end
 end

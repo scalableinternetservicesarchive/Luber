@@ -64,8 +64,11 @@ class CarsController < ApplicationController
   def destroy
     @car.destroy
     respond_to do |format|
-      format.html {redirect_to cars_url, notice: 'Car was successfully destroyed.'}
-      format.json {head :no_content}
+      format.html do
+        redirect_to controller: 'users', action: 'cars', id: current_user.id
+        flash[:notice] = 'Car was successfully destroyed.'
+      end
+      format.json { head :no_content }
     end
   end
 
@@ -86,6 +89,9 @@ class CarsController < ApplicationController
     unless current_user?(@user)
       flash[:danger] = "You are not the owner of this car! GTFO"
       redirect_to(@car)
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def car_params
+      params.require(:car).permit(:make, :user_id, :plate_number, :model, :color, :year, :all_tags)
     end
   end
 

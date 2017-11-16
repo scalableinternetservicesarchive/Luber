@@ -46,7 +46,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
       delete car_url(@car)
     end
 
-    assert_redirected_to cars_url
+    assert_redirected_to controller: 'users', action: 'cars', id: @user.id
   end
 
   test "should redirect if guest tries to create a car" do

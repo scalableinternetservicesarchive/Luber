@@ -5,7 +5,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     @user1 = User.create!(username: "Michael", email:"michael@example.com", password: "foobar", password_confirmation: "foobar")
     @user2 = User.create!(username: "Justin", email:"justin@example.com", password: "foobar", password_confirmation: "foobar")
 
-    @car = Car.create!(user_id: @user1.id, make: "Ford", model: "Mustang", year: 2000, color: "red", plate_number: "m123")
+    @car = Car.create!(user_id: @user1.id, make: "Ford", model: "Mustang", year: 2000, color: "red", plate_number: "3asd123")
 
     @rental = Rental.create!(owner_id: @user1.id, renter_id: @user2.id, car_id: @car.id, start_location: "Santa Barbara", end_location: "Mountain View",
         start_time: "2017-10-17 20:20:37", end_time: "2017-10-18 20:20:37", price: 1.53, status: 0, terms: "My terms",

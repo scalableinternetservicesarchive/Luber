@@ -11,7 +11,7 @@ main {
   #hero-background {
     min-height: 100vh;
     color: white;
-    background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), url(/hero.png);
+    background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), asset-data-url("hero.png");
   
     p {
       font-size: 1.7rem;

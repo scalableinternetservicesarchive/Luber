@@ -3,6 +3,9 @@ class Car < ApplicationRecord
     has_many :taggings
     has_many :tags, through: :taggings
 
+    PLATE_REGEX = /\A\d{1}[a-z]{3}\d{3}\z/i
+    validates :plate_number, presence: true, length: {is: 7}, format: {with: PLATE_REGEX}
+    validates :year, presence: true, numericality: {greater_than: 1900}
 
     def all_tags=(names)
       self.tags = names.split(",").map do |name|

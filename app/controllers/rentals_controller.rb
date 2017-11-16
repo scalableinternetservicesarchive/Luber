@@ -20,6 +20,10 @@ class RentalsController < ApplicationController
   def new
     @rental = Rental.new
     @cars = Car.where(user_id: session[:user_id])
+    if @cars.blank?
+      flash[:danger] = "You do not have any cars. Please add cars to your profile before creating a rental post."
+      redirect_to rentals_url
+    end
   end
 
   # GET /rentals/1/edit

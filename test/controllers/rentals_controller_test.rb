@@ -23,6 +23,13 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "if user has no cars they can not create a rental post" do
+    log_in_as(@user2, password: "foobar")
+    get new_rental_url
+    assert_redirected_to rentals_url
+    assert_not flash.empty?
+  end
+
   test "should create rental" do
     log_in_as(@user1, password: "foobar")
     assert_difference('Rental.count') do

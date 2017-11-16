@@ -14,7 +14,7 @@
       <%= yield %>
     </main>
     <footer>
-      <% if session[:user_id] != nil && User.find_by_id(session[:user_id]).admin == true %>
+      <% if User.find_by(id: session[:user_id]) != nil && User.find_by(id: session[:user_id]).admin == true %>
         <%= render 'layouts/debug' %>
       <% end %>
       <%= render 'layouts/footer' %>

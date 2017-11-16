@@ -1,6 +1,7 @@
 class Rental < ApplicationRecord
   has_one :user, through: :owner_id
-  has_one :user, through: :renter_id
+  validates :owner_id, presence: true
+
   has_one :car
 
   geocoded_by :start_location,  latitude: :start_latitude, longitude: :start_longitude

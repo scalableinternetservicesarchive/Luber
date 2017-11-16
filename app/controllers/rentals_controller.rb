@@ -36,6 +36,7 @@ class RentalsController < ApplicationController
   # POST /rentals.json
   def create
     @rental = Rental.new(rental_params)
+    @rental.owner_id = current_user.id
 
     respond_to do |format|
       if @rental.save
@@ -51,6 +52,8 @@ class RentalsController < ApplicationController
   # PATCH/PUT /rentals/1
   # PATCH/PUT /rentals/1.json
   def update
+    @cars = Car.where(user_id: Rental.find(params[:id]).owner_id)
+
     respond_to do |format|
       if @rental.update(rental_params)
         format.html {redirect_to @rental, notice: 'Rental post was successfully updated.'}
@@ -90,7 +93,7 @@ class RentalsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def rental_params
-    params.require(:rental).permit(:owner_id, :renter_id, :car_id, :start_location, :end_location, :start_time, :end_time, :price, :terms)
+    params.require(:rental).permit(:car_id, :start_location, :end_location, :start_time, :end_time, :price, :terms)
   end
 
   # before filters for authorization

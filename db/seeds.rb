@@ -38,7 +38,7 @@ User.create!(
   last_name: "Admn",
   city: "Goleta",
   state: "CA",
-  username: "WaTcher53",
+  username: "admin01",
   email: "a@a.com",
   password: "foobar",
   admin: true,
@@ -91,7 +91,7 @@ User.all.each do |u|
       start_time: "2018-10-30 20:00:00", 
       end_time: "2018-10-31 02:00:00",
       price: "999.99",
-      status: "1",  # how to ints map to what the statuses mean?
+      status: "0",  # how to ints map to what the statuses mean?
       terms: "Be nice" )
   end
 
@@ -106,7 +106,7 @@ User.all.each do |u|
       start_time: "2018-10-30 20:00:00", 
       end_time: "2018-10-31 02:00:00",
       price: "111.11",
-      status: "0",
+      status: "1",
       terms: "Be nice" )
   end
 end

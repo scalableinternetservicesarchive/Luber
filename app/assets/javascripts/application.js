@@ -16,48 +16,16 @@
 //= require popper
 //= require bootstrap
 //= require_tree .
-function initMap() {
-  var start_lat = $('.start-lat').text();
-  var start_lng = $('.start-lng').text();
-  var myLatLng = {lat: parseFloat(start_lat), lng: parseFloat(start_lng)};
-  
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 8,
-    center: myLatLng
-  });
 
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map
-  });
-  map.setZoom(12);
-  map.panTo(marker.position);
-}
-
-  
 $(document).on('turbolinks:load', function () { 
   // Set a dynamic footer height since rails debug may/may not be showing
   $('main').css('margin-bottom', $('footer').height() + 36);
 
-  // Get rid of the top and bottom margin on the homepage only
-  if($('#hero-background').length) {
-    $('main').css('margin-bottom', $('footer').height());
+  if($('#static_pages-home')) {
+    hero();
   }
-
-  // Set dynamic dropdown carets and add responsive collapsing for FAQ entries
-  var prevQuestion;
-  $('.faq-question').on('click', function() {
-    if($(this).children().hasClass('fa-caret-right')) {
-      $(this).children().removeClass('fa-caret-right').addClass('fa-caret-down');
-      if(prevQuestion != null) {
-        prevQuestion.children().removeClass('fa-caret-down').addClass('fa-caret-right');
-        $(prevQuestion.attr('href')).collapse('hide');
-      }
-      prevQuestion = $(this);
-    }
-    else {
-      $(this).children().removeClass('fa-caret-down').addClass('fa-caret-right');
-      prevQuestion = null;
-    }
-  });
+  
+  if($('#static_pages-faq')) {
+    carets();
+  }
 });

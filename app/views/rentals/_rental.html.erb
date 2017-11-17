@@ -1,8 +1,8 @@
-<div class="card">
+<div class="card mb-4">
   <div class="card-header">
     <div class="row">
       <div class="col">
-        <h3 class="mb-0"><span class="badge <%= rental.get_status_class %> mr-3"><%= rental.get_status_label %></span><%= rental.start_location %> <%= icon('arrow-right') %> <%= rental.end_location %></h3>
+        <h3 class="mb-0"><span class="badge <%= rental.get_status_class %> align-top mr-3"><%= rental.get_status_label %></span><%= rental.start_location %> <%= icon('arrow-right') %> <%= rental.end_location %></h3>
       </div>
       <div class="col-md-auto">
         <h3 class="mb-0 font-weight-bold">$<%= rental.price %></h3>
@@ -55,14 +55,19 @@
           <div class="col-md-auto">
             <% case session[:user_id] %>
             <% when rental.owner_id %>
-              <%= link_to icon('pencil')+" Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-2', role: 'button' %>
+              <% if action_name != 'show' %>
+                <%= link_to icon('search')+" View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
+              <% end %>
+              <%= link_to icon('pencil')+" Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-1', role: 'button' %>
               <%= link_to icon('times')+" Delete", rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
             <% when rental.renter_id %>
-              <%= link_to icon('search')+" View", rental, class: 'btn btn-outline-base mr-2', role: 'button' %>
-              <%= link_to icon('times')+" Unrent", {controller: :rentals, action: :unrent}, method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
+              <% if action_name != 'show' %>
+                <%= link_to icon('search')+" View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
+              <% end %>
+              <%= link_to icon('times')+" Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
             <% else %>
               <% if rental.renter_id.nil? %>
-                <%= link_to icon('shopping-cart')+" Rent", {controller: :rentals, action: :rent}, method: :patch, class: 'btn btn-outline-base', role: 'button' %>
+                <%= link_to icon('shopping-cart')+" Rent", rent_rental_path(rental), method: :patch, class: 'btn btn-outline-base', role: 'button' %>
               <% end %>
             <% end %>
           </div>

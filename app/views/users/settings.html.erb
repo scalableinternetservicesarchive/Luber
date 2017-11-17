@@ -68,9 +68,9 @@
           <h5>Posts as Renter:</h5>
         </div>
         <div class="col">
-          <h5 class="text-right"><%= @cars.length %></h5>
-          <h5 class="text-right"><%= @rides_sold.length %></h5>
-          <h5 class="text-right"><%= @rides_bought.length %></h5>
+          <h5 class="text-right"><%= @cars_count %></h5>
+          <h5 class="text-right"><%= @rides_sold_count %></h5>
+          <h5 class="text-right"><%= @rides_bought_count %></h5>
         </div>
       </div>
       <hr>
@@ -104,17 +104,11 @@
   <hr>
   <div class="card">
     <div class="card-body">
-      <%= link_to about_path, class: 'btn btn-danger', role: 'button' do %>
-        <%= icon('times') %> Delete All Cars
-      <% end %>
+      <%= link_to 'Delete All Cars', about_path, class: 'btn btn-danger', role: 'button' %>
       <p class="mt-2 mb-4">This will permanently delete all of your cars. Watch them go 100 to 0 real quick.</p>
-      <%= link_to about_path, class: 'btn btn-danger', role: 'button' do %>
-        <%= icon('times') %> Delete All Rental Posts
-      <% end %>
+      <%= link_to 'Delete All Rental Posts', about_path, class: 'btn btn-danger', role: 'button' %>
       <p class="mt-2 mb-4">This will permanently delete all of the rental posts you've made as the owner. If a post was <span class="badge badge-primary">Available</span>, it will be taken off the market. Otherwise, it will be considered <span class="badge badge-danger">Cancelled</span>, and the renter will no longer have access to it.</p>
-      <%= link_to @user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', role: 'button' do %>
-        <%= icon('times') %> Delete Account
-      <% end %>
+      <%= link_to 'Delete Account', @user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', role: 'button' %>
       <p class="mt-2">This will permanently delete your account. There's no going back from this...</p>
     </div>
   </div>

@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      @user.touch(:logged_in_at)
       log_in @user
       flash[:success] = 'Welcome to Luber!'
       redirect_to controller: 'users', action: 'overview', id: @user.id
@@ -28,7 +29,6 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
-      # handle successful update
       flash[:success] = "Profile successfully updated"
       redirect_to controller: 'users', action: 'overview', id: @user.id
     else
@@ -38,7 +38,6 @@ class UsersController < ApplicationController
 
   def overview
     @user = User.find(params[:id])
-    @user.update_attribute(:logged_in_at, params[:logged_in_at])
     @rides_sold = Rental.where(owner_id: @user.id)
     @rides_bought = Rental.where(renter_id: @user.id)
   end
@@ -63,9 +62,9 @@ class UsersController < ApplicationController
 
   def settings
     @user = User.find(params[:id])
-    @cars = Car.where(user_id: @user.id)
-    @rides_sold = Rental.where(owner_id: @user.id)
-    @rides_bought = Rental.where(renter_id: @user.id)
+    @cars_count = Car.where(user_id: @user.id).length
+    @rides_sold_count = Rental.where(owner_id: @user.id).length
+    @rides_bought_count = Rental.where(renter_id: @user.id).length
   end
 
   private

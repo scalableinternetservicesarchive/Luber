@@ -64,7 +64,7 @@ User.all.each do |u|
     model: car_models.sample,
     year: (1960..2017).to_a.sample,
     color: car_colors.sample,
-    plate_number: "6ABC123" )
+    license_plate: "6ABC123" )
 end
 
 p "Created #{Car.count} cars"
@@ -86,12 +86,12 @@ User.all.each do |u|
       owner_id: u.id,
       renter_id: nil,
       car_id: c.id,
+      status: "0",
       start_location: "Los Angeles",
       end_location: "San Francisco",
       start_time: "2018-10-30 20:00:00", 
       end_time: "2018-10-31 02:00:00",
       price: "999.99",
-      status: "0",  # how to ints map to what the statuses mean?
       terms: "Be nice" )
   end
 
@@ -101,12 +101,12 @@ User.all.each do |u|
       owner_id: u.id,
       renter_id: User.all.sample.id,
       car_id: c.id,
+      status: "1",
       start_location: "Los Angeles",
       end_location: "San Francisco",
       start_time: "2018-10-30 20:00:00", 
       end_time: "2018-10-31 02:00:00",
       price: "111.11",
-      status: "1",
       terms: "Be nice" )
   end
 end

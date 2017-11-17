@@ -6,15 +6,18 @@ class RentalsController < ApplicationController
   # GET /rentals
   # GET /rentals.json
   def index
-    @rentals = Rental.all
-    @available_rentals = Rental.where(:renter_id => nil)
-    @filled_rentals = Rental.all.find_all {|r| r.renter_id}
+    @available_rentals = Rental.where(status: 0)
   end
 
   # GET /rentals/1
   # GET /rentals/1.json
   def show
     @rental = Rental.find(params[:id])
+    @owner = User.find(@rental.owner_id)
+    if @rental.renter_id
+      @renter = User.find(@rental.renter_id)
+    end
+    @car = Car.find(@rental.car_id)
   end
 
   # GET /rentals/new
@@ -63,13 +66,19 @@ class RentalsController < ApplicationController
   end
 
   def rent
-    @rental.renter_id = session[:user_id]
-    redirect_to @rental, notice: "Congrats, you are renting this car!"
+    @rental = Rental.find(params[:id])
+    @rental.update_attribute(:renter_id, session[:user_id])
+    @rental.update_attribute(:status, 1)
+    flash[:success] = 'You have successfully rented this car!'
+    redirect_to @rental
   end
 
-  def unrent
-    @rental.renter_id = nil
-    redirect_to @rental, notice: "You have un-rented this car."
+  def cancel
+    @rental = Rental.find(params[:id])
+    @rental.update_attribute(:renter_id, nil)
+    @rental.update_attribute(:status, 4)
+    flash[:success] = 'You have successfully cancelled renting this car.'
+    redirect_to overview_user_path(session[:user_id])
   end
 
   # DELETE /rentals/1

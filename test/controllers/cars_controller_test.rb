@@ -4,7 +4,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = User.create!(username: "Example User", email:"user@example.com", password: "foobar", password_confirmation: "foobar")
-    @car = Car.create!(user_id: @user.id, make: "Ford", model: "Mustang", year: 2000, color: "red", plate_number: "8DEF234")
+    @car = Car.create!(user_id: @user.id, make: "Ford", model: "Mustang", year: 2000, color: "red", license_plate: "8DEF234")
   end
 
   test "should get new" do
@@ -14,7 +14,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create car" do
     assert_difference('Car.count') do
-      post cars_url, params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, plate_number: @car.plate_number } }
+      post cars_url, params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, license_plate: @car.license_plate } }
     end
 
     assert_redirected_to car_url(Car.last)
@@ -31,7 +31,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update car" do
-    patch car_url(@car), params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, plate_number: @car.plate_number } }
+    patch car_url(@car), params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, license_plate: @car.license_plate } }
     assert_redirected_to car_url(@car)
   end
 

@@ -199,6 +199,10 @@ a.disabled {
 // Misc
 // -------------------------
 
+.alert {
+  margin-bottom: 0;
+}
+
 .banner {
   color: white;
   background: $darker-accent;
@@ -223,18 +227,14 @@ a.disabled {
 }
 
 .card-wrapper {
-  .card {
-    margin-bottom: 16px;
+  .card-header {
+    color: white;
+    background: linear-gradient(to bottom right, $primary, $secondary);
+  }
 
-    .card-header {
-      color: white;
-      background: linear-gradient(to bottom right, $primary, $secondary);
-    }
-
-    .card-body {
-      .col-desc {
-        margin-left: -34px;
-      }
+  .card-body {
+    .col-desc {
+      margin-left: -34px;
     }
   }
 }

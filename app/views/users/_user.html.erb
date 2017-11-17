@@ -63,7 +63,7 @@
           <div class="col">
             <h5>Last logged in on <%= user.logged_in_at.strftime("%A, %B %-d") %> at <%= user.logged_in_at.strftime("%l:%M%p") %></h5>
           </div>
-          <div class="col-md-auto">
+          <div class="col-md-auto align-self-end">
             <% if session[:user_id] == user.id %>
               <%= link_to icon('pencil')+" Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
             <% end %>

@@ -95,13 +95,8 @@ class UsersController < ApplicationController
     @rentals = Rental.where([
       '(renter_id = ? OR owner_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
       @user.id, @user.id, 1, DateTime.now, 2, DateTime.now])
-    puts @rentals.length
     @rentals.each do |rental|
-      if rental.status == 1
-        rental.update_attribute(:status, 2)
-      elsif rental.status == 2
-        rental.update_attribute(:status, 3)
-      end
+      rental.update_attribute(:status, rental.status + 1)
     end
   end
 

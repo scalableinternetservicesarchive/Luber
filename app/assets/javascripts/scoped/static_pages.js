@@ -1,8 +1,9 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
-
 // Set dynamic dropdown carets and add responsive collapsing for FAQ entries
-function carets() {
+function makeCaretsDynamic() {
+  if($('#static_pages-faq').length == 0) {
+    return;
+  }
+
   var prevQuestion;
   $('.faq-question').on('click', function() {
     if($(this).children().hasClass('fa-caret-right')) {
@@ -21,8 +22,10 @@ function carets() {
 }
 
 // Get rid of the top and bottom margin on the homepage only
-function hero() {  
-  if($('#hero-background').length) {
-    $('main').css('margin-bottom', $('footer').height());
+function setHomeMargin() {
+  if($('#static_pages-home').length == 0) {
+    return;
   }
+  
+  $('main').css('margin-bottom', $('footer').height());
 }

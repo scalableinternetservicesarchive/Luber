@@ -52,19 +52,23 @@
               <% end %>
             </h5>
           </div>
-          <div class="col-md-auto">
+          <div class="col-md-auto align-self-end">
             <% case session[:user_id] %>
             <% when rental.owner_id %>
               <% if action_name != 'show' %>
                 <%= link_to icon('search')+" View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
               <% end %>
-              <%= link_to icon('pencil')+" Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-1', role: 'button' %>
+              <% if rental.status < 2 %>
+                <%= link_to icon('pencil')+" Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-1', role: 'button' %>
+              <% end %>
               <%= link_to icon('times')+" Delete", rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
             <% when rental.renter_id %>
               <% if action_name != 'show' %>
                 <%= link_to icon('search')+" View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
               <% end %>
-              <%= link_to icon('times')+" Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
+              <% if rental.status < 2 %>
+                <%= link_to icon('times')+" Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
+              <% end %>
             <% else %>
               <% if rental.renter_id.nil? %>
                 <%= link_to icon('shopping-cart')+" Rent", rent_rental_path(rental), method: :patch, class: 'btn btn-outline-base', role: 'button' %>

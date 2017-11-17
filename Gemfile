@@ -42,6 +42,13 @@ gem 'autoprefixer-rails', '~> 7.1.6'
 # Use Font Awesome or neat icons
 gem 'font-awesome-sass', '~> 4.7.0'
 
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'foundation-rails'
+
+gem 'geocoder'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -60,12 +67,6 @@ group :development do
   gem 'rails_real_favicon'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-gem 'foundation-rails'
 group :production do
   gem 'pg'
 end
-
-gem 'geocoder'

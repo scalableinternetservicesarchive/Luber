@@ -2,45 +2,43 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-main {
-  .jumbotron {
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
+.jumbotron {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
-  #hero-background {
-    min-height: 100vh;
-    color: white;
-    background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), asset-data-url("hero.png");
+#hero-background {
+  min-height: 100vh;
+  color: white;
+  background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), asset-data-url("hero.png");
+
+  p {
+    font-size: 1.7rem;
+  }
+}
+
+#using-luber-background {
+  position: relative;
+  min-height: 60vh;
+  color: white;
+  background-color: $primary;
+  box-shadow: 0 0 6px $material-shadow;
   
-    p {
-      font-size: 1.7rem;
-    }
+  img {
+    width: 225px;
+    height: auto;
   }
 
-  #using-luber-background {
-    position: relative;
-    min-height: 60vh;
-    color: white;
-    background-color: $primary;
-    box-shadow: 0 0 6px $material-shadow;
-    
-    img {
-      width: 225px;
-      height: auto;
-    }
-
-    p {
-      font-size: 1.4rem;
-    }
+  p {
+    font-size: 1.4rem;
   }
+}
 
-  #promo-video-background {
-    min-height: 50vh;
-    background-color: $light-base;
+#promo-video-background {
+  min-height: 50vh;
+  background-color: $light-base;
 
-    p {
-      font-size: 1.4rem;
-    }
+  p {
+    font-size: 1.4rem;
   }
 }

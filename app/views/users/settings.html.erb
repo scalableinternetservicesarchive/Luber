@@ -92,9 +92,7 @@
         </div>
       </div>
       <div class="btn-group mt-4 float-right" role="group" aria-label="Edit Account Information">
-        <%= link_to edit_user_path, class: 'btn btn-success', role: 'button' do %>
-          <%= icon('pencil') %> Edit
-        <% end %>
+        <%= link_to icon('pencil')+" Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
       </div>
     </div>
   </div>

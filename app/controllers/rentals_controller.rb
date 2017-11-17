@@ -124,10 +124,8 @@ class RentalsController < ApplicationController
   # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
   def set_progress
     @rental = Rental.find(params[:id])
-    if @rental.status == 1 && @rental.start_time < DateTime.now
-      @rental.update_attribute(:status, 2)
-    elsif @rental.status == 2 && @rental.end_time < DateTime.now
-      @rental.update_attribute(:status, 3)
+    if (@rental.status == 1 && @rental.start_time < DateTime.now) || (@rental.status == 2 && @rental.end_time < DateTime.now)
+      @rental.update_attribute(:status, @rental.status + 1)
     end
   end
 end

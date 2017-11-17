@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mb-4">
   <div class="card-body">
     <div class="row">
       <div class="col-1">
@@ -25,7 +25,7 @@
               <% end %>
             </h5>
           </div>
-          <div class="col-md-auto">
+          <div class="col-md-auto align-self-end">
             <% if session[:user_id] == car.user_id %>
               <%= link_to icon('pencil')+" Edit", edit_car_path(car), class: 'btn btn-outline-success mr-1', role: 'button' %>
               <%= link_to icon('times')+" Delete", car, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>

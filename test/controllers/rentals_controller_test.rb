@@ -66,7 +66,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       delete rental_url(@rental)
     end
 
-    assert_redirected_to rentals_url
+    assert_redirected_to controller: 'users', action: 'rentals', id: @user1.id
   end
 
   # :show, :new, :create, :edit, :update, :destroy

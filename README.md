@@ -63,3 +63,90 @@ Justin Pearson ([@justinpearson](https://github.com/justinpearson))
 
 Michael Zhang & Michael's little helper([@Heronalps](https://github.com/Heronalps))  
 ![Heronalps photo](https://github.com/scalableinternetservices/Luber/blob/master/misc/snapshots/heronalps.jpg)
+
+
+How to run load-tests with Tsung
+----------------------------------
+
+See <http://cs291.com/slides/2017/11_tsung/#1>, slide 9/34.
+
+### Recall your AWS username and password
+
+SSH into our Elastic Beanstalk (EB) EC2 instance using the provided TEAMNAME.pem file:
+
+    ssh -i TEAMNAME.pem TEAMNAME@ec2.cs291.com
+
+Our AWS username and pw is in `~/TEAMNAME_key.txt`.
+
+WARNING: Never commit this credentials into your repository, or put them anywhere else that they might be made public.
+
+
+### Deploy Tsung on a m3.medium instance using CloudFormation
+
+1. Visit AWS CloudFormation: https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new
+
+    - Account ID or Alias: `bboe-ucsb`
+    - IAM user name: see above
+    - Password: see above
+
+1. Use for the "S3 template URL": https://cs291.s3.amazonaws.com/Tsung.json
+
+1. Pick a Stack Name of the form `luber-michael`.
+
+1. App instance type: m3.medium
+
+1. Team name (pulldown): luber
+
+1. "Next", "Next", "Create"
+
+    - You should now be at the CloudFormation "Stacks" page.
+
+1. If your Stack Name doesn't appear in the table, refresh after a couple secs.
+
+1. Should see "CREATE_IN_PROGRESS" under Status.
+
+1. Check your Stack Name, then under "Outputs" tab, use the SSH cmd to log in to the EC2 Tsung machine. Also, open the IP addr in another browser tab.
+
+1. In the ssh session, see `simple.xml`, our tsung test.
+
+    - This machine will be destroyed after 45 inactive minutes, so if you edit `simple.xml` be sure to `rsync` it to your local machine.
+
+
+1. In the Tsung file `simple.xml` change the line `server host="www.google.com"` to the AWS EB URL where our app is running (to find that, see below)
+
+### Start Elastic Beanstalk
+
+- See <https://github.com/scalableinternetservices/demo_rails514_beanstalk>
+
+- Note: In the EC2 instance where we start EB with `eb init`, make your own directory, `git clone` our repo, set up EB so that `eb init` works, and then you can start your own EB instance without stepping on your teammates' toes.
+
+### Start Tsung test
+
+1. With EB started, go to the EB dashboard and get the URL where EB is hosting your site.
+
+1. Paste that URL into the `server host=` field of `simple.xml`.
+
+1. In simple.xml, define a 'session' (a flow of user going thru the site)
+
+1. Start Tsung:
+
+    tsung -f simple.xml -k start
+
+1. (Tsung runs.)
+
+1. In the browser tab for the Tsung EC2 instance (got from Options tab earlier)
+
+1. See the Tsung dashboard. Neato.
+
+1. When Tsung is finished, `rsync` over the logs & data to your local machine:
+
+    rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:tsung_logs .
+
+1. Don't put tsung data into our repo, you'll probably want to experiment with Tsung. Maybe put each log into a folder with a README of which commit hash code you ran in EB, and which Tsung file you used, and how you changed the site (vertical / horiz scaling etc) to accommodate the load.
+
+1. To vary the # instances in EB and their size: 
+
+    - AWS elastic beanstalk > all applications > luber > luber-michael > sidebar > configuration
+    - can change instance type / number of instances on the fly, don't have to restart EB
+
+1. Try out a bunch of things!

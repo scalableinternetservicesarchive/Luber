@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:cars, :history, :settings]
   before_action :logged_in_user, only: [:edit, :update]
   before_action :correct_user, only: [:edit, :update]
+  before_action :set_progress, only: [:overview, :rentals]
 
   def show
     redirect_to overview_user_path, status: 301
@@ -37,31 +39,26 @@ class UsersController < ApplicationController
   end
 
   def overview
-    @user = User.find(params[:id])
     @rides_sold = Rental.where(owner_id: @user.id)
     @rides_bought = Rental.where(renter_id: @user.id)
   end
 
   def rentals
-    @user = User.find(params[:id])
     @rides_sold = Rental.where(owner_id: @user.id)
     @rides_bought = Rental.where(renter_id: @user.id)
   end
 
   def cars
-    @user = User.find(params[:id])
     @cars = Car.where(user_id: @user.id)
   end
 
   def history
-    @user = User.find(params[:id])
     @cars = Car.where(user_id: @user.id)
     @rides_sold = Rental.where(owner_id: @user.id)
     @rides_bought = Rental.where(renter_id: @user.id)
   end
 
   def settings
-    @user = User.find(params[:id])
     @cars_count = Car.where(user_id: @user.id).length
     @rides_sold_count = Rental.where(owner_id: @user.id).length
     @rides_bought_count = Rental.where(renter_id: @user.id).length
@@ -73,7 +70,12 @@ class UsersController < ApplicationController
     params.require(:user).permit(:username, :email, :password, :password_confirmation)
   end
 
-  # before filters for authorization
+  # Use callbacks to share common setup or constraints between actions
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  # Before filters for authorization
   def logged_in_user
     unless logged_in?
       flash[:danger] = "Please login first."
@@ -81,10 +83,26 @@ class UsersController < ApplicationController
     end
   end
 
-  # confirms the correct user
+  # Confirms the correct user
   def correct_user
     @user = User.find(params[:id])
     redirect_to(root_path) unless current_user?(@user)
+  end
+
+  # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
+  def set_progress
+    @user = User.find(params[:id])
+    @rentals = Rental.where([
+      '(renter_id = ? OR owner_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
+      @user.id, @user.id, 1, DateTime.now, 2, DateTime.now])
+    puts @rentals.length
+    @rentals.each do |rental|
+      if rental.status == 1
+        rental.update_attribute(:status, 2)
+      elsif rental.status == 2
+        rental.update_attribute(:status, 3)
+      end
+    end
   end
 
 end

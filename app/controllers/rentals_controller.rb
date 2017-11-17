@@ -1,7 +1,8 @@
 class RentalsController < ApplicationController
-  before_action :set_rental, only: [:show, :edit, :update, :destroy]
+  before_action :set_rental, only: [:rent, :cancel]
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :set_progress, only: [:show]
 
   # GET /rentals
   # GET /rentals.json
@@ -12,7 +13,6 @@ class RentalsController < ApplicationController
   # GET /rentals/1
   # GET /rentals/1.json
   def show
-    @rental = Rental.find(params[:id])
     @owner = User.find(@rental.owner_id)
     if @rental.renter_id
       @renter = User.find(@rental.renter_id)
@@ -32,7 +32,7 @@ class RentalsController < ApplicationController
 
   # GET /rentals/1/edit
   def edit
-    @cars = Car.where(user_id: Rental.find(params[:id]).owner_id)
+    @cars = Car.where(user_id: @rental.owner_id)
   end
 
   # POST /rentals
@@ -65,16 +65,16 @@ class RentalsController < ApplicationController
     end
   end
 
+  # PATCH /rentals/1/rent
   def rent
-    @rental = Rental.find(params[:id])
     @rental.update_attribute(:renter_id, session[:user_id])
     @rental.update_attribute(:status, 1)
     flash[:success] = 'You have successfully rented this car!'
     redirect_to @rental
   end
 
+  # PATCH /rentals/1/cancel
   def cancel
-    @rental = Rental.find(params[:id])
     @rental.update_attribute(:renter_id, nil)
     @rental.update_attribute(:status, 4)
     flash[:success] = 'You have successfully cancelled renting this car.'
@@ -92,31 +92,42 @@ class RentalsController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_rental
-    @rental = Rental.find(params[:id])
-  end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the white list through
   def rental_params
     params.require(:rental).permit(:owner_id, :renter_id, :car_id, :start_location, :end_location, :start_time, :end_time, :price, :terms)
   end
 
-  # before filters for authorization
+  # Use callbacks to share common setup or constraints between actions
+  def set_rental
+    @rental = Rental.find(params[:id])
+  end
+
+  # Before filters for authorization
   def logged_in_user
     unless logged_in?
-      flash[:danger] = "Please log in before accessing rental posts."
+      flash[:danger] = "Please login before accessing rental posts."
       redirect_to login_url
     end
   end
 
-  # confirms the correct user
+  # Confirms the correct user
   def correct_user
     @rental = Rental.find(params[:id])
     @user = User.find(@rental.owner_id)
     unless current_user?(@user)
       flash[:danger] = "You are not the owner of this rental post."
       redirect_to(@rental)
+    end
+  end
+
+  # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
+  def set_progress
+    @rental = Rental.find(params[:id])
+    if @rental.status == 1 && @rental.start_time < DateTime.now
+      @rental.update_attribute(:status, 2)
+    elsif @rental.status == 2 && @rental.end_time < DateTime.now
+      @rental.update_attribute(:status, 3)
     end
   end
 end

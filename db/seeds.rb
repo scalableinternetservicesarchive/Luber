@@ -109,6 +109,21 @@ User.all.each do |u|
       price: "111.11",
       terms: "Be nice" )
   end
+
+  # Purchased rentals, about to shift status to "In Progress":
+  1.times do
+    Rental.create!(
+      owner_id: u.id,
+      renter_id: User.all.sample.id,
+      car_id: c.id,
+      status: "1",
+      start_location: "Los Angeles",
+      end_location: "San Francisco",
+      start_time: DateTime.now + 2.minutes,
+      end_time: DateTime.now + 4.minutes, 
+      price: "123.45",
+      terms: "Quick drive only" )
+  end
 end
 
 p "Created #{Rental.count} rental posts"

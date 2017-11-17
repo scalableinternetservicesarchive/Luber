@@ -33,7 +33,7 @@ class Rental < ApplicationRecord
     when 2
       return 'badge-dark'
     when 3
-      return 'badge-succes'
+      return 'badge-success'
     when 4
       return 'badge-danger'
     else

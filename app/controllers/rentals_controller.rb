@@ -35,6 +35,7 @@ class RentalsController < ApplicationController
   # POST /rentals
   # POST /rentals.json
   def create
+    @cars = Car.where(user_id: session[:user_id])
     @rental = Rental.new(rental_params)
     @rental.owner_id = current_user.id
 
@@ -80,7 +81,10 @@ class RentalsController < ApplicationController
   def destroy
     @rental.destroy
     respond_to do |format|
-      format.html {redirect_to rentals_url, notice: 'Rental post was successfully destroyed.'}
+      format.html do
+        redirect_to controller: 'users', action: 'rentals', id: current_user.id
+        flash[:notice] = 'Rental post was successfully destroyed.'
+      end
       format.json {head :no_content}
     end
   end

@@ -4,11 +4,21 @@ class Rental < ApplicationRecord
 
   has_one :car
 
+  validates :start_location, :end_location, presence: true
+
   geocoded_by :start_location,  latitude: :start_latitude, longitude: :start_longitude
   after_validation :geocode, if: ->(obj){ obj.start_location.present? }
 
   VALID_PRICE_REGEX = /\A\d+(\.\d\d)?\z/
   validates :price, presence: true, format: {with: VALID_PRICE_REGEX}
+
+  validate :end_time_cannot_be_before_start
+
+  def end_time_cannot_be_before_start
+    if end_time < start_time
+      errors.add(:end_time, 'can not be before the start time')
+    end
+  end
 
   def get_status_label
     case self.status

@@ -68,7 +68,9 @@ Michael Zhang & Michael's little helper([@Heronalps](https://github.com/Heronalp
 How to run load-tests with Tsung
 ----------------------------------
 
-See <http://cs291.com/slides/2017/11_tsung/#1>, slide 9/34.
+References:
+
+- <http://cs291.com/slides/2017/11_tsung/#1>, slide 9/34.
 
 ### Recall your AWS username and password
 
@@ -130,7 +132,7 @@ WARNING: Never commit this credentials into your repository, or put them anywher
 
 1. Start Tsung:
 
-    tsung -f simple.xml -k start
+        tsung -f simple.xml -k start
 
 1. (Tsung runs.)
 
@@ -140,7 +142,7 @@ WARNING: Never commit this credentials into your repository, or put them anywher
 
 1. When Tsung is finished, `rsync` over the logs & data to your local machine:
 
-    rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:tsung_logs .
+         rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:tsung_logs .
 
 1. Don't put tsung data into our repo, you'll probably want to experiment with Tsung. Maybe put each log into a folder with a README of which commit hash code you ran in EB, and which Tsung file you used, and how you changed the site (vertical / horiz scaling etc) to accommodate the load.
 

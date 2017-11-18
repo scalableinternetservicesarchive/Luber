@@ -6,4 +6,27 @@
 #map-end {
   height: 40vh;
   width: 95%;
+  box-shadow: -1px 1px 6px $material-shadow;
+}
+
+.no-section-content {
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+
+  hr {
+    width: 100%;
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+  }
+
+  div {
+    flex-grow: 1;
+
+    div {
+      flex-grow: 1;
+      top: 50%;
+      margin-bottom: 1.75rem;
+    }
+  }
 }

@@ -9,18 +9,24 @@
 <section class="container m-top card-wrapper">
   <h2>Listing</h2>
   <hr>
+  <p id="start-location" hidden><%= @rental.start_location %></p>
+  <p id="end-location" hidden><%= @rental.end_location %></p>
   <%= render @rental %>
 </section>
 <section class="container m-top">
   <div class="row">
-    <div class="col">
+    <div class="col" id="user-col">
       <% if session[:user_id] == @rental.owner_id %>
         <h2>Renter</h2>
         <hr>
         <% if @renter %>
           <%= render @renter %>
         <% else %>
-          <p class="text-center">Looks like no one is renting your car yet...</p>
+          <div class="text-center font-italic d-flex align-items-center">
+            <div>
+              <p>Looks like no one is renting your car yet...</p>
+            </div>
+          </div>
         <% end %>
       <% else %>
         <h2>Owner</h2>
@@ -28,7 +34,7 @@
         <%= render @owner %>
       <% end %>
     </div>
-    <div class="col">
+    <div class="col" id="car-col">
       <h2>Car</h2>
       <hr>
       <%= render @car %>
@@ -37,18 +43,18 @@
 </section>
 <section class="container m-top">
   <div class="row">
-    <div class="col">
+    <div class="col" id="start-col">
       <h2>Start Location</h2>
       <hr>
-      <p class="start-latitude" hidden><%= @rental.start_latitude %></p>
-      <p class="start-longitude" hidden><%= @rental.start_longitude %></p>
+      <p id="start-latitude" hidden><%= @rental.start_latitude %></p>
+      <p id="start-longitude" hidden><%= @rental.start_longitude %></p>
       <div class="mx-auto d-block" id="map-start"></div>
     </div>
-    <div class="col">
+    <div class="col" id="end-col">
       <h2>End Location</h2>
       <hr>
-      <p class="end-latitude" hidden><%= @rental.end_latitude %></p>
-      <p class="end-longitude" hidden><%= @rental.end_longitude %></p>
+      <p id="end-latitude" hidden><%= @rental.end_latitude %></p>
+      <p id="end-longitude" hidden><%= @rental.end_longitude %></p>
       <div class="mx-auto d-block" id="map-end"></div>
     </div>
   </div>

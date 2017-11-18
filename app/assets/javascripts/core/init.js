@@ -7,6 +7,7 @@ init = function() {
   makeCaretsDynamic();
   initMaps();
   preventFontInjection();
+  addNoRenterCSS();
 };
 
 $(document).on("turbolinks:load", function() {

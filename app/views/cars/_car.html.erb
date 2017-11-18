@@ -1,4 +1,4 @@
-<div class="card mb-4">
+<div class="card<%= action_name == 'show' ? '' : ' mb-4' %>">
   <div class="card-body">
     <div class="row">
       <div class="col-1">
@@ -9,7 +9,7 @@
         <h5 class="text-center"><%= icon('barcode') %></h5>
         <h5 class="text-center"><%= icon('tags') %></h5>
       </div>
-      <div class="col col-desc">
+      <div class="col col-wide">
         <h5><%= car.make %></h5>
         <h5><%= car.model %></h5>
         <h5><%= car.year %></h5>

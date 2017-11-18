@@ -21,7 +21,7 @@
         <h5 class="text-center"><%= icon('car') %></h5>
         <h5 class="text-center"><%= icon('tags') %></h5>
       </div>
-      <div class="col col-desc">
+      <div class="col col-wide">
         <h5>From <%= rental.start_time.strftime("%l:%M%p") %> on <%= rental.start_time.strftime("%A, %b. %-d") %> until <%= rental.end_time.strftime("%l:%M%p") %> on <%= rental.end_time.strftime("%A, %b. %-d") %></h5>
         <% if rental.terms.nil? %>
           <h5 class="font-italic">No terms were specified by the owner.</h5>

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StaticPagesControllerTest < ActionDispatch::IntegrationTest
+class StaticsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get home" do
     get home_url

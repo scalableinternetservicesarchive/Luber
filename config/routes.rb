@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-  root 'static_pages#home'
+  root 'statics#home'
 
-  get 'home', to: 'static_pages#home'
-  get 'faq', to: 'static_pages#faq'
-  get 'about', to: 'static_pages#about'
-  get 'contact', to: 'static_pages#contact'
-  get 'privacy', to: 'static_pages#privacy'
+  get 'home', to: 'statics#home'
+  get 'faq', to: 'statics#faq'
+  get 'about', to: 'statics#about'
+  get 'contact', to: 'statics#contact'
+  get 'privacy', to: 'statics#privacy'
 
   resources :users, :except => [:index, :new, :create] do
     member do

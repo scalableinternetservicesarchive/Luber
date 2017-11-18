@@ -1,6 +1,6 @@
 // Set dynamic dropdown carets and add responsive collapsing for FAQ entries
 function makeCaretsDynamic() {
-  if($('#static_pages-faq').length == 0) {
+  if($('#statics-faq').length == 0) {
     return;
   }
 
@@ -23,7 +23,7 @@ function makeCaretsDynamic() {
 
 // Get rid of the top and bottom margin on the homepage only
 function setHomeMargin() {
-  if($('#static_pages-home').length == 0) {
+  if($('#statics-home').length == 0) {
     return;
   }
   

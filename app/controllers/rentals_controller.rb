@@ -1,6 +1,7 @@
 class RentalsController < ApplicationController
   before_action :set_rental, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /rentals
   # GET /rentals.json
@@ -20,6 +21,10 @@ class RentalsController < ApplicationController
   def new
     @rental = Rental.new
     @cars = Car.where(user_id: session[:user_id])
+    if @cars.blank?
+      flash[:danger] = "You do not have any cars. Please add cars to your profile before creating a rental post."
+      redirect_to rentals_url
+    end
   end
 
   # GET /rentals/1/edit
@@ -30,7 +35,9 @@ class RentalsController < ApplicationController
   # POST /rentals
   # POST /rentals.json
   def create
+    @cars = Car.where(user_id: session[:user_id])
     @rental = Rental.new(rental_params)
+    @rental.owner_id = current_user.id
 
     respond_to do |format|
       if @rental.save
@@ -46,6 +53,8 @@ class RentalsController < ApplicationController
   # PATCH/PUT /rentals/1
   # PATCH/PUT /rentals/1.json
   def update
+    @cars = Car.where(user_id: Rental.find(params[:id]).owner_id)
+
     respond_to do |format|
       if @rental.update(rental_params)
         format.html {redirect_to @rental, notice: 'Rental post was successfully updated.'}
@@ -72,7 +81,10 @@ class RentalsController < ApplicationController
   def destroy
     @rental.destroy
     respond_to do |format|
-      format.html {redirect_to rentals_url, notice: 'Rental post was successfully destroyed.'}
+      format.html do
+        redirect_to controller: 'users', action: 'rentals', id: current_user.id
+        flash[:notice] = 'Rental post was successfully destroyed.'
+      end
       format.json {head :no_content}
     end
   end
@@ -85,7 +97,7 @@ class RentalsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def rental_params
-    params.require(:rental).permit(:owner_id, :renter_id, :car_id, :start_location, :end_location, :start_time, :end_time, :price, :terms)
+    params.require(:rental).permit(:car_id, :start_location, :end_location, :start_time, :end_time, :price, :terms)
   end
 
   # before filters for authorization
@@ -93,6 +105,16 @@ class RentalsController < ApplicationController
     unless logged_in?
       flash[:danger] = "Please log in before accessing rental posts."
       redirect_to login_url
+    end
+  end
+
+  # confirms the correct user
+  def correct_user
+    @rental = Rental.find(params[:id])
+    @user = User.find(@rental.owner_id)
+    unless current_user?(@user)
+      flash[:danger] = "You are not the owner of this rental post."
+      redirect_to(@rental)
     end
   end
 end

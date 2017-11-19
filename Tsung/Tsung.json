@@ -1,0 +1,238 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Mappings": {
+        "SpotPrices": {
+            "c5.2xlarge": {
+                "price": "0.34"
+            },
+            "c5.4xlarge": {
+                "price": "0.68"
+            },
+            "c5.large": {
+                "price": "0.08"
+            },
+            "c5.xlarge": {
+                "price": "0.17"
+            },
+            "m3.medium": {
+                "price": "0.06"
+            },
+            "m4.2xlarge": {
+                "price": "0.40"
+            },
+            "m4.4xlarge": {
+                "price": "0.80"
+            },
+            "m4.large": {
+                "price": "0.10"
+            },
+            "m4.xlarge": {
+                "price": "0.20"
+            },
+            "r4.2xlarge": {
+                "price": "0.53"
+            },
+            "r4.large": {
+                "price": "0.13"
+            },
+            "r4.xlarge": {
+                "price": "0.26"
+            }
+        },
+        "Subnets": {
+            "us-west-2a": {
+                "subnet": "subnet-0f94aa6b"
+            },
+            "us-west-2b": {
+                "subnet": "subnet-2cf2a35a"
+            },
+            "us-west-2c": {
+                "subnet": "subnet-5fd54007"
+            }
+        },
+        "Teams": {
+            "boomerang": {
+                "sg": "sg-c9109eb4"
+            },
+            "cs-food": {
+                "sg": "sg-14f8cb69"
+            },
+            "demo": {
+                "sg": "sg-c38ce8be"
+            },
+            "iamarobot": {
+                "sg": "sg-5824aa25"
+            },
+            "luber": {
+                "sg": "sg-8624aafb"
+            },
+            "match.edu": {
+                "sg": "sg-a921afd4"
+            },
+            "ssh": {
+                "sg": "sg-49ae3c30"
+            },
+            "ucsb-class-scheduler": {
+                "sg": "sg-a5d0e3d8"
+            }
+        }
+    },
+    "Outputs": {
+        "SSH": {
+            "Description": "AppServer SSH connect string",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "ssh -i ",
+                        {
+                            "Ref": "TeamName"
+                        },
+                        ".pem ec2-user@",
+                        {
+                            "Fn::GetAtt": [
+                                "AppServer",
+                                "PublicIp"
+                            ]
+                        }
+                    ]
+                ]
+            }
+        },
+        "URL": {
+            "Description": "The URL to the rails application.",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "http://",
+                        {
+                            "Fn::GetAtt": [
+                                "AppServer",
+                                "PublicIp"
+                            ]
+                        }
+                    ]
+                ]
+            }
+        }
+    },
+    "Parameters": {
+        "AppInstanceType": {
+            "AllowedValues": [
+                "m3.medium",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "m4.4xlarge"
+            ],
+            "Default": "m3.medium",
+            "Description": "The AppServer instance type.",
+            "Type": "String"
+        },
+        "TeamName": {
+            "AllowedValues": [
+                "boomerang",
+                "cs-food",
+                "demo",
+                "iamarobot",
+                "luber",
+                "match.edu",
+                "ssh",
+                "ucsb-class-scheduler"
+            ],
+            "Description": "Your team name.",
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "AppServer": {
+            "CreationPolicy": {
+                "ResourceSignal": {
+                    "Timeout": "PT3M"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Init": {
+                    "configSets": {
+                        "default": [
+                            "packages"
+                        ]
+                    },
+                    "packages": {
+                        "packages": {
+                            "yum": {}
+                        }
+                    }
+                }
+            },
+            "Properties": {
+                "IamInstanceProfile": {
+                    "Ref": "TeamName"
+                },
+                "ImageId": "ami-f62afe8e",
+                "InstanceType": {
+                    "Ref": "AppInstanceType"
+                },
+                "KeyName": {
+                    "Ref": "TeamName"
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Fn::FindInMap": [
+                            "Teams",
+                            {
+                                "Ref": "TeamName"
+                            },
+                            "sg"
+                        ]
+                    }
+                ],
+                "SubnetId": "subnet-0f94aa6b",
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "#!/bin/bash -v\n\n# Define some helper functions\nfunction error_exit {",
+                                "\n    echo \"ERROR: $1\"\n    /opt/aws/bin/cfn-signal -e 1 -r \"$1\" --stack ",
+                                {
+                                    "Ref": "AWS::StackName"
+                                },
+                                " --resource AppServer --region ",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "\n    exit 1\n}",
+                                "\n\nfunction loop {",
+                                "\n    original=$1\n    remaining=$1\n    shift\n    while [ $remaining -gt 0 ]; do\n        if [ $original -ne $remaining ]; then\n            sleep_time=$(expr $original - $remaining)\n            echo -n \"$* failed. Trying $remaining more time(s) \"\n            echo \"after sleeping $sleep_time seconds.\"\n            sleep $sleep_time\n        fi\n        $*\n        if [ $? -eq 0 ]; then\n            return 0\n        else\n            remaining=$(expr $remaining - 1)\n        fi\n    done\n    return 1\n}",
+                                "\n\nfunction user_sudo {",
+                                "\n    sudo -u ec2-user bash -lc \"$*\"\n}",
+                                "\n\n\n# Run necessary updates\nyum update -y aws-cfn-bootstrap\n\n# Run cfn-init (see AWS::CloudFormation::Init)\n/opt/aws/bin/cfn-init -s ",
+                                {
+                                    "Ref": "AWS::StackName"
+                                },
+                                " -r AppServer --region ",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                " || error_exit 'Failed to run cfn-init'\n\n# Don't require tty to run sudo\nsed -i 's/ requiretty/ !requiretty/' /etc/sudoers\n",
+                                "# Set environment variable\necho \"export PATH=/usr/lib/tsung/bin:\\$PATH\" >> /home/ec2-user/.bashrc\n\n# Redirect port 80 to port 8091 (tsung server port)\niptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8091\n\nln -s /home/ec2-user/.tsung/log /home/ec2-user/tsung_logs\n",
+                                "# All is well so signal success\n/opt/aws/bin/cfn-signal -e 0 --stack ",
+                                {
+                                    "Ref": "AWS::StackName"
+                                },
+                                " --resource AppServer   --region ",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "\n"
+                            ]
+                        ]
+                    }
+                }
+            },
+            "Type": "AWS::EC2::Instance"
+        }
+    }
+}

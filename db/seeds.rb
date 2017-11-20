@@ -118,7 +118,7 @@ User.all.each do |u|
       renter = (User.all-[u]).sample.id
     end
     price = rand(10...200)
-    terms = all_terms.sample(2)
+    terms = all_terms.sample(2).join(' ')
 
     Rental.create!(
       owner_id: u.id,

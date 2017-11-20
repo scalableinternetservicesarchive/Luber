@@ -72,10 +72,10 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test "db seed file: each user should have 2 avail and 2 purchased rentals" do
+  test "db seed file: each user should have 3 rentals" do
     Rails.application.load_seed
     User.all.each do |u|
-      assert_equal Rental.where(owner_id: u.id).count, 4
+      assert_equal Rental.where(owner_id: u.id).count, 3
     end
   end
 end

@@ -92,4 +92,29 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to car_url(@car)
     assert_not flash.empty?
   end
+
+  test 'should fail to create if car data does not validate' do
+    log_in_as(@user, password: "foobar")
+    post cars_url, params: { car: { user_id: @car.user_id,
+                                    make: '',
+                                    model: '',
+                                    year: -24143454.2133,
+                                    color: '34',
+                                    plate_number: 'akslfdj;asdf a;ofsdofj ial; b;asdjf' } }
+
+    assert_template 'cars/new'
+    assert_not flash.empty?
+  end
+
+  test 'should fail to update if car data does not validate' do
+    log_in_as(@user, password: "foobar")
+    patch car_url(@car), params: { car: { user_id: @car.user_id,
+                                          make: nil,
+                                          model: nil,
+                                          year: nil,
+                                          color: nil,
+                                          plate_number: '' } }
+    assert_template 'cars/edit'
+    assert_not flash.empty?
+  end
 end

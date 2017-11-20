@@ -27,7 +27,7 @@ class CarsController < ApplicationController
       content: 'Added a '+@car.color+', '+@car.year.to_s+' '+@car.make+' '+@car.model+' to My Cars')
 
     respond_to do |format|
-      if @car.save!
+      if @car.save
         flash[:success] = 'Car successfully created'
         format.html { redirect_to cars_user_path(session[:user_id]) }
       else

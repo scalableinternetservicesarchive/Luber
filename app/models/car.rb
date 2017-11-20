@@ -1,10 +1,17 @@
 class Car < ApplicationRecord
+    before_save {self.license_plate = license_plate.upcase}
     belongs_to :user
     has_many :taggings
     has_many :tags, through: :taggings
 
-    PLATE_REGEX = /\A\d{1}[a-z]{3}\d{3}\z/i
-    validates :license_plate, presence: true, length: {is: 7}, format: {with: PLATE_REGEX}
+    # http://guides.rubyonrails.org/active_record_validations.html#validates-each
+    validates_each :license_plate do |record, attr, value|
+        # puts "Checking plate number #{value}"
+        record.errors.add(attr, 'must have length 2 to 7') if not (2 <= value.length and value.length <= 7)
+        record.errors.add(attr, 'must be only letters, numbers, or spaces') if not value.match? /\A[a-z0-9 ]+\z/i
+        record.errors.add(attr, 'must have at least two non-space characters') if not value.match? /\A.*[a-z0-9].*[a-z0-9].*\z/i
+      end
+    
     validates :year, presence: true, numericality: {greater_than: 1900}
 
     def all_tags=(names)
@@ -18,6 +25,7 @@ class Car < ApplicationRecord
     end
 
     def self.tagged_with(name)
+      name = name.downcase
       Tag.find_by_name!(name).cars
     end
 end

@@ -38,7 +38,9 @@ class RentalsController < ApplicationController
   # POST /rentals
   # POST /rentals.json
   def create
+    @cars = Car.where(user_id: session[:user_id])
     @rental = Rental.new(rental_params)
+
     @rental.owner_id = session[:user_id]
 
     car = Car.find(@rental.car_id)

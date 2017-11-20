@@ -1,5 +1,7 @@
 class CarsController < ApplicationController
   before_action :set_car, only: [:edit, :update, :destroy]
+  before_action :logged_in_user, only: [:new, :edit, :create, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /cars/new
   def new
@@ -29,8 +31,8 @@ class CarsController < ApplicationController
         flash[:success] = 'Car successfully created'
         format.html { redirect_to cars_user_path(session[:user_id]) }
       else
-        format.html { render :new }
-        format.json { render json: @car.errors, status: :unprocessable_entity }
+        format.html {render :new}
+        format.json {render json: @car.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -70,8 +72,8 @@ class CarsController < ApplicationController
         flash[:success] = 'Car successfully updated'
         format.html { redirect_to cars_user_path(session[:user_id]) }
       else
-        format.html { render :edit }
-        format.json { render json: @car.errors, status: :unprocessable_entity }
+        format.html {render :edit}
+        format.json {render json: @car.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -103,13 +105,32 @@ class CarsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_car
-      @car = Car.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def car_params
-      params.require(:car).permit(:make, :model, :year, :color, :license_plate, :all_tags)
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def car_params
+    params.require(:car).permit(:user_id, :make, :model, :year, :color, :license_plate, :all_tags)
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_car
+    @car = Car.find(params[:id])
+  end
+
+  # before filters for authorization
+  def logged_in_user
+    unless logged_in?
+      flash[:danger] = "Please log in or register before messing with them cars."
+      redirect_to login_url
     end
+  end
+
+  # confirms the correct user
+  def correct_user
+    @car = Car.find(params[:id])
+    @user = User.find(@car.user.id)
+    unless current_user?(@user)
+      flash[:danger] = "You are not the owner of this car! GTFO"
+      redirect_to(@car)
+    end
+  end
 end

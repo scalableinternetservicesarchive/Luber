@@ -49,7 +49,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
     assert_equal 'prius', mycar.model
     assert_equal 2004, mycar.year
     assert_equal 'white', mycar.color
-    assert_equal '3bne098', mycar.plate_number
+    assert_equal '3BNE098', mycar.plate_number
 
     # delete the car
     assert_difference 'Car.count', -1 do

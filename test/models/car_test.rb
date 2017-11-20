@@ -9,14 +9,38 @@ class CarTest < ActiveSupport::TestCase
   end
 
 
-  test "license plate has form DLLLDDD, all digs not allowed" do
-    @car.plate_number = "1234567"
-    assert_not @car.valid?
+  test "license plate len 2 ok" do
+    @car.plate_number = "12"
+    assert @car.valid?
   end
 
-  test "license plate has form DLLLDDD" do
+  test "license plate len 7 ok" do
+    @car.plate_number = "1234567"
+    assert @car.valid?
+  end
+
+  test "license plate len 8 not ok" do
+    @car.plate_number = "12345678"
+    assert @car.invalid?
+  end
+
+  test "license plate len 1 not ok" do
+    @car.plate_number = "1"
+    assert @car.invalid?
+  end
+
+  test "license plate has illegal char" do
+    @car.plate_number = "6we!123"
+    assert @car.invalid?
+  end
+
+  test "license plate has only let, num, spaces" do
     @car.plate_number = "6wer123"
-    puts "Plate: #{@car.plate_number}, valid?: #{@car.valid?}"
+    assert @car.valid?
+  end
+
+  test "license plate has at least 2 non-sp characters" do
+    @car.plate_number = "1     2"
     assert @car.valid?
   end
 

@@ -26,7 +26,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
                                     license_plate: '1abc234' } }
     end
     follow_redirect!
-    assert_template 'cars/show'
+    assert_template 'users/cars'
     assert_not flash.blank?
     mycar = Car.last
     assert_select 'a[href=?]', edit_car_path(mycar)
@@ -41,7 +41,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
                                               license_plate: '3bne098' } }
     end
     follow_redirect!
-    assert_template 'cars/show'
+    assert_template 'users/cars'
     assert_not flash.blank?
     assert_select 'a[href=?][data-method=delete]', car_path(mycar)
     mycar.reload

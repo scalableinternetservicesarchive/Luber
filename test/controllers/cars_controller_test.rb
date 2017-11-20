@@ -20,7 +20,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
       post cars_url, params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, license_plate: @car.license_plate } }
     end
 
-    assert_redirected_to car_url(Car.last)
+    assert_redirected_to cars_user_path(@user.id)
   end
 
   test "should get edit" do
@@ -32,7 +32,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   test "should update car" do
     log_in_as(@user, password: "foobar")
     patch car_url(@car), params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, license_plate: @car.license_plate } }
-    assert_redirected_to car_url(@car)
+    assert_redirected_to cars_user_path(@user.id)
   end
 
   test "should destroy car" do
@@ -41,7 +41,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
       delete car_url(@car)
     end
 
-    assert_redirected_to controller: 'users', action: 'cars', id: @user.id
+    assert_redirected_to cars_user_path(@user.id)
   end
 
   test "should redirect if guest tries to create a car" do

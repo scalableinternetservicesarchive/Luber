@@ -2,14 +2,37 @@ require 'test_helper'
 
 class RentalsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user1 = User.create!(username: "Michael", email:"michael@example.com", password: "foobar", password_confirmation: "foobar")
-    @user2 = User.create!(username: "Justin", email:"justin@example.com", password: "foobar", password_confirmation: "foobar")
+    @user1 = User.create!(
+      username: "Michael", 
+      email:"michael@example.com", 
+      password: "foobar", 
+      password_confirmation: "foobar", 
+      logged_in_at: DateTime.now )
+    @user2 = User.create!(
+      username: "Justin", 
+      email:"justin@example.com", 
+      password: "foobar", 
+      password_confirmation: "foobar",
+      logged_in_at: DateTime.now )
 
-    @car = Car.create!(user_id: @user1.id, make: "Ford", model: "Mustang", year: 2000, color: "red", license_plate: "3asd123")
+    @car = Car.create!(
+      user_id: @user1.id, 
+      make: "Ford", 
+      model: "Mustang", 
+      year: 2000, 
+      color: "red", 
+      license_plate: "3asd123" )
 
-    @rental = Rental.create!(owner_id: @user1.id, renter_id: @user2.id, car_id: @car.id, start_location: "Santa Barbara", end_location: "Mountain View",
-        start_time: "2017-10-17 20:20:37", end_time: "2017-10-18 20:20:37", price: 1.53, status: 0, terms: "My terms",
-        start_latitude: 34.3987087, start_longitude:-119.8198962)
+    @rental = Rental.create!(
+      owner_id: @user1.id, 
+      renter_id: @user2.id, 
+      car_id: @car.id, 
+      start_location: "Santa Barbara", 
+      end_location: "Mountain View",
+      start_time: "2017-10-17 20:20:37", 
+      end_time: "2017-10-18 20:20:37", 
+      price: 1.53, status: 0, 
+      terms: "My terms" )
   end
 
   test "should get index" do
@@ -26,7 +49,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   test "if user has no cars they can not create a rental post" do
     log_in_as(@user2, password: "foobar")
     get new_rental_url
-    assert_redirected_to rentals_url
+    assert_redirected_to cars_user_path(@user2.id)
     assert_not flash.empty?
   end
 
@@ -66,7 +89,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       delete rental_url(@rental)
     end
 
-    assert_redirected_to controller: 'users', action: 'rentals', id: @user1.id
+    assert_redirected_to overview_user_path(@user1.id)
   end
 
   # :show, :new, :create, :edit, :update, :destroy

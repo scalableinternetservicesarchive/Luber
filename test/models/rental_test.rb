@@ -41,5 +41,18 @@ class RentalTest < ActiveSupport::TestCase
     assert @rental.valid?
   end
 
+  test "end date before start date not ok" do
+    t = Time.now
+    @rental.start_time = t
+    @rental.end_time = t-1
+    assert @rental.invalid?
+  end
+
+  test "start date before end date ok" do
+    t = Time.now
+    @rental.start_time = t
+    @rental.end_time = t+1
+    assert @rental.valid?
+  end
 
 end

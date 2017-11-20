@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
       # need to fix pass required issue
       #user.logged_in_at = DateTime.now
       #user.save!(touch: false)
+      user.touch(:logged_in_at)
       log_in user
       flash[:success] = 'You have successfully logged in'
       redirect_to controller: 'users', action: 'overview', id: user.id

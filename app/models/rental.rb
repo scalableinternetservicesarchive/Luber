@@ -22,19 +22,40 @@ class Rental < ApplicationRecord
   end
 
   def get_status_label
-    case self.status
-    when 0
-      return 'Available'
-    when 1
-      return 'Upcoming'
-    when 2
-      return 'In Progress'
-    when 3
-      return 'Completed'
-    when 4
-      return 'Cancelled'
-    else
-      return 'Error: Invalid Status'
+    Rental.status_int_to_label self.status
+  end
+
+  def self.status_int_to_label(i)
+    case i
+      when 0
+        return 'Available'
+      when 1
+        return 'Upcoming'
+      when 2
+        return 'In Progress'
+      when 3
+        return 'Completed'
+      when 4
+        return 'Cancelled'
+      else
+        return 'Error: Invalid Status'
+    end
+  end
+
+  def self.status_label_to_int(label)
+    case label
+      when 'Available' 
+        return 0
+      when 'Upcoming' 
+        return 1
+      when 'In Progress' 
+        return 2
+      when 'Completed' 
+        return 3
+      when 'Cancelled' 
+        return 4
+      else
+        return -1
     end
   end
 

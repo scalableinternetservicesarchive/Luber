@@ -28,8 +28,10 @@
         <% else %>
           <h5>Terms: <%= rental.terms %></h5>
         <% end %>
-          <h5>
-            Owner: <%= link_to User.find_by_id(rental.owner_id).username, user_path(rental.owner_id) %>
+          <h5>Owner:
+            <% if User.find_by_id(rental.owner_id) != nil %>
+              <%= link_to User.find_by_id(rental.owner_id).username, user_path(rental.owner_id) %>
+            <% end %>
             <% if session[:user_id] && rental.owner_id == session[:user_id] %>
             (you)
             <% end %>

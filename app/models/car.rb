@@ -18,6 +18,7 @@ class Car < ApplicationRecord
     end
 
     def self.tagged_with(name)
+      name = name.downcase
       Tag.find_by_name!(name).cars
     end
 end

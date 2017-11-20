@@ -1,8 +1,12 @@
+.rental-icon {
+  margin-left: 0.55rem;
+}
+
 #map-start,
 #map-end {
   height: 40vh;
   width: 95%;
-  box-shadow: -1px 1px 6px $material-shadow;
+  box-shadow: -1px 1px 4px $object-shadow;
 }
 
 .no-section-content {
@@ -11,7 +15,6 @@
   height: 40vh;
 
   hr {
-    width: 100%;
     margin-top: 0.25rem;
     margin-bottom: 0;
   }

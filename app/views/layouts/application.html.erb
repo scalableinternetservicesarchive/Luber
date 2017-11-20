@@ -8,13 +8,24 @@
       <%= render 'layouts/header' %>
     </header>
     <main class="container-fluid" id="<%= controller_name %>-<%= action_name %>">
-      <% flash.each do |message_type, message| %>
-        <section class="alert alert-<%= message_type %>">
-          <div class="container">
-            <p class="mb-0"><%= message %></p>
+      <section class="alert-wrapper">
+        <% flash.each do |message_type, message| %>
+          <div class="alert alert-<%= message_type %> fade show mb-0" role="alert">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <p class="mb-0"><%= message %></p>
+                </div>
+                <div class="col-auto">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><%= icon('times', class: 'm-0') %></span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
-      <% end %>
+        <% end %>
+      </section>
       <%= yield %>
     </main>
     <footer>

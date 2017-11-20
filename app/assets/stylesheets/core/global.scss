@@ -12,6 +12,7 @@ html {
 }
 
 hr {
+  width: 100%;
   margin-top: 0.75rem;
   margin-bottom: 1.75rem;
 }
@@ -192,17 +193,28 @@ a.disabled {
 // -------------------------
 
 .fa {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 0.25rem;
+  margin-right: 0.55rem;
 }
 
 // Misc
 // -------------------------
 
 .alert {
-  margin-bottom: 0;
-}
+  border-radius: 0;
 
+  .fa {
+    cursor: pointer;
+  }
+
+  button.focus,
+  button:focus {
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+  }
+}
+  
 .banner {
   color: white;
   background: $darker-accent;
@@ -237,4 +249,17 @@ a.disabled {
       margin-left: -34px;
     }
   }
+}
+
+.fs-1 {
+  flex-shrink: 1;
+}
+
+.list-group-item,
+.list-group-item:first-child,
+.list-group-item:last-child {
+  font-size: 1.25rem;
+  padding: 0;
+  margin-bottom: 0.4rem;
+  border: 0;
 }

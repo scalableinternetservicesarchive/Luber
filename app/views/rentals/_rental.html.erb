@@ -1,82 +1,63 @@
-<div class="card mb-4">
+<div class="card<%= action_name == 'show' ? '' : ' mb-4' %>">
   <div class="card-header">
     <div class="row">
       <div class="col">
-        <h3 class="mb-0"><span class="badge <%= rental.get_status_class %> align-top mr-3"><%= rental.get_status_label %></span><%= rental.start_location %> <%= icon('arrow-right') %> <%= rental.end_location %></h3>
+        <h3 class="mb-0"><span class="badge <%= rental.get_status_class %> align-top mr-3"><%= rental.get_status_label %></span><%= rental.start_location %><%= icon('arrow-right', class: 'rental-icon') %><%= rental.end_location %></h3>
       </div>
-      <div class="col-md-auto">
+      <div class="col-auto">
         <h3 class="mb-0 font-weight-bold">$<%= rental.price %></h3>
       </div>
     </div>
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-1">
-        <h5 class="text-center"><%= icon('clock-o') %></h5>
-        <h5 class="text-center"><%= icon('gavel') %></h5>
-        <h5 class="text-center"><%= icon('key') %></h5>
-        <% unless rental.renter_id.nil? %>
-          <h5 class="text-center"><%= icon('mobile') %></h5>
-        <% end %>
-        <h5 class="text-center"><%= icon('car') %></h5>
-        <h5 class="text-center"><%= icon('tags') %></h5>
-      </div>
-      <div class="col col-wide">
-        <h5>From <%= rental.start_time.strftime("%l:%M%p") %> on <%= rental.start_time.strftime("%A, %b. %-d") %> until <%= rental.end_time.strftime("%l:%M%p") %> on <%= rental.end_time.strftime("%A, %b. %-d") %></h5>
-        <% if rental.terms.nil? %>
-          <h5 class="font-italic">No terms were specified by the owner.</h5>
-        <% else %>
-          <h5>Terms: <%= rental.terms %></h5>
-        <% end %>
-        <h5>Owner: <%= link_to User.find(rental.owner_id).username, user_path(rental.owner_id) %>
-        <% if session[:user_id] && rental.owner_id == session[:user_id] %>
-          <span class="font-italic">(You are the owner)</span>
-        <% end %>
-        </h5>
-        <% unless rental.renter_id.nil? %>
-          <h5>Renter: <%= link_to User.find(rental.renter_id).username, user_path(rental.renter_id) %>
-          <% if session[:user_id] && rental.renter_id == session[:user_id] %>
-            <span class="font-italic">(You are the renter)</span>
-          <% end %>
-          </h5>
-        <% end %>
-        <% rental_car = Car.find(rental.car_id) %>
-        <h5><%= rental_car.make %> <%= rental_car.model %></h5>
-        <div class="row">
-          <div class="col">
-            <h5>Tags:
-              <% rental_car.tags.each do |tag_group| %>
-                <% tag_group.name.split(' ').each do |tag| %>
-                  <span class="badge badge-tag"><%= tag %></span>
-                <% end %>
-              <% end %>
-            </h5>
-          </div>
-          <div class="col-md-auto align-self-end">
-            <% case session[:user_id] %>
-            <% when rental.owner_id %>
-              <% if action_name != 'show' %>
-                <%= link_to icon('search')+" View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
-              <% end %>
-              <% if rental.status < 2 %>
-                <%= link_to icon('pencil')+" Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-1', role: 'button' %>
-              <% end %>
-              <%= link_to icon('times')+" Delete", rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
-            <% when rental.renter_id %>
-              <% if action_name != 'show' %>
-                <%= link_to icon('search')+" View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
-              <% end %>
-              <% if rental.status < 2 %>
-                <%= link_to icon('times')+" Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
-              <% end %>
-            <% else %>
-              <% if rental.renter_id.nil? %>
-                <%= link_to icon('shopping-cart')+" Rent", rent_rental_path(rental), method: :patch, class: 'btn btn-outline-base', role: 'button' %>
+    <div class="list-group">
+      <p class="list-group-item"><%= icon('clock-o', class: 'fa-fw') %>From <%= rental.start_time.strftime("%l:%M %p") %> on <%= rental.start_time.strftime("%A, %b. %-d") %> until <%= rental.end_time.strftime("%l:%M %p") %> on <%= rental.end_time.strftime("%A, %b. %-d") %></p>
+      <p class="list-group-item"><%= icon('gavel', class: 'fa-fw') %>Terms: <%= rental.terms ? rental.terms : '<span class="font-italic">No terms were specified by the owner.</span>'.html_safe %></p>
+      <p class="list-group-item"><%= icon('key', class: 'fa-fw') %>Owner: <%= link_to User.find(rental.owner_id).username, user_path(rental.owner_id) %><%= rental.owner_id == session[:user_id] ? '<span class="font-italic"> (You are the owner)</span>'.html_safe : '' %></p>
+      <% unless rental.renter_id.nil? %>
+        <p class="list-group-item"><%= icon('mobile', class: 'fa-fw') %>Renter: <%= link_to User.find(rental.renter_id).username, user_path(rental.renter_id) %><%= rental.renter_id == session[:user_id] ? '<span class="font-italic"> (You are the renter)</span>'.html_safe : '' %></p>
+      <% end %>
+      <% car = Car.find(rental.car_id) %>
+      <p class="list-group-item"><%= icon('car', class: 'fa-fw') %><%= car.make %> <%= car.model %></p>
+      <div class="row">
+        <div class="col-auto fs-1">
+          <p class="list-group-item mb-2"><%= icon('tags', class: 'fa-fw') %>Tags:
+            <% car.tags.each do |tag_group| %>
+              <% tag_group.name.split(' ').each do |tag| %>
+                <span class="badge badge-tag"><%= tag %></span>
               <% end %>
             <% end %>
-          </div>
+          </p>
+        </div>
+        <div class="col-auto ml-auto fs-1">
+          <% case session[:user_id] %>
+          <% when rental.owner_id %>
+            <% if action_name != 'show' %>
+              <%= link_to icon('search')+"View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
+            <% end %>
+            <% if rental.status < 2 %>
+              <%= link_to icon('pencil')+"Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-1', role: 'button' %>
+              <%= link_to icon('times')+"Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
+            <% elsif rental.status > 2 %>
+              <%= link_to icon('times')+"Delete", rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
+            <% end %>
+          <% when rental.renter_id %>
+            <% if action_name != 'show' %>
+              <%= link_to icon('search')+"View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
+            <% end %>
+            <% if rental.status < 2 %>
+              <%= link_to icon('times')+"Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
+            <% elsif rental.status > 2 %>
+              <%= link_to icon('times')+"Remove", remove_rental_path(rental), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
+            <% end %>
+          <% else %>
+            <% if rental.renter_id.nil? %>
+              <%= link_to icon('shopping-cart')+"Rent", rent_rental_path(rental), method: :patch, class: 'btn btn-outline-base', role: 'button' %>
+            <% end %>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
+

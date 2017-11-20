@@ -10,86 +10,24 @@
   <hr>
   <div class="card">
     <div class="card-body">
-      <div class="row">
-        <div class="col-1">
-          <h5 class="text-center"><%= icon('id-card-o') %></h5>
-          <h5 class="text-center"><%= icon('id-card-o') %></h5>
-          <h5 class="text-center"><%= icon('map-signs') %></h5>
-          <h5 class="text-center"><%= icon('map-o') %></h5>
-        </div>
-        <div class="col col-wide">
-          <h5>First Name:</h5>
-          <h5>Last Name:</h5>
-          <h5>City:</h5>
-          <h5>State:</h5>
-        </div>
-        <div class="col">
-          <h5 class="text-right"><%= @user.first_name %></h5>
-          <h5 class="text-right"><%= @user.last_name %></h5>
-          <h5 class="text-right"><%= @user.city %></h5>
-          <h5 class="text-right"><%= @user.state %></h5>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-1">
-          <h5 class="text-center"><%= icon('user') %></h5>
-          <h5 class="text-center"><%= icon('envelope-o') %></h5>
-          <h5 class="text-center"><%= icon('lock') %></h5>
-          <h5 class="text-center"><%= icon('clone') %></h5>
-        </div>
-        <div class="col col-wide">
-          <h5>Username:</h5>
-          <h5>Email:</h5>
-          <h5>Password:</h5>
-          <h5>Account Type:</h5>
-        </div>
-        <div class="col">
-          <h5 class="text-right"><%= @user.username %></h5>
-          <h5 class="text-right"><%= @user.email %></h5>
-          <h5 class="text-right">******</h5>
-          <% if @user.admin == true %>
-            <h5 class="text-right">Admin User</h5>
-          <% else %>
-            <h5 class="text-right">Standard User</h5>
-          <% end %>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-1">
-          <h5 class="text-center"><%= icon('car') %></h5>
-          <h5 class="text-center"><%= icon('key') %></h5>
-          <h5 class="text-center"><%= icon('mobile') %></h5>
-        </div>
-        <div class="col col-wide">
-          <h5>Cars:</h5>
-          <h5>Posts as Owner:</h5>
-          <h5>Posts as Renter:</h5>
-        </div>
-        <div class="col">
-          <h5 class="text-right"><%= @cars_count %></h5>
-          <h5 class="text-right"><%= @rides_sold_count %></h5>
-          <h5 class="text-right"><%= @rides_bought_count %></h5>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-1">
-          <h5 class="text-center"><%= icon('birthday-cake') %></h5>
-          <h5 class="text-center"><%= icon('refresh') %></h5>
-          <h5 class="text-center"><%= icon('sign-in') %></h5>
-        </div>
-        <div class="col col-wide">
-          <h5>Created On:</h5>
-          <h5>Last Updated On:</h5>
-          <h5>Last Logged In On:</h5>
-        </div>
-        <div class="col">
-          <h5 class="text-right"><%= @user.created_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M%p") %></h5>
-          <h5 class="text-right"><%= @user.updated_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M%p") %></h5>
-          <h5 class="text-right"><%= @user.logged_in_at.strftime("%A, %B %-d %Y") %> at <%= @user.logged_in_at.strftime("%l:%M%p") %></h5>
-        </div>
+      <div class="list-group">
+        <p class="list-group-item d-flex align-items-center"><%= icon('id-card-o', class: 'fa-fw') %>First Name:<span class="ml-auto<%= @user.first_name ? '' : ' font-italic' %>"><%= @user.first_name ? @user.first_name : '(Add a first name)' %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('id-card-o', class: 'fa-fw') %>Last Name:<span class="ml-auto<%= @user.last_name ? '' : ' font-italic' %>"><%= @user.last_name ? @user.last_name : '(Add a last name)' %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('map-signs', class: 'fa-fw') %>City:<span class="ml-auto<%= @user.city ? '' : ' font-italic' %>"><%= @user.city ? @user.city : '(Add a city)' %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('map-o', class: 'fa-fw') %>State:<span class="ml-auto<%= @user.state ? '' : ' font-italic' %>"><%= @user.state ? @user.state : '(Add a state)' %></span></p>
+        <hr>
+        <p class="list-group-item d-flex align-items-center"><%= icon('user', class: 'fa-fw') %>Username:<span class="ml-auto"><%= @user.username %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('envelope-o', class: 'fa-fw') %>Email:<span class="ml-auto"><%= @user.email %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('lock', class: 'fa-fw') %>Password:<span class="ml-auto">******</span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('clone', class: 'fa-fw') %>Account Type:<span class="ml-auto"><%= @user.admin ? 'Admin User' : 'Standard User' %></span></p>
+        <hr>
+        <p class="list-group-item d-flex align-items-center"><%= icon('car', class: 'fa-fw') %>Cars:<span class="ml-auto"><%= @cars_count %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('key', class: 'fa-fw') %>Rentals As Owner:<span class="ml-auto"><%= @rides_sold_count %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('mobile', class: 'fa-fw') %>Rentals As Renter:<span class="ml-auto"><%= @rides_bought_count %></span></p>
+        <hr>
+        <p class="list-group-item d-flex align-items-center"><%= icon('id-card-o', class: 'fa-fw') %>Created On:<span class="ml-auto"><%= @user.created_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M %p") %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('id-card-o', class: 'fa-fw') %>Last Updated On:<span class="ml-auto"><%= @user.updated_at.strftime("%A, %B %-d %Y") %> at <%= @user.updated_at.strftime("%l:%M %p") %></span></p>
+        <p class="list-group-item d-flex align-items-center"><%= icon('map-signs', class: 'fa-fw') %>Last Logged In On:<span class="ml-auto"><%= @user.logged_in_at.strftime("%A, %B %-d %Y") %> at <%= @user.logged_in_at.strftime("%l:%M %p") %></span></p>
       </div>
       <div class="btn-group mt-4 float-right" role="group" aria-label="Edit Account Information">
         <%= link_to icon('pencil')+" Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>

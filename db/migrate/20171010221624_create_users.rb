@@ -10,7 +10,6 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :password_digest
       t.boolean :admin, default: false
       t.datetime :logged_in_at
-      t.datetime :logged_out_at
       t.timestamps
     end
     add_index :users, :email, unique: true

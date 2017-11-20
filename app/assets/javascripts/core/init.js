@@ -1,6 +1,7 @@
 init = function() {
   // Persistant functions
   margins();
+  alerts();
 
   // Scoped functions
   setHomeMargin();

@@ -20,11 +20,6 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to car_url(Car.last)
   end
 
-  test "should show car" do
-    get car_url(@car)
-    assert_response :success
-  end
-
   test "should get edit" do
     get edit_car_url(@car)
     assert_response :success

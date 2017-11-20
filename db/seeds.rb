@@ -29,8 +29,7 @@
     email: "user#{i}@boo.com",
     password: "foobar",
     admin: false,
-    logged_in_at: DateTime.now, 
-    logged_out_at: DateTime.now )
+    logged_in_at: DateTime.now )
 end
 
 User.create!(
@@ -42,8 +41,7 @@ User.create!(
   email: "a@a.com",
   password: "foobar",
   admin: true,
-  logged_in_at: DateTime.now, 
-  logged_out_at: DateTime.now )
+  logged_in_at: DateTime.now )
 
 p "Created #{User.count} users"
 

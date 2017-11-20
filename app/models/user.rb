@@ -9,11 +9,11 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: {minimum: 6}
 
+  has_many :rentals
+  has_many :logs
   has_many :cars, dependent: :destroy 
   # If user is deleted, kill his cars too
   # https://stackoverflow.com/questions/29544693/cant-delete-object-due-to-foreign-key-constraint
-
-  has_many :rentals
 
   # returns the hash digest of the given string
   def User.digest(string)

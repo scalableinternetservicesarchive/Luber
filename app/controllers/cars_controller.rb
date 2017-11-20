@@ -35,7 +35,7 @@ class CarsController < ApplicationController
     end
 
     respond_to do |format|
-      if @car.save!
+      if @car.save
         format.html {redirect_to @car, notice: 'Car was successfully created.'}
         format.json {render :show, status: :created, location: @car}
       else

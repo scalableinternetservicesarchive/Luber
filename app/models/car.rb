@@ -12,7 +12,11 @@ class Car < ApplicationRecord
     record.errors.add(attr, 'must have at least two non-space characters') unless value.match /\A.*[a-z0-9].*[a-z0-9].*\z/i
   end
 
-  validates :year, presence: true, numericality: { greater_than: 1900 }
+  validates :year, presence: true, numericality: { greater_than: 1900, only_integer: true }
+  validates :make, presence: true, length: { minimum: 3, maximum: 30 }
+  validates :model, presence: true, length: { minimum: 3, maximum: 30 }
+  validates :color, presence: true, length: { minimum: 3, maximum: 30 }
+  validates_format_of :color, :with => /\A[-a-z]+\Z/i
 
   def all_tags=(names)
     self.tags = names.split(',').map do |name|

@@ -48,8 +48,8 @@ p "Created #{User.count} users"
 # CARS
 ###############################################
 
-car_makes = ['TOYOTA','HOLDEN','FORD','NISSAN','BMW','MAZDA','MERCEDES-BENZ','VOLKSWAGEN','AUDI','KIA','PEUGEOT','HYUNDAI']
-car_models = ['Civic','CR-V','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','RAV4','Pilot','Tacoma','CX-5','Outback','Challenger','Cherokee','Forester','Equinox','Explorer','Sorento','Mustang','Camaro','Crosstrek','Rogue','Sonata','Tucson','Odyssey','Compass','Silverado 1500','RX 350','Escape','4Runner','Traverse','XC90','Colorado','Santa Fe','Corolla','Edge','Ridgeline','Tahoe','Pacifica','Acadia','Fusion','Charger']
+car_makes = ['Toyota','Ford','Nissan','BMW','Mazda','Mercedes','Volkswagen','Audi','Kia','Hyundai','Subaru']
+car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','Tacoma','Outback','Forester','Equinox','Explorer','Mustang','Camaro','Tacoma','Odyssey','Silverado','Escape','Corolla','Tahoe','Fusion','Charger']
 car_colors = ['red','orange','yellow','green','blue','purple','black','white','gray','silver']
 
 # Car.destroy_all
@@ -61,7 +61,7 @@ User.all.each do |u|
     model: car_models.sample,
     year: (1960..2017).to_a.sample,
     color: car_colors.sample,
-    plate_number: "6ABC123" )
+    plate_number: [(0...9).to_a.sample, ('A'...'Z').to_a.sample(3), (0...9).to_a.sample(3)].join )
 end
 p "Created #{Car.count} cars"
 
@@ -69,42 +69,70 @@ p "Created #{Car.count} cars"
 # Rentals
 ###############################################
 
+all_cities = ["Los Angeles, CA", "San Diego, CA", "San Jose, CA", "San Francisco, CA", "Fresno, CA", "Sacramento, CA", "Long Beach, CA", "Oakland, CA", "Bakersfield, CA", "Anaheim, CA", "Santa Ana, CA", "Riverside, CA", "Stockton, CA", "Chula Vista, CA", "Irvine, CA", "Fremont, CA", "San Bernardino, CA", "Modesto, CA", "Oxnard, CA", "Fontana, CA", "Moreno Valley, CA", "Huntington Beach, CA", "Glendale, CA", "Santa Clarita, CA", "Garden Grove, CA", "Oceanside, CA", "Rancho Cucamonga, CA", "Santa Rosa, CA", "Ontario, CA", "Elk Grove, CA", "Corona, CA", "Lancaster, CA", "Palmdale, CA", "Salinas, CA", "Hayward, CA", "Pomona, CA", "Escondido, CA", "Sunnyvale, CA", "Torrance, CA", "Pasadena, CA", "Orange, CA", "Fullerton, CA", "Thousand Oaks, CA", "Visalia, CA", "Roseville, CA", "Concord, CA", "Simi Valley, CA", "East Los Angeles, CA", "Santa Clara, CA", "Victorville, CA", "Vallejo, CA", "Berkeley, CA", "El Monte, CA", "Downey, CA", "Costa Mesa, CA", "Carlsbad, CA", "Inglewood, CA", "Fairfield, CA", "San Buenaventura (Ventura), CA", "Temecula, CA", "Antioch, CA", "Richmond, CA", "West Covina, CA", "Murrieta, CA", "Norwalk, CA", "Daly City, CA", "Burbank, CA", "Santa Maria, CA", "El Cajon, CA", "San Mateo, CA", "Rialto, CA", "Clovis, CA"];
+all_terms = [
+ "Take time to know yourself.",
+ "A narrow focus brings big results.",
+ "Show up fully.",
+ "Don't make assumptions.",
+ "Be patient and persistent.",
+ "In order to get, you have to give.",
+ "Luck comes from hard work.",
+ "Be your best at all times.",
+ "Don't try to impress everyone.",
+ "Don't be afraid of being afraid.",
+ "Listen to learn.",
+ "Life's good, but it's not fair.",
+ "No task is beneath you.",
+ "You can't always get what you want.",
+ "Don't make decisions when you are angry or ecstatic.",
+ "Don't worry what other people think.",
+ "Use adversity as an opportunity.",
+ "Do what is right, not what is easy.",
+ "Dreams remain dreams until you take action.",
+ "Treat others the way you want to be treated.",
+ "When you quit, you fail.",
+ "Trust your instincts.",
+ "Learn something new every day.",
+ "Make what is valuable important.",
+ "Believe in yourself."]
+
 # Rental.destroy_all
 User.all.each do |u|
   c = Car.where(user_id: u.id).take
-  p "User #{u.username} owns car id: #{c.id}"
 
-  # This user posted a few rentals, some of which have been purchased:
+  # p "User #{u.username} owns car id: #{c.id}"
 
-  # Available rentals:
-  2.times do
+  # This user posted a few rentals, with varying statuses:
+
+  3.times do
+
+    c1,c2 = all_cities.sample(2)
+    tstart = Time.at(Time.now + rand.hours + 1.weeks)
+    tend = Time.at(tstart + rand.hours)
+    status = rand(0...4) # see rental.rb for meaning
+    label = Rental.status_int_to_label(status)
+    if label == 'Available' 
+      renter = nil  
+    else
+      renter = (User.all-[u]).sample.id
+    end
+    price = rand(10...200)
+    terms = all_terms.sample(2)
+
     Rental.create!(
       owner_id: u.id,
-      renter_id: nil,
+      renter_id: renter,
       car_id: c.id,
-      start_location: "Los Angeles",
-      end_location: "San Francisco",
-      start_time: "2018-10-30 20:00:00", 
-      end_time: "2018-10-31 02:00:00",
-      price: "999.99",
-      status: "1",  # how to ints map to what the statuses mean?
-      terms: "Be nice" )
+      start_location: c1,
+      end_location: c2,
+      start_time: tstart,
+      end_time: tend,
+      price: price,
+      status: status,  
+      terms: terms)
   end
 
-  # Purchased rentals:
-  2.times do
-    Rental.create!(
-      owner_id: u.id,
-      renter_id: User.all.sample.id,
-      car_id: c.id,
-      start_location: "Los Angeles",
-      end_location: "San Francisco",
-      start_time: "2018-10-30 20:00:00", 
-      end_time: "2018-10-31 02:00:00",
-      price: "111.11",
-      status: "0",
-      terms: "Be nice" )
-  end
 end
 p "Created #{Rental.count} rental posts"
 

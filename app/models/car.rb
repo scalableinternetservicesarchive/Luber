@@ -2,7 +2,7 @@ class Car < ApplicationRecord
   before_save { self.license_plate = license_plate.upcase }
   before_save { self.make = make[0,1].upcase + make[1,make.length] }
   before_save { self.model = model[0,1].upcase + model[1,model.length] }
-  before_save { self.color = color.capitalize }
+  before_save { self.color = color.titleize }
   belongs_to :user
   has_many :taggings
   has_many :tags, through: :taggings
@@ -18,7 +18,9 @@ class Car < ApplicationRecord
   validates :make, presence: true, length: { minimum: 3, maximum: 30 }
   validates :model, presence: true, length: { minimum: 3, maximum: 30 }
   validates :color, presence: true, length: { minimum: 3, maximum: 30 }
-  validates_format_of :color, :with => /\A[-a-z]+\Z/i
+  validates_format_of :make, :with => /\A[a-z0-9 -]+\Z/i
+  validates_format_of :model, :with => /\A[a-z0-9 -]+\Z/i
+  validates_format_of :color, :with => /\A[a-z ]+\Z/i
 
   def all_tags=(names)
     self.tags = names.split(',').map do |name|

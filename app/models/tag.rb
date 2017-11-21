@@ -4,5 +4,5 @@ class Tag < ApplicationRecord
     has_many :cars, through: :taggings
 
     validates :name, presence: true, length: { minimum: 3, maximum: 30 }
-    validates_format_of :name, :with => /\A^[a-zA-Z0-9- ]*$\z/i
+    validates_format_of :name, :with => /\A^[a-z0-9 -]+$\z/i
 end

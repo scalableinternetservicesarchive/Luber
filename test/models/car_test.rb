@@ -69,7 +69,7 @@ class CarTest < ActiveSupport::TestCase
     assert_not @car.valid?
   end
 
-  test 'color can only be characters, no numbers or symbols' do
+  test 'color can only be letters and spaces, no numbers or symbols' do
     @car.color = '72'
     assert_not @car.valid?
     @car.reload
@@ -79,6 +79,9 @@ class CarTest < ActiveSupport::TestCase
     @car.reload
 
     @car.color = 'heliotrope'
+    assert @car.valid?
+
+    @car.color = 'Blueish Gray'
     assert @car.valid?
   end
 

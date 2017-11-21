@@ -13,6 +13,8 @@
         <div class="col-auto ml-auto">
           <% if session[:user_id] == user.id %>
             <%= link_to icon('pencil')+"Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
+          <% elsif session[:user_id] != user.id && User.find(session[:user_id]).admin == true && user.admin == false %>
+            <%= link_to 'Promote to Admin', promote_user_path, method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
           <% end %>
         </div>
       </div>

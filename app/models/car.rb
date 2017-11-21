@@ -18,13 +18,13 @@ class Car < ApplicationRecord
   validates :make, presence: true, length: { minimum: 3, maximum: 30 }
   validates :model, presence: true, length: { minimum: 3, maximum: 30 }
   validates :color, presence: true, length: { minimum: 3, maximum: 30 }
-  validates_format_of :make, :with => /\A[a-z0-9 -]+\Z/i
-  validates_format_of :model, :with => /\A[a-z0-9 -]+\Z/i
-  validates_format_of :color, :with => /\A[a-z ]+\Z/i
+  validates_format_of :make, :with => /\A[a-z0-9 -]+\z/i
+  validates_format_of :model, :with => /\A[a-z0-9 -]+\z/i
+  validates_format_of :color, :with => /\A[a-z ]+\z/i
 
   def all_tags=(names)
     self.tags = names.split(',').map do |name|
-      Tag.where(name: name.strip).first_or_create!
+      Tag.where(name: name.strip.gsub(/[\s-]+/, '-')).first_or_create!
     end
   end
 

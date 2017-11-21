@@ -36,7 +36,7 @@ class Rental < ApplicationRecord
       when 3
         return 'Completed'
       when 4
-        return 'Cancelled'
+        return 'Canceled'
       else
         return 'Error: Invalid Status'
     end
@@ -52,7 +52,7 @@ class Rental < ApplicationRecord
         return 2
       when 'Completed' 
         return 3
-      when 'Cancelled' 
+      when 'Canceled' 
         return 4
       else
         return -1

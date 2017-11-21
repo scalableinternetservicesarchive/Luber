@@ -30,30 +30,46 @@
           </p>
         </div>
         <div class="col-auto ml-auto fs-1">
-          <% case session[:user_id] %>
-          <% when rental.owner_id %>
-            <% if action_name != 'show' %>
+
+          <!-- Buttons to interact w/ this Rental: -->
+
+
+          <% case session[:user_id] 
+           when rental.owner_id %>
+            <!-- If you own this rental, you can edit, cancel, or delete it. -->
+            <% if action_name != 'show' %> <!-- Can view it, if you're not already showing it. -->
               <%= link_to icon('search')+"View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
             <% end %>
-            <% if rental.status < 2 %>
+            <% if rental.get_status_label.in? ['Available', 'Upcoming'] %>
+            <!-- If available or upcoming, can edit or cancel. -->
               <%= link_to icon('pencil')+"Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-1', role: 'button' %>
               <%= link_to icon('times')+"Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
-            <% elsif rental.status > 2 %>
+            <% elsif rental.get_status_label.in? ['Completed, Cancelled'] %>
+            <!-- If completed or canceled, can delete. -->
               <%= link_to icon('times')+"Delete", rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
             <% end %>
           <% when rental.renter_id %>
+          <!-- If you're the renter, you can cancel or remove it. -->
             <% if action_name != 'show' %>
               <%= link_to icon('search')+"View", rental, class: 'btn btn-outline-base mr-1', role: 'button' %>
             <% end %>
-            <% if rental.status < 2 %>
+            <% if rental.get_status_label.in? ['Available', 'Upcoming'] %>
+            <!-- If available or upcoming, can cancel or remove. -->
               <%= link_to icon('times')+"Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
-            <% elsif rental.status > 2 %>
+            <% elsif rental.get_status_label.in? ['Completed, Cancelled'] %>
               <%= link_to icon('times')+"Remove", remove_rental_path(rental), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
             <% end %>
           <% else %>
+          <!-- You're not the owner or renter. -->
             <% if rental.renter_id.nil? %>
+              <!-- If available, can rent. -->
               <%= link_to icon('shopping-cart')+"Rent", rent_rental_path(rental), method: :patch, class: 'btn btn-outline-base', role: 'button' %>
             <% end %>
+          <% end %>
+          <!-- Regardless of whether who's renting this Rental, -->
+          <% if current_admin? %>
+            <!-- If you're admin, can delete. -->            
+            <%= link_to icon('times')+"Admin Delete", rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
           <% end %>
         </div>
       </div>

@@ -44,7 +44,7 @@
             <!-- If available or upcoming, can edit or cancel. -->
               <%= link_to icon('pencil')+"Edit", edit_rental_path(rental), class: 'btn btn-outline-success mr-1', role: 'button' %>
               <%= link_to icon('times')+"Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
-            <% elsif rental.get_status_label.in? ['Completed, Cancelled'] %>
+            <% elsif rental.get_status_label.in? ['Completed', 'Cancelled'] %>
             <!-- If completed or canceled, can delete. -->
               <%= link_to icon('times')+"Delete", rental, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
             <% end %>
@@ -56,7 +56,7 @@
             <% if rental.get_status_label.in? ['Available', 'Upcoming'] %>
             <!-- If available or upcoming, can cancel or remove. -->
               <%= link_to icon('times')+"Cancel", cancel_rental_path(rental), method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
-            <% elsif rental.get_status_label.in? ['Completed, Cancelled'] %>
+            <% elsif rental.get_status_label.in? ['Completed', 'Cancelled'] %>
               <%= link_to icon('times')+"Remove", remove_rental_path(rental), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
             <% end %>
           <% else %>

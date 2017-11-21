@@ -29,7 +29,7 @@
       <%= yield %>
     </main>
     <footer>
-      <% if User.find_by(id: session[:user_id]) && User.find_by(id: session[:user_id]).admin == true %>
+      <% if current_admin? %>
         <%= render 'layouts/debug' %>
       <% end %>
       <%= render 'layouts/footer' %>

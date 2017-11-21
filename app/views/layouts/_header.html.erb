@@ -13,30 +13,20 @@
         <ul class="navbar-nav">
           <% if logged_in? %>
             <li>
-              <%= link_to rentals_path, class: 'nav-link' do %>
-                <%= icon('exchange') %> Rentals
-              <% end %>
+              <%= link_to icon('exchange')+"Rentals", rentals_path, class: 'nav-link' %>
             </li>
             <li>
-              <%= link_to current_user, class: 'nav-link' do %>
-                <%= icon('user-circle') %> <%= current_user.username %>
-              <% end %>
+              <%= link_to icon('user-circle')+current_user.username, current_user, class: 'nav-link' %>
             </li>
             <li>
-              <%= link_to logout_path, method: :delete, class: 'nav-link' do %>
-                <%= icon('sign-out') %> Logout
-              <% end %>
+              <%= link_to icon('sign-out')+"Logout", logout_path, method: :delete, class: 'nav-link' %>
             </li>
           <% else %>
             <li>
-              <%= link_to signup_path, class: 'nav-link' do %>
-                <%= icon('user-o') %> Signup
-              <% end %>
+              <%= link_to icon('user-o')+"Signup", signup_path, class: 'nav-link' %>
             </li>
             <li>
-              <%= link_to login_path, class: 'nav-link' do %>
-                <%= icon('sign-in') %> Login
-              <% end %>
+              <%= link_to icon('sign-in')+"Login", login_path, class: 'nav-link' %>
             </li>
           <% end %>
         </ul>

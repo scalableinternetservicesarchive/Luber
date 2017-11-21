@@ -1,0 +1,31 @@
+.rental-icon {
+  margin-left: 0.55rem;
+}
+
+#map-start,
+#map-end {
+  height: 40vh;
+  width: 95%;
+  box-shadow: -1px 1px 4px $object-shadow;
+}
+
+.no-section-content {
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+
+  hr {
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+  }
+
+  div {
+    flex-grow: 1;
+
+    div {
+      flex-grow: 1;
+      top: 50%;
+      margin-bottom: 1.75rem;
+    }
+  }
+}

@@ -4,7 +4,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
   def setup
     User.create!(username: 'RickSanchez', email: 'rick@sanchez.com', password: 'foobar', password_confirmation: 'foobar')
     @user = User.where(username: 'RickSanchez').take
-    @car = Car.create!(user_id: @user.id, make: 'Ford', model: 'Mustang', year: 2000, color: 'red', plate_number: '8DEF234')
+    @car = Car.create!(user_id: @user.id, make: 'Ford', model: 'Mustang', year: 2000, color: 'red', license_plate: '8DEF234')
   end
 
   teardown do
@@ -18,21 +18,24 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
 
     # create a car
     assert_difference 'Car.count', 1 do
-      post cars_url, params: { car: { user_id: @user.id,
-                                      make: 'ford',
-                                      model: 'aspire',
-                                      year: '1992',
-                                      color: 'white',
-                                      plate_number: '1abc234',
-                                      all_tags: 'yes,no' } }
+      post cars_url, params: { 
+        car: { 
+          user_id: @user.id,
+          make: 'ford',
+          model: 'aspire',
+          year: '1992',
+          color: 'white',
+          license_plate: '1abc234',
+          all_tags: 'yes,no' } }
     end
     follow_redirect!
-    assert_template 'cars/show'
+    assert_template 'users/cars'
     assert_not flash.blank?
-    assert_select 'h3', 'ford aspire'
-    assert_select 'h5', 'Year: 1992'
-    assert_select 'h5', 'Color: white'
-    assert_select 'h5', 'License Plate Number: 1ABC234'
+    assert_select 'p', 'ford'
+    assert_select 'p', 'aspire'
+    assert_select 'p', '1992'
+    assert_select 'p', 'white'
+    assert_select 'p', 'License Plate: 1ABC234'
     assert_select 'span', 'yes'
     assert_select 'span', 'no'
     mycar = Car.last
@@ -40,16 +43,18 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
 
     # edit the car
     assert_no_difference 'Car.count' do
-      patch car_url(Car.last), params: { car: { user_id: @user.id,
-                                                make: 'toyota',
-                                                model: 'prius',
-                                                year: '2004',
-                                                color: 'white',
-                                                plate_number: '3bne098',
-                                                all_tags: 'yes' } }
+      patch car_url(Car.last), params: { 
+        car: { 
+          user_id: @user.id,
+          make: 'toyota',
+          model: 'prius',
+          year: '2004',
+          color: 'white',
+          license_plate: '3bne098',
+          all_tags: 'yes' } }
     end
     follow_redirect!
-    assert_template 'cars/show'
+    assert_template 'users/cars'
     assert_not flash.blank?
     assert_select 'a[href=?][data-method=delete]', car_path(mycar)
     mycar.reload
@@ -57,14 +62,14 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
     assert_equal 'prius', mycar.model
     assert_equal 2004, mycar.year
     assert_equal 'white', mycar.color
-    assert_equal '3BNE098', mycar.plate_number
-    assert_select 'h3', 'toyota prius'
-    assert_select 'h5', 'Year: 2004'
-    assert_select 'h5', 'Color: white'
-    assert_select 'h5', 'License Plate Number: 3BNE098'
+    assert_equal '3BNE098', mycar.license_plate
+    assert_select 'p', 'toyota'
+    assert_select 'p', 'prius'
+    assert_select 'p', '2004'
+    assert_select 'p', 'white'
+    assert_select 'p', 'License Plate: 3BNE098'
     assert_select 'span', 'yes'
     assert_select 'span', count: 0, text: 'no'
-
     # delete the car
     assert_difference 'Car.count', -1 do
       delete car_url(@car)

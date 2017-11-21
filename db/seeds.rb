@@ -29,20 +29,21 @@
     email: "user#{i}@boo.com",
     password: "foobar",
     admin: false,
-    logged_in_at: "2017-11-01 20:00:00", 
-    logged_out_at: "2017-11-01 20:00:00" )
+    logged_in_at: DateTime.now )
 end
+
 User.create!(
   first_name: "Mister",
   last_name: "Admn",
   city: "Goleta",
   state: "CA",
-  username: "WaTcher53",
+  username: "admin01",
   email: "a@a.com",
   password: "foobar",
-  admin: true )
-p "Created #{User.count} users"
+  admin: true,
+  logged_in_at: DateTime.now )
 
+p "Created #{User.count} users"
 
 ###############################################
 # CARS
@@ -61,8 +62,9 @@ User.all.each do |u|
     model: car_models.sample,
     year: (1960..2017).to_a.sample,
     color: car_colors.sample,
-    plate_number: [(0...9).to_a.sample, ('A'...'Z').to_a.sample(3), (0...9).to_a.sample(3)].join )
+    license_plate: [(0...9).to_a.sample, ('A'...'Z').to_a.sample(3), (0...9).to_a.sample(3)].join )
 end
+
 p "Created #{Car.count} cars"
 
 ###############################################
@@ -104,9 +106,7 @@ User.all.each do |u|
   # p "User #{u.username} owns car id: #{c.id}"
 
   # This user posted a few rentals, with varying statuses:
-
   3.times do
-
     c1,c2 = all_cities.sample(2)
     tstart = Time.at(Time.now + rand.hours + 1.weeks)
     tend = Time.at(tstart + rand.hours)
@@ -134,8 +134,8 @@ User.all.each do |u|
   end
 
 end
-p "Created #{Rental.count} rental posts"
 
+p "Created #{Rental.count} rental posts"
 
 ###############################################
 # TAGS
@@ -146,6 +146,7 @@ all_tags = ['no-smoking', 'sunroof', 'sporty', 'child-car-seat', 'SUV', 'off-roa
 all_tags.each do |t|
     Tag.create!(name: t)
 end
+
 p "Created #{Tag.count} tags"
 
 ###############################################
@@ -159,5 +160,5 @@ Car.all.each do |c|
     Tagging.create!( car_id: c.id, tag_id: t.id )
   end
 end
-p "Created #{Tagging.count} taggings"
 
+p "Created #{Tagging.count} taggings"

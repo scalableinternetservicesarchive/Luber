@@ -1,4 +1,5 @@
 class Rental < ApplicationRecord
+  before_save :geocode_endpoints
   has_one :user, through: :owner_id
   validates :owner_id, presence: true
 
@@ -67,11 +68,32 @@ class Rental < ApplicationRecord
     when 2
       return 'badge-dark'
     when 3
-      return 'badge-succes'
+      return 'badge-success'
     when 4
       return 'badge-danger'
     else
-      return 'Error: Invalid Status'
+      return ''
+    end
+  end
+
+  private
+
+  # Enable Geocoder to works with multiple locations
+  def geocode_endpoints
+    if start_location_changed?
+      geocoded = Geocoder.search(start_location).first
+      if geocoded
+        self.start_latitude = geocoded.latitude
+        self.start_longitude = geocoded.longitude
+      end
+    end
+    # Repeat for destination
+    if end_location_changed?
+      geocoded = Geocoder.search(end_location).first
+      if geocoded
+        self.end_latitude = geocoded.latitude
+        self.end_longitude = geocoded.longitude
+      end
     end
   end
 end

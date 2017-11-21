@@ -3,13 +3,18 @@ class CreateRentals < ActiveRecord::Migration[5.0]
     create_table :rentals do |t|
       t.integer :owner_id
       t.integer :renter_id
+      t.boolean :renter_visible, default: true
       t.integer :car_id
+      t.integer :status, default: 0
       t.string :start_location
+      t.float :start_longitude
+      t.float :start_latitude
       t.string :end_location
+      t.float :end_longitude
+      t.float :end_latitude
       t.datetime :start_time
       t.datetime :end_time
-      t.float :price
-      t.integer :status
+      t.text :price
       t.string :terms
       t.timestamps
     end

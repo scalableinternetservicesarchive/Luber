@@ -1,11 +1,11 @@
 class Car < ApplicationRecord
-  before_save { self.plate_number = plate_number.upcase }
+  before_save { self.license_plate = license_plate.upcase }
   belongs_to :user
   has_many :taggings
   has_many :tags, through: :taggings
 
   # http://guides.rubyonrails.org/active_record_validations.html#validates-each
-  validates_each :plate_number do |record, attr, value|
+  validates_each :license_plate do |record, attr, value|
     # puts "Checking plate number #{value}"
     record.errors.add(attr, 'must have length 2 to 7') unless (value.length >= 2) && (value.length <= 7)
     record.errors.add(attr, 'must be only letters, numbers, or spaces') unless value.match /\A[a-z0-9 ]+\z/i

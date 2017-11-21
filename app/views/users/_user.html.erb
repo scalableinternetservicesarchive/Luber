@@ -1,0 +1,21 @@
+<div class="card<%= action_name == 'show' ? '' : ' mb-4' %>">
+  <div class="card-body">
+    <div class="list-group">
+      <p class="list-group-item"><%= icon('user', class: 'fa-fw') %><%= user.username %></p>
+      <p class="list-group-item"><%= icon('id-card-o', class: 'fa-fw') %><%= user.first_name.present? && user.last_name.present? ? user.first_name+' '+user.last_name : (user.first_name.present? ? user.first_name : (user.last_name.present? ? user.last_name : '')) %><span class="font-italic"><%= session[:user_id] == user.id ? (user.first_name.blank? && user.last_name.blank? ? '(Add a first and last name)' : (user.first_name.blank? ? ' (Add a first name)' : (user.last_name.blank? ? ' (Add a last name)' : ''))) : (user.first_name.present? || user.last_name.present? ? '' : '(This user has not provided a first or last name)') %></span></p>
+      <p class="list-group-item"><%= icon('globe', class: 'fa-fw') %><%= user.city.present? && user.state.present? ? user.city+', '+user.state : (user.city.present? ? user.city : (user.state.present? ? user.state : '')) %><span class="font-italic"><%= session[:user_id] == user.id ? (user.city.blank? && user.state.blank? ? '(Add a city and state)' : (user.city.blank? ? ' (Add a city)' : (user.state.blank? ? ' (Add a state)' : ''))) : (user.city.present? || user.state.present? ? '' : '(This user has not provided a city or state)') %></span></p>
+      <p class="list-group-item"><%= icon('envelope-o', class: 'fa-fw') %><%= user.email %></p>
+      <p class="list-group-item"><%= icon('clone', class: 'fa-fw') %><%= user.admin ? 'Admin User' : 'Standard User' %></p>
+      <div class="row">
+        <div class="col-auto fs-1">
+          <p class="list-group-item mb-2"><%= icon('clock-o', class: 'fa-fw') %>Last logged in on <%= user.logged_in_at.strftime("%A, %B %-d") %> at <%= user.logged_in_at.strftime("%l:%M %p") %></p>
+        </div>
+        <div class="col-auto ml-auto">
+          <% if session[:user_id] == user.id %>
+            <%= link_to icon('pencil')+"Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

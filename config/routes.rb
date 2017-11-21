@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get 'cars'
       get 'history'
       get 'settings'
+      patch 'promote'
     end
   end
   get 'signup', to: 'users#new'

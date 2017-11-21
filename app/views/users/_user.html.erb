@@ -11,8 +11,12 @@
           <p class="list-group-item mb-2"><%= icon('clock-o', class: 'fa-fw') %>Last logged in on <%= user.logged_in_at.strftime("%A, %B %-d") %> at <%= user.logged_in_at.strftime("%l:%M %p") %></p>
         </div>
         <div class="col-auto ml-auto">
-          <% if session[:user_id] == user.id %>
+          <!-- If it's your own profile, you can edit it. -->
+          <% if current_user?(user) %> 
             <%= link_to icon('pencil')+"Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
+          <!-- Else, if you're an admin and 'user' isn't, you can promote him. -->
+          <% elsif current_admin? and not user.admin %>
+            <%= link_to 'Promote to Admin', promote_user_path, method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
           <% end %>
         </div>
       </div>

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:cars, :history, :settings]
+  before_action :set_user, only: [:cars, :history, :settings, :promote]
   before_action :logged_in_user, only: [:edit, :update]
   before_action :correct_user, only: [:edit, :update]
   before_action :set_progress, only: [:overview, :rentals]
@@ -97,6 +97,23 @@ class UsersController < ApplicationController
     @cars_count = Car.where(user_id: @user.id).length
     @rides_sold_count = Rental.where(owner_id: @user.id).length
     @rides_bought_count = Rental.where(renter_id: @user.id).length
+  end
+
+  # PATCH /users/1/promote
+  def promote
+    @user.update_attribute(:admin, true)
+
+    Log.create!(
+      user_id: session[:user_id], 
+      action: 0, 
+      content: 'Promoted '+@user.username+' to admin' )
+    Log.create!(
+      user_id: @user.id, 
+      action: 0, 
+      content: 'Promoted to admin by '+User.find(session[:user_id]).username )
+
+    flash[:success] = 'You have successfully promoted this user to admin'
+    redirect_to overview_user_path(@user.id)
   end
 
   private

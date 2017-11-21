@@ -64,7 +64,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to rental_url(Rental.last)
   end
 
-  test "should show rental" do
+  test "should show rental (as guest)" do
     get rental_url(@rental)
     assert_response :success
   end

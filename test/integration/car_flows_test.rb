@@ -31,10 +31,11 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'users/cars'
     assert_not flash.blank?
-    assert_select 'h3', 'ford aspire'
-    assert_select 'h5', 'Year: 1992'
-    assert_select 'h5', 'Color: white'
-    assert_select 'h5', 'License Plate Number: 1ABC234'
+    assert_select 'p', 'ford'
+    assert_select 'p', 'aspire'
+    assert_select 'p', '1992'
+    assert_select 'p', 'white'
+    assert_select 'p', 'License Plate: 1ABC234'
     assert_select 'span', 'yes'
     assert_select 'span', 'no'
     mycar = Car.last
@@ -62,10 +63,11 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
     assert_equal 2004, mycar.year
     assert_equal 'white', mycar.color
     assert_equal '3BNE098', mycar.license_plate
-    assert_select 'h3', 'toyota prius'
-    assert_select 'h5', 'Year: 2004'
-    assert_select 'h5', 'Color: white'
-    assert_select 'h5', 'License Plate Number: 3BNE098'
+    assert_select 'p', 'toyota'
+    assert_select 'p', 'prius'
+    assert_select 'p', '2004'
+    assert_select 'p', 'white'
+    assert_select 'p', 'License Plate: 3BNE098'
     assert_select 'span', 'yes'
     assert_select 'span', count: 0, text: 'no'
     # delete the car

@@ -21,13 +21,13 @@ class CarsController < ApplicationController
       @car.user_id = session[:user_id]
     end
 
-    Log.create!(
-      user_id: session[:user_id], 
-      action: 0, 
-      content: 'Added a '+@car.color+', '+@car.year.to_s+' '+@car.make+' '+@car.model+' to My Cars')
-
     respond_to do |format|
       if @car.save
+        Log.create!(
+          user_id: session[:user_id], 
+          action: 0, 
+          content: 'Added a '+@car.color+', '+@car.year.to_s+' '+@car.make+' '+@car.model+' to My Cars')
+        
         flash[:success] = 'Car successfully created'
         format.html { redirect_to cars_user_path(session[:user_id]) }
       else

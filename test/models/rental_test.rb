@@ -7,17 +7,17 @@ class RentalTest < ActiveSupport::TestCase
 
   def setup
     @rental = Rental.new(
-            owner_id: 1,
-            renter_id: 2,
-            car_id: 1,
-            start_location: "la, ca",
-            end_location: "sb, ca",
-            start_time: "Jan 1, 2017",
-            end_time: "Jan 5, 2017",
-            price: "100.12",
-            status: 0,
-            terms: "no-smoking"
-        )
+      owner_id: 1,
+      renter_id: 2,
+      car_id: 1,
+      start_location: "la, ca",
+      end_location: "sb, ca",
+      start_time: "Jan 1, 2017",
+      end_time: "Jan 5, 2017",
+      price: "100.12",
+      status: 0,
+      terms: "no-smoking"
+    )
   end
 
 

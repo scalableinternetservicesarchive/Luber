@@ -2,7 +2,14 @@
   <div class="card-header">
     <div class="row">
       <div class="col">
-        <h3 class="mb-0"><span class="badge <%= rental.get_status_class %> align-top mr-3"><%= rental.get_status_label %></span><%= rental.start_location %><%= icon('arrow-right', class: 'rental-icon') %><%= rental.end_location %></h3>
+        <h3 class="mb-0">
+          <span class="badge <%= rental.get_status_class %> align-top mr-3">
+            <%= rental.get_status_label %>
+          </span>
+          <span class="rental_start_location_label"><%= rental.start_location %></span>
+          <%= icon('arrow-right', class: 'rental-icon') %>
+          <span class="rental_end_location_label"><%= rental.end_location %></span>
+        </h3>
       </div>
       <div class="col-auto">
         <h3 class="mb-0 font-weight-bold">$<%= rental.price %></h3>

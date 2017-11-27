@@ -101,16 +101,25 @@ all_terms = [
 
 # Rental.destroy_all
 User.all.each do |u|
-  c = Car.where(user_id: u.id).take
+  c = Car.where(user_id: u.id).sample
 
   # p "User #{u.username} owns car id: #{c.id}"
 
-  # This user posted a few rentals, with varying statuses:
-  3.times do
+  # https://github.com/scalableinternetservices/Luber/issues/107
+  # Generate 1 post with a start and end date sampling in the future, no renter, and status as available
+  # Generate 1 post with a start and end date sampling in the (near) future and status as upcoming
+  # Generate 1 post with a start date in the past and end date in the (near) future and status as In Progress
+  # Generate 1 post with a start and end date sampling in the past and status canceled
+  # Generate 1 post with a start and end date sampling in the past and status completed
+
+  deltatimes = [1.weeks, 2.hours, -30.minutes, -1.weeks, -1.weeks]
+
+  deltatimes.each_with_index do |dt,i|
+
     c1,c2 = all_cities.sample(2)
-    tstart = Time.at(Time.now + rand.hours + 1.weeks)
-    tend = Time.at(tstart + rand.hours)
-    status = rand(0...4) # see rental.rb for meaning
+    tstart = Time.at(Time.now + dt)
+    tend = Time.at(tstart + 1.hours)
+    status = i # see rental.rb for meaning
     label = Rental.status_int_to_label(status)
     if label == 'Available' 
       renter = nil  

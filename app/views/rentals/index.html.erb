@@ -6,9 +6,17 @@
     <h1>Available Rentals</h1>
   </div>
 </section>
+
+<%# https://www.railstutorial.org/book/updating_and_deleting_users#sec-pagination %>
+<%# https://github.com/yrgoldteeth/bootstrap-will_paginate %>
+<%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
+
 <section class="container m-top card-wrapper">
   <%= render @available_rentals %>
 </section>
+
+<%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
+
 <section class="container text-right">
   <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
 </section>

@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+
 gem 'rails-controller-testing'
 
 # Use Capistrano for deployment
@@ -41,6 +42,14 @@ gem 'bootstrap', '~> 4.0.0.beta2.1'
 gem 'autoprefixer-rails', '~> 7.1.6'
 # Use Font Awesome or neat icons
 gem 'font-awesome-sass', '~> 4.7.0'
+
+
+# Pagination
+# jpp
+# https://www.railstutorial.org/book/updating_and_deleting_users#sec-pagination
+gem 'will_paginate',           '3.1.5'
+gem 'bootstrap-will_paginate', '1.0.0'
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

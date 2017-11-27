@@ -151,7 +151,7 @@ p "Created #{Rental.count} rental posts"
 ###############################################
 
 # Tag.destroy_all
-all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'SUV', 'off road', 'moon-roof', 'smoking', 'tinted', 'fold down seats', 'curtains','cup-holders','arm-rests','bed','fridge','leather','stereo','backseat-tv','satellite-dish']
+all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'moon-roof', 'smoking', 'tinted', 'fold-down-seats', 'curtains','cup-holders','arm-rests','bed','fridge','leather','stereo','backseat-tv','satellite-dish']
 all_tags.each do |t|
     Tag.create!(name: t)
 end

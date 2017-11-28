@@ -7,7 +7,7 @@ class RentalsController < ApplicationController
   # GET /rentals
   # GET /rentals.json
   def index
-    @available_rentals = Rental.where(status: 0)
+    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: 8 )
     @owners, @cars = [], []
     @available_rentals.each do |rental|
       @owners << User.find(rental.owner_id)

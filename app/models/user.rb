@@ -13,7 +13,7 @@ class User < ApplicationRecord
   VALID_LAST_NAME = /\A[a-z ]+\z/i
   VALID_CITY = /\A[a-z -]+\z/i
   VALID_STATE = /\A[a-z]+\z/i
-  VALID_USERNAME = /\A[a-z0-9_ -]+\z/i
+  VALID_USERNAME = /\A[\w -]+\z/i
   VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
   validates :first_name, allow_blank: true, length: { minimum: 2, maximum: 32 }, format: { with: VALID_FIRST_NAME }

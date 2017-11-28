@@ -3,22 +3,22 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
   def setup
     User.create!(
-      username: 'Rick Sanchez',
+      username: 'RickSanchez',
       email: 'rick@sanchez.com',
       password: 'password',
       admin: false
     )
 
-    @user = User.where(username: 'Rick Sanchez').take
+    @user = User.where(username: 'RickSanchez').take
 
     User.create!(
-      username: 'Morty Sanchez',
+      username: 'MortySanchez',
       email: 'morty@sanchez.com',
       password: 'password',
       admin: false
     )
 
-    @other_user = User.where(username: 'Morty Sanchez').take
+    @other_user = User.where(username: 'MortySanchez').take
   end
 
   teardown do

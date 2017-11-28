@@ -23,7 +23,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
       make: 'Ford',
       model: 'Mustang',
       year: 2000,
-      color: 'red',
+      color: 'Red',
       license_plate: '8DEF234'
     )
 
@@ -47,13 +47,15 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_template 'rentals/new'
     assert_select 'option', 'Red, 2000 Ford Mustang' # check that my cars are listed
 
-    post rentals_url, params: { rental: { car_id: @car.id,
-                                          start_location: 'Los Angeles',
-                                          end_location: 'San Francisco',
-                                          start_time: '2017-11-28 00:45:02.077277',
-                                          end_time: '2017-11-28 00:52:44.748212',
-                                          price: 1_642_884.77,
-                                          terms: 'nonsmoking, happiness' } }
+    post rentals_url, params: { 
+      rental: { 
+        car_id: @car.id,
+        start_location: 'Los Angeles',
+        end_location: 'San Francisco',
+        start_time: '2018-11-28 00:45:02',
+        end_time: '2018-11-28 01:52:44',
+        price: 184.77,
+        terms: 'nonsmoking, happiness' } }
     myrental = Rental.last
     assert_redirected_to rental_path(myrental)
     follow_redirect!
@@ -62,8 +64,8 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select 'span', 'Available'
     assert_select 'span.rental_start_location_label', 'Los Angeles'
     assert_select 'span.rental_end_location_label', 'San Francisco'
-    assert_select 'h3', '$1642884.77'
-    assert_select 'p.list-group-item', 'From 12:45 AM on Tuesday, Nov. 28 until 12:52 AM on Tuesday, Nov. 28'
+    assert_select 'h3', '$184.77'
+    assert_select 'p.list-group-item', 'From 12:45 AM on Wednesday, Nov. 28 until 1:52 AM on Wednesday, Nov. 28'
     assert_select 'p.list-group-item', 'Terms: nonsmoking, happiness'
     assert_select 'p > a', 'RickSanchez'
     assert_select 'p.list-group-item', 'Ford Mustang'
@@ -76,17 +78,19 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select '#rental_start_location[value=?]', 'Los Angeles'
     assert_select '#rental_end_location[value=?]', 'San Francisco'
     # TODO: how to test the values of the start/end times?
-    assert_select '#rental_price[value=?]', '1642884.77'
+    assert_select '#rental_price[value=?]', '184.77'
     assert_select '#rental_terms[value=?]', 'nonsmoking, happiness'
 
     # submit a new dank
-    patch rental_url(myrental), params: { rental: { car_id: @car.id,
-                                                    start_location: 'Minneapolis',
-                                                    end_location: 'St. Paul',
-                                                    start_time: '3024-05-11 11:59:00.00',
-                                                    end_time: '3024-12-30 23:59:00.00',
-                                                    price: 0.01,
-                                                    terms: 'chronic, depression' } }
+    patch rental_url(myrental), params: { 
+      rental: { 
+        car_id: @car.id,
+        start_location: 'Minneapolis',
+        end_location: 'St. Paul',
+        start_time: '3024-05-11 11:59:00.00',
+        end_time: '3024-12-30 23:59:00.00',
+        price: 0.01,
+        terms: 'chronic, depression' } }
     assert_redirected_to rental_path(myrental)
     follow_redirect!
     assert_template 'rentals/show'

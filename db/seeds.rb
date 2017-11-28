@@ -21,7 +21,7 @@
 # User.destroy_all
 (1..10).to_a.each do |i|
   User.create!(
-    first_name: "Bob#{i}",
+    first_name: "Bob",
     last_name: "Jones",
     city: "Goleta",
     state: "CA",
@@ -51,7 +51,7 @@ p "Created #{User.count} users"
 
 car_makes = ['Toyota','Ford','Nissan','BMW','Mazda','Mercedes','Volkswagen','Audi','Kia','Hyundai','Subaru']
 car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','Tacoma','Outback','Forester','Equinox','Explorer','Mustang','Camaro','Tacoma','Odyssey','Silverado','Escape','Corolla','Tahoe','Fusion','Charger']
-car_colors = ['red','orange','yellow','green','blue','purple','black','white','gray','silver']
+car_colors = ['Red','Orange','Yellow','Green','Blue','Purple','Black','White','Gray','Silver']
 
 # Car.destroy_all
 User.all.each do |u|
@@ -71,7 +71,7 @@ p "Created #{Car.count} cars"
 # Rentals
 ###############################################
 
-all_cities = ["Los Angeles, CA", "San Diego, CA", "San Jose, CA", "San Francisco, CA", "Fresno, CA", "Sacramento, CA", "Long Beach, CA", "Oakland, CA", "Bakersfield, CA", "Anaheim, CA", "Santa Ana, CA", "Riverside, CA", "Stockton, CA", "Chula Vista, CA", "Irvine, CA", "Fremont, CA", "San Bernardino, CA", "Modesto, CA", "Oxnard, CA", "Fontana, CA", "Moreno Valley, CA", "Huntington Beach, CA", "Glendale, CA", "Santa Clarita, CA", "Garden Grove, CA", "Oceanside, CA", "Rancho Cucamonga, CA", "Santa Rosa, CA", "Ontario, CA", "Elk Grove, CA", "Corona, CA", "Lancaster, CA", "Palmdale, CA", "Salinas, CA", "Hayward, CA", "Pomona, CA", "Escondido, CA", "Sunnyvale, CA", "Torrance, CA", "Pasadena, CA", "Orange, CA", "Fullerton, CA", "Thousand Oaks, CA", "Visalia, CA", "Roseville, CA", "Concord, CA", "Simi Valley, CA", "East Los Angeles, CA", "Santa Clara, CA", "Victorville, CA", "Vallejo, CA", "Berkeley, CA", "El Monte, CA", "Downey, CA", "Costa Mesa, CA", "Carlsbad, CA", "Inglewood, CA", "Fairfield, CA", "San Buenaventura (Ventura), CA", "Temecula, CA", "Antioch, CA", "Richmond, CA", "West Covina, CA", "Murrieta, CA", "Norwalk, CA", "Daly City, CA", "Burbank, CA", "Santa Maria, CA", "El Cajon, CA", "San Mateo, CA", "Rialto, CA", "Clovis, CA"];
+all_locations = ["Los Angeles, CA", "San Diego, CA", "San Jose, CA", "San Francisco, CA", "Fresno, CA", "Sacramento, CA", "Long Beach, CA", "Oakland, CA", "Bakersfield, CA", "Anaheim, CA", "Santa Ana, CA", "Riverside, CA", "Stockton, CA", "Chula Vista, CA", "Irvine, CA", "Fremont, CA", "San Bernardino, CA", "Modesto, CA", "Oxnard, CA", "Fontana, CA", "Moreno Valley, CA", "Huntington Beach, CA", "Glendale, CA", "Santa Clarita, CA", "Garden Grove, CA", "Oceanside, CA", "Rancho Cucamonga, CA", "Santa Rosa, CA", "Ontario, CA", "Elk Grove, CA", "Corona, CA", "Lancaster, CA", "Palmdale, CA", "Salinas, CA", "Hayward, CA", "Pomona, CA", "Escondido, CA", "Sunnyvale, CA", "Torrance, CA", "Pasadena, CA", "Orange, CA", "Fullerton, CA", "Thousand Oaks, CA", "Visalia, CA", "Roseville, CA", "Concord, CA", "Simi Valley, CA", "East Los Angeles, CA", "Santa Clara, CA", "Victorville, CA", "Vallejo, CA", "Berkeley, CA", "El Monte, CA", "Downey, CA", "Costa Mesa, CA", "Carlsbad, CA", "Inglewood, CA", "Fairfield, CA", "Ventura, CA", "Temecula, CA", "Antioch, CA", "Richmond, CA", "West Covina, CA", "Murrieta, CA", "Norwalk, CA", "Daly City, CA", "Burbank, CA", "Santa Maria, CA", "El Cajon, CA", "San Mateo, CA", "Rialto, CA", "Clovis, CA"];
 all_terms = [
  "Take time to know yourself.",
  "A narrow focus brings big results.",
@@ -107,13 +107,13 @@ User.all.each do |u|
 
   # This user posted a few rentals, with varying statuses:
   3.times do
-    c1,c2 = all_cities.sample(2)
-    tstart = Time.at(Time.now + rand.hours + 1.weeks)
-    tend = Time.at(tstart + rand.hours)
+    c1, c2 = all_locations.sample(2)
+    tstart = Time.at(Time.now + 1.weeks + rand.hours)
+    tend = Time.at(tstart + 1.hours)
     status = rand(0...4) # see rental.rb for meaning
     label = Rental.status_int_to_label(status)
     if label == 'Available' 
-      renter = nil  
+      renter = nil 
     else
       renter = (User.all-[u]).sample.id
     end

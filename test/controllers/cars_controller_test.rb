@@ -3,8 +3,8 @@ require 'test_helper'
 class CarsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
-    @user = User.create!(username: "Example User", email:"user@example.com", password: "foobar", password_confirmation: "foobar")
-    @badboi = User.create!(username: "Bad Boi", email:"bad@boi.com", password: "foobar", password_confirmation: "foobar")
+    @user = User.create!(username: "ExampleUser", email:"user@example.com", password: "foobar", password_confirmation: "foobar")
+    @badboi = User.create!(username: "BadBoi", email:"bad@boi.com", password: "foobar", password_confirmation: "foobar")
     @car = Car.create!(user_id: @user.id, make: "Ford", model: "Mustang", year: 2000, color: "red", license_plate: "8DEF234")
   end
 
@@ -20,7 +20,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
       post cars_url, params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, license_plate: @car.license_plate } }
     end
 
-    assert_redirected_to cars_user_path(@user.id)
+    assert_redirected_to cars_user_path(@user.username)
   end
 
   test "should get edit" do
@@ -32,7 +32,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   test "should update car" do
     log_in_as(@user, password: "foobar")
     patch car_url(@car), params: { car: { user_id: @car.user_id, make: @car.make, model: @car.model, year: @car.year, color: @car.color, license_plate: @car.license_plate } }
-    assert_redirected_to cars_user_path(@user.id)
+    assert_redirected_to cars_user_path(@user.username)
   end
 
   test "should destroy car" do
@@ -41,7 +41,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
       delete car_url(@car)
     end
 
-    assert_redirected_to cars_user_path(@user.id)
+    assert_redirected_to cars_user_path(@user.username)
   end
 
   test "should redirect if guest tries to create a car" do

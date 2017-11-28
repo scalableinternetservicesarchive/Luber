@@ -3,13 +3,13 @@ require 'test_helper'
 class UsersEditTest < ActionDispatch::IntegrationTest
   def setup
     User.create!(
-        username: 'Rick Sanchez',
+        username: 'RickSanchez',
         email: 'rick@sanchez.com',
         password: 'password',
         admin: false
     )
 
-    @user = User.where(username: 'Rick Sanchez').take
+    @user = User.where(username: 'RickSanchez').take
   end
 
   teardown do
@@ -22,14 +22,14 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_template 'users/edit'
     patch user_path(@user), params: {
       user: {
-        username: "foo bar",
+        username: "foobar",
         email: "foo@bar.com",
         password: "password2",
         password_confirmation: "password2" } }
     assert_not flash.empty?
-    assert_redirected_to overview_user_path
     @user.reload
-    assert_equal "foo bar", @user.username
+    assert_redirected_to overview_user_path(@user.username)
+    assert_equal "foobar", @user.username
     assert_equal "foo@bar.com", @user.email
   end
 

@@ -29,7 +29,7 @@ class CarsController < ApplicationController
           content: 'Added a '+@car.color+', '+@car.year.to_s+' '+@car.make+' '+@car.model+' to My Cars')
         
         flash[:success] = 'Car successfully created'
-        format.html { redirect_to cars_user_path(session[:user_id]) }
+        format.html { redirect_to cars_user_path(session[:user_username]) }
       else
         format.html {render :new}
         format.json {render json: @car.errors, status: :unprocessable_entity}
@@ -70,7 +70,7 @@ class CarsController < ApplicationController
         end
 
         flash[:success] = 'Car successfully updated'
-        format.html { redirect_to cars_user_path(session[:user_id]) }
+        format.html { redirect_to cars_user_path(session[:user_username]) }
       else
         format.html {render :edit}
         format.json {render json: @car.errors, status: :unprocessable_entity}
@@ -92,7 +92,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       flash[:success] = 'Car successfully deleted'
-      format.html { redirect_to cars_user_path(session[:user_id]) }
+      format.html { redirect_to cars_user_path(session[:user_username]) }
     end
   end
 

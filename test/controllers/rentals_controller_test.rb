@@ -29,13 +29,14 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       car_id: @car.id, 
       start_location: "Santa Barbara", 
       end_location: "Mountain View",
-      start_time: "2017-10-17 20:20:37", 
-      end_time: "2017-10-18 20:20:37", 
-      price: 1.53, status: 0, 
+      start_time: "2018-10-17 20:20:37", 
+      end_time: "2018-10-18 20:20:37", 
+      price: 1.53, status: 1, 
       terms: "My terms" )
   end
 
   test "should get index" do
+    log_in_as(@user1, password: "foobar")
     get rentals_url
     assert_response :success
   end
@@ -49,7 +50,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   test "if user has no cars they can not create a rental post" do
     log_in_as(@user2, password: "foobar")
     get new_rental_url
-    assert_redirected_to cars_user_path(@user2.id)
+    assert_redirected_to cars_user_path(@user2.username)
     assert_not flash.empty?
   end
 
@@ -89,7 +90,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       delete rental_url(@rental)
     end
 
-    assert_redirected_to overview_user_path(@user1.id)
+    assert_redirected_to overview_user_path(@user1.username)
   end
 
   # :show, :new, :create, :edit, :update, :destroy

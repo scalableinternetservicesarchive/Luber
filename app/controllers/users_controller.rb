@@ -1,11 +1,13 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:cars, :history, :settings, :promote]
+  before_action :set_user, only: [:show, :cars, :history, :settings, :promote]
   before_action :logged_in_user, only: [:edit, :update]
   before_action :correct_user, only: [:edit, :update]
   before_action :set_progress, only: [:overview, :rentals]
 
   def show
-    redirect_to overview_user_path, status: 301
+    if @user.id == session[:user_id]
+      redirect_to overview_user_path(session[:user_username]), status: 301
+    end
   end
 
   def new
@@ -24,7 +26,7 @@ class UsersController < ApplicationController
 
       log_in @user
       flash[:success] = 'Account successfully created. Welcome to Luber!'
-      redirect_to controller: 'users', action: 'overview', id: @user.id
+      redirect_to overview_user_path(session[:user_username])
     else
       render 'new'
     end
@@ -62,6 +64,10 @@ class UsersController < ApplicationController
           update_str = updates.take(updates.length() - 1).join(', ')+', and '+updates.last()
         end
 
+        if update_username?(@user)
+          session[:user_username] = @user.username
+        end
+
         Log.create!(
           user_id: session[:user_id], 
           action: 1, 
@@ -69,20 +75,49 @@ class UsersController < ApplicationController
       end
 
       flash[:success] = 'Account successfully updated'
-      redirect_to overview_user_path(session[:user_id])
+      redirect_to overview_user_path(session[:user_username])
     else
+      # Need to manually rollback if username length is 0 otherwise a UrlGeneration error occurs
+      # since the edit url is based on the username and not the ID. I can't figure out why this is,
+      # to see what I mean comment out these three lines and try updating with a blank username
+      if @user.username.length == 0
+        @user.username = original_user.username
+      end
       render 'edit'
     end
   end
 
   def overview
-    @rides_sold = Rental.where(owner_id: @user.id)
-    @rides_bought = Rental.where(['renter_id = ? AND renter_visible = ?', @user.id, true])
+    @recent_owner_rentals = Rental.where(owner_id: @user.id).limit(3)
+    if @recent_owner_rentals.length > 0
+      @or_owners, @or_renters, @or_cars = [], [], []
+      @recent_owner_rentals.each do |rental|
+        @or_owners << User.find(rental.owner_id)
+        @or_renters << User.find(rental.renter_id)
+        @or_cars << Car.find(rental.car_id)
+      end
+    end
+    @recent_renter_rentals = Rental.where(['renter_id = ? AND renter_visible = ?', @user.id, true]).limit(3)
+    if @recent_renter_rentals.length > 0
+      @rr_owners, @rr_renters, @rr_cars = [], [], []
+      @recent_renter_rentals.each do |rental|
+        @rr_owners << User.find(rental.owner_id)
+        @rr_renters << User.find(rental.renter_id)
+        @rr_cars << Car.find(rental.car_id)
+      end
+    end
   end
 
   def rentals
-    @rides_sold = Rental.where(owner_id: @user.id)
-    @rides_bought = Rental.where(['renter_id = ? AND renter_visible = ?', @user.id, true])
+    @rentals = Rental.where(['owner_id = ? OR renter_id = ?', @user.id, @user.id])
+    @owner_rentals_count, @renter_rentals_count = 0, 0
+    @owners, @renters, @cars = [], [], []
+    @rentals.each do |rental|
+      rental.owner_id == @user.id ? @owner_rentals_count += 1 : @renter_rentals_count += 1
+      @owners << User.find(rental.owner_id)
+      rental.renter_id.nil? ? @renters << nil : @renters << User.find(rental.renter_id)
+      @cars << Car.find(rental.car_id)
+    end
   end
 
   def cars
@@ -110,10 +145,10 @@ class UsersController < ApplicationController
     Log.create!(
       user_id: @user.id, 
       action: 0, 
-      content: 'Promoted to admin by '+User.find(session[:user_id]).username )
+      content: 'Promoted to admin by '+session[:user_username] )
 
     flash[:success] = 'You have successfully promoted this user to admin'
-    redirect_to overview_user_path(@user.id)
+    redirect_to overview_user_path(@user.username)
   end
 
   private
@@ -124,7 +159,7 @@ class UsersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by(username: params[:username])
   end
 
   # Before filters for authorization
@@ -137,13 +172,13 @@ class UsersController < ApplicationController
 
   # Confirms the correct user
   def correct_user
-    @user = User.find(params[:id])
+    @user = User.find_by(username: params[:username])
     redirect_to(root_path) unless current_user?(@user)
   end
 
   # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
   def set_progress
-    @user = User.find(params[:id])
+    @user = User.find_by(username: params[:username])
     @rentals = Rental.where([
       '(renter_id = ? OR owner_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
       @user.id, @user.id, 1, DateTime.now, 2, DateTime.now])

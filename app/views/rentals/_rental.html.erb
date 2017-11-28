@@ -1,3 +1,12 @@
+<% if local_assigns[:owners] %>
+  <% owner = owners[rental_counter] %>
+<% end %>
+<% if local_assigns[:renters] %>
+  <% renter = renters[rental_counter] %>
+<% end %>
+<% if local_assigns[:cars] %>
+  <% car = cars[rental_counter] %>
+<% end %>
 <div class="card<%= action_name == 'show' ? '' : ' mb-4' %>">
   <div class="card-header">
     <div class="row">
@@ -18,14 +27,31 @@
   </div>
   <div class="card-body">
     <div class="list-group">
-      <p class="list-group-item"><%= icon('clock-o', class: 'fa-fw') %>From <%= rental.start_time.strftime("%l:%M %p") %> on <%= rental.start_time.strftime("%A, %b. %-d") %> until <%= rental.end_time.strftime("%l:%M %p") %> on <%= rental.end_time.strftime("%A, %b. %-d") %></p>
-      <p class="list-group-item"><%= icon('gavel', class: 'fa-fw') %>Terms: <%= rental.terms ? rental.terms : '<span class="font-italic">No terms were specified by the owner.</span>'.html_safe %></p>
-      <p class="list-group-item"><%= icon('key', class: 'fa-fw') %>Owner: <%= link_to User.find(rental.owner_id).username, user_path(rental.owner_id) %><%= rental.owner_id == session[:user_id] ? '<span class="font-italic"> (You are the owner)</span>'.html_safe : '' %></p>
+      <p class="list-group-item">
+        <%= icon('clock-o', class: 'fa-fw') %>
+        From <%= rental.start_time.strftime("%l:%M %p") %> on <%= rental.start_time.strftime("%A, %b. %-d") %> 
+        until <%= rental.end_time.strftime("%l:%M %p") %> on <%= rental.end_time.strftime("%A, %b. %-d") %>
+      </p>
+      <p class="list-group-item">
+        <%= icon('gavel', class: 'fa-fw') %>
+        Terms: <%= rental.terms ? rental.terms : '<span class="font-italic">No terms were specified by the owner.</span>'.html_safe %>  
+      </p>
+      <p class="list-group-item">
+        <%= icon('key', class: 'fa-fw') %>
+        Owner: <%= link_to owner.username, user_path(owner.username) %>
+        <%= rental.owner_id == session[:user_id] ? '<span class="font-italic"> (You are the owner)</span>'.html_safe : '' %>    
+      </p>
       <% unless rental.renter_id.nil? %>
-        <p class="list-group-item"><%= icon('mobile', class: 'fa-fw') %>Renter: <%= link_to User.find(rental.renter_id).username, user_path(rental.renter_id) %><%= rental.renter_id == session[:user_id] ? '<span class="font-italic"> (You are the renter)</span>'.html_safe : '' %></p>
+        <p class="list-group-item">
+          <%= icon('mobile', class: 'fa-fw') %>
+          Renter: <%= link_to renter.username, user_path(renter.username) %>
+          <%= rental.renter_id == session[:user_id] ? '<span class="font-italic"> (You are the renter)</span>'.html_safe : '' %>    
+        </p>
       <% end %>
-      <% car = Car.find(rental.car_id) %>
-      <p class="list-group-item"><%= icon('car', class: 'fa-fw') %><%= car.make %> <%= car.model %></p>
+      <p class="list-group-item">
+        <%= icon('car', class: 'fa-fw') %>
+        <%= car.make %> <%= car.model %>
+      </p>
       <div class="row">
         <div class="col-auto fs-1">
           <p class="list-group-item mb-2"><%= icon('tags', class: 'fa-fw') %>Tags:

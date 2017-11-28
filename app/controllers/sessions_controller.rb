@@ -5,13 +5,13 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
-      # need to fix pass required issue
+      # need to fix password required issue to enable this
       #user.logged_in_at = DateTime.now
       #user.save!(touch: false)
       user.touch(:logged_in_at)
       log_in user
       flash[:success] = 'You have successfully logged in'
-      redirect_to controller: 'users', action: 'overview', id: user.id
+      redirect_to overview_user_path(session[:user_username])
     else
       flash.now[:danger] = 'Yo ass goofed hommie! Da email/password you provided is invalid!'
       render 'new'

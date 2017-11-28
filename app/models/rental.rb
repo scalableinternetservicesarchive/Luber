@@ -1,23 +1,46 @@
 class Rental < ApplicationRecord
   before_save :geocode_endpoints
+
   has_one :user, through: :owner_id
-  validates :owner_id, presence: true
-
   has_one :car
+  
+  VALID_LOCATION = /\A[a-z0-9.,' -]+\z/i
+  VALID_PRICE = /\A\d+(\.\d\d)?\z/
+  VALID_TERMS = /\A[a-z0-9_.,'"!?@#$() -]*\z/i
 
-  validates :start_location, :end_location, presence: true
+  validates :owner_id, presence: true
+  validates :car_id, presence: true
+  validates :status, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 4, only_integer: true }
+  validates :start_location, presence: true, length: { minimum: 3, maximum: 256 }, format: { with: VALID_LOCATION }
+  validates :end_location, presence: true, length: { minimum: 3, maximum: 256 }, format: { with: VALID_LOCATION }
+  validate :start_time_cannot_be_after_end_time
+  validate :end_time_cannot_be_before_start_time
+  validate :times_cannot_be_in_the_past
+  validates :price, presence: true, length: { maximum: 8 }, format: { with: VALID_PRICE }
+  validates :terms, allow_blank: true, length: { maximum: 64 }, format: { with: VALID_TERMS }
 
-  geocoded_by :start_location,  latitude: :start_latitude, longitude: :start_longitude
+  geocoded_by :start_location, latitude: :start_latitude, longitude: :start_longitude
   after_validation :geocode, if: ->(obj){ obj.start_location.present? }
+  geocoded_by :end_location, latitude: :end_latitude, longitude: :end_longitude
+  after_validation :geocode, if: ->(obj){ obj.end_location.present? }
 
-  VALID_PRICE_REGEX = /\A\d+(\.\d\d)?\z/
-  validates :price, presence: true, format: {with: VALID_PRICE_REGEX}
-
-  validate :end_time_cannot_be_before_start
-
-  def end_time_cannot_be_before_start
+  def start_time_cannot_be_after_end_time
     if end_time < start_time
-      errors.add(:end_time, 'can not be before the start time')
+      errors.add(:start_time, 'cannot be after the end time')
+    end
+  end
+
+  def end_time_cannot_be_before_start_time
+    if end_time < start_time
+      errors.add(:end_time, 'cannot be before the start time')
+    end
+  end
+
+  def times_cannot_be_in_the_past
+    if start_time < DateTime.now
+      errors.add(:start_time, 'cannot be in the past')
+    elsif end_time < DateTime.now
+      errors.add(:end_time, 'cannot be in the past')
     end
   end
 

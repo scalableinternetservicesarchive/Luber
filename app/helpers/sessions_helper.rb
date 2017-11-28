@@ -3,6 +3,7 @@ module SessionsHelper
   # logs in the given user
   def log_in(user)
     session[:user_id] = user.id
+    session[:user_username] = user.username
   end
 
   def current_user?(user)
@@ -19,6 +20,7 @@ module SessionsHelper
 
   def log_out
     session.delete(:user_id)
+    session.delete(:user_username)
     @current_user = nil
   end
 
@@ -28,5 +30,9 @@ module SessionsHelper
     else
       return false
     end
+  end
+
+  def update_username?(user)
+    session[:user_username] != user.username
   end
 end

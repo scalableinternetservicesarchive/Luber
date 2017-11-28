@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'contact', to: 'statics#contact'
   get 'privacy', to: 'statics#privacy'
 
-  resources :users, :except => [:index, :new, :create] do
+  resources :users, param: :username, :except => [:index, :new, :create] do
     member do
       get 'overview'
       get 'rentals'

@@ -7,7 +7,7 @@
   </div>
 </section>
 <section class="container m-top card-wrapper">
-  <%= render @available_rentals %>
+  <%= render @available_rentals, owners: @owners, cars: @cars %>
 </section>
 <section class="container text-right">
   <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>

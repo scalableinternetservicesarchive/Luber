@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class RentalTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
-
   def setup
     @rental = Rental.new(
       owner_id: 1,
@@ -12,14 +8,13 @@ class RentalTest < ActiveSupport::TestCase
       car_id: 1,
       start_location: "la, ca",
       end_location: "sb, ca",
-      start_time: "Jan 1, 2017",
-      end_time: "Jan 5, 2017",
+      start_time: "Jan 1, 2019",
+      end_time: "Jan 5, 2019",
       price: "100.12",
-      status: 0,
+      status: 1,
       terms: "no-smoking"
     )
   end
-
 
   test "integer price ok" do
     @rental.price = "100"
@@ -49,7 +44,7 @@ class RentalTest < ActiveSupport::TestCase
   end
 
   test "start date before end date ok" do
-    t = Time.now
+    t = Time.now + 1.hours
     @rental.start_time = t
     @rental.end_time = t+1
     assert @rental.valid?

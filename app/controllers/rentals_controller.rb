@@ -8,6 +8,11 @@ class RentalsController < ApplicationController
   # GET /rentals.json
   def index
     @available_rentals = Rental.where(status: 0)
+    @owners, @cars = [], []
+    @available_rentals.each do |rental|
+      @owners << User.find(rental.owner_id)
+      @cars << Car.find(rental.car_id)
+    end
   end
 
   # GET /rentals/1
@@ -26,7 +31,7 @@ class RentalsController < ApplicationController
     @cars = Car.where(user_id: session[:user_id])
     if @cars.blank?
       flash[:danger] = 'You do not have any cars. Please add cars to your profile before creating a rental post'
-      redirect_to cars_user_path(session[:user_id])
+      redirect_to cars_user_path(session[:user_username])
     end
   end
 
@@ -52,7 +57,7 @@ class RentalsController < ApplicationController
     respond_to do |format|
       if @rental.save
         flash[:success] = 'Rental post successfully created'
-        format.html {redirect_to rental_path(@rental)}
+        format.html {redirect_to @rental}
         format.json {render :show, status: :created, location: @rental}
       else
         format.html {render :new}
@@ -117,7 +122,7 @@ class RentalsController < ApplicationController
     Log.create!(
       user_id: @rental.owner_id, 
       action: 0, 
-      content: 'My post for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was rented by '+User.find(@rental.renter_id).username)
+      content: 'My post for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was rented by '+session[:user_username])
 
     flash[:success] = 'You have successfully rented this car'
     redirect_to @rental
@@ -142,7 +147,7 @@ class RentalsController < ApplicationController
         Log.create!(
           user_id: @rental.renter_id, 
           action: 4, 
-          content: 'My rental for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was canceled by the owner ('+User.find(@rental.owner_id).username+')')
+          content: 'My rental for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was canceled by the owner ('+session[:user_username]+')')
       end
     elsif session[:user_id] == @rental.renter_id
       Log.create!(
@@ -152,7 +157,7 @@ class RentalsController < ApplicationController
       Log.create!(
         user_id: @rental.owner_id, 
         action: 4, 
-        content: 'My post for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was canceled by the renter ('+User.find(@rental.renter_id).username+')')
+        content: 'My post for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was canceled by the renter ('+session[:user_username]+')')
     end
 
     flash[:success] = 'You have successfully canceled renting this car'
@@ -170,7 +175,7 @@ class RentalsController < ApplicationController
       content: 'Removed the post for my rental of a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from '+User.find(@rental.owner_id).username+' from My Rentals')
 
     flash[:success] = 'You have successfully removed this rental'
-    action_name == 'rentals' ? (redirect_to rentals_user_path(session[:user_id])) : (redirect_to overview_user_path(session[:user_id]))
+    action_name == 'rentals' ? (redirect_to rentals_user_path(session[:user_username])) : (redirect_to overview_user_path(session[:user_username]))
   end
 
   # DELETE /rentals/1
@@ -188,7 +193,7 @@ class RentalsController < ApplicationController
 
     respond_to do |format|
       flash[:success] = 'Rental post successfully deleted'
-      format.html {action_name == 'rentals' ? (redirect_to rentals_user_path(session[:user_id])) : (redirect_to overview_user_path(session[:user_id]))}
+      format.html {action_name == 'rentals' ? (redirect_to rentals_user_path(session[:user_username])) : (redirect_to overview_user_path(session[:user_username]))}
       format.json {head :no_content}
     end
   end
@@ -219,7 +224,7 @@ class RentalsController < ApplicationController
     @user = User.find(@rental.owner_id)
     unless current_user?(@user)
       flash[:danger] = 'You are not the owner of this rental post'
-      redirect_to(@rental)
+      redirect_to @rental
     end
   end
 

@@ -8,18 +8,16 @@
 <section class="container m-top card-wrapper">
   <h2>Cars</h2>
   <hr>
-  <% if @cars.length == 0 %>
+  <% if @cars.length > 0 %>
+    <%= render @cars %>
+    <div class="text-right">
+      <%= link_to 'Add a new Car', new_car_path, class: 'btn btn-base', role: 'button' %>
+    </div>
+  <% else %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't added a car yet.</p>
       <p>Wanna make some extra cash with your mom's old minivan?</p>
       <%= link_to 'Add a Car today!', new_car_path, class: 'btn btn-base', role: 'button' %>
     </div>
-  <% else %>
-    <%= render @cars %>
   <% end %>
 </section>
-<% if @cars.length > 0 %>
-  <section class="container text-right">
-    <%= link_to 'Add a new Car', new_car_path, class: 'btn btn-base', role: 'button' %>
-  </section>
-<% end %>

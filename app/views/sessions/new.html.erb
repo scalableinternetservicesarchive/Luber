@@ -1,12 +1,12 @@
-<% provide(:title, "Login") %>
+<% provide(:title, "Sign In") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
 <section class="container align-slef-center m-top">
-  <h1 class="text-center">Login</h1>
+  <h1 class="text-center">Sign In</h1>
   <div class="row">
     <div class="col"></div>
     <div class="col">
-      <%= form_for(:session, url: login_path) do |f| %>
+      <%= form_for(:session, url: signin_path) do |f| %>
         <div class="form-group">
           <%= f.label :email %>
           <%= f.email_field :email, class: 'form-control', placeholder: 'Email' %>
@@ -17,7 +17,7 @@
         </div>
         <div class="text-center">
           <%= f.submit 'Login', class: 'btn btn-lg btn-base mt-3' %>
-          <%= link_to 'Don\'t have an Account? Signup here!', signup_path, class: 'account-access-link mt-4' %>
+          <%= link_to "Don't have an Account? Sign Up here!", signup_path, class: 'account-access-link mt-4' %>
         </div>
       <% end %>
     </div>

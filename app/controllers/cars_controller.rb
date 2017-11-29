@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
   before_action :set_car, only: [:edit, :update, :destroy]
-  before_action :logged_in_user, only: [:new, :edit, :create, :update, :destroy]
+  before_action :signed_in_user, only: [:new, :edit, :create, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /cars/new
@@ -29,7 +29,7 @@ class CarsController < ApplicationController
           content: 'Added a '+@car.color+', '+@car.year.to_s+' '+@car.make+' '+@car.model+' to My Cars')
         
         flash[:success] = 'Car successfully created'
-        format.html { redirect_to cars_user_path(session[:user_id]) }
+        format.html { redirect_to cars_user_path(session[:user_username]) }
       else
         format.html {render :new}
         format.json {render json: @car.errors, status: :unprocessable_entity}
@@ -70,7 +70,7 @@ class CarsController < ApplicationController
         end
 
         flash[:success] = 'Car successfully updated'
-        format.html { redirect_to cars_user_path(session[:user_id]) }
+        format.html { redirect_to cars_user_path(session[:user_username]) }
       else
         format.html {render :edit}
         format.json {render json: @car.errors, status: :unprocessable_entity}
@@ -92,7 +92,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       flash[:success] = 'Car successfully deleted'
-      format.html { redirect_to cars_user_path(session[:user_id]) }
+      format.html { redirect_to cars_user_path(session[:user_username]) }
     end
   end
 
@@ -117,10 +117,10 @@ class CarsController < ApplicationController
   end
 
   # before filters for authorization
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = "Please log in or register before messing with them cars."
-      redirect_to login_url
+  def signed_in_user
+    unless signed_in?
+      flash[:danger] = "Please sign in or register before messing with them cars."
+      redirect_to signin_url
     end
   end
 

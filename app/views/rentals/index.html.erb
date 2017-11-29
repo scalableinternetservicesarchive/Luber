@@ -1,4 +1,4 @@
-<% provide(:title, 'Rentals') %>
+<% provide(:title, 'Available Rentals') %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
 <section class="container-fluid banner">
@@ -6,17 +6,21 @@
     <h1>Available Rentals</h1>
   </div>
 </section>
-
 <%# https://www.railstutorial.org/book/updating_and_deleting_users#sec-pagination %>
 <%# https://github.com/yrgoldteeth/bootstrap-will_paginate %>
-<%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
-
-<section class="container m-top card-wrapper">
-  <%= render @available_rentals %>
-</section>
-
-<%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
-
-<section class="container text-right">
-  <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
-</section>
+<% if @available_rentals.length != 0 %>
+  <%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
+  <section class="container m-top card-wrapper">
+    <%= render @available_rentals, owners: @owners, cars: @cars %>
+  </section>
+  <%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
+  <section class="container text-right">
+    <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
+  </section>
+<% else %>
+  <div class="text-center">
+    <p class="font-italic">Looks like there aren't any rentals available at this time.</p>
+    <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
+    <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
+  </div>
+<% end %>

@@ -43,13 +43,9 @@ gem 'autoprefixer-rails', '~> 7.1.6'
 # Use Font Awesome or neat icons
 gem 'font-awesome-sass', '~> 4.7.0'
 
-
 # Pagination
-# jpp
-# https://www.railstutorial.org/book/updating_and_deleting_users#sec-pagination
+# (jpp) https://www.railstutorial.org/book/updating_and_deleting_users#sec-pagination
 gem 'will_paginate',           '3.1.5'
-gem 'bootstrap-will_paginate', '1.0.0'
-
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -72,9 +68,11 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
+
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Favicon generator
   gem 'rails_real_favicon'

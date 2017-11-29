@@ -1,0 +1,9 @@
+<% provide(:title, "#{@user.username}\'s Profile") %>
+<% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+
+<%= render 'users/banner' %>
+<section class="container m-top card-wrapper">
+  <h2>Info</h2>
+  <hr>
+  <%= render @user %>
+</section>

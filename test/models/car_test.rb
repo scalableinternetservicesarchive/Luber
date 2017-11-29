@@ -2,8 +2,20 @@ require 'test_helper'
 
 class CarTest < ActiveSupport::TestCase
   def setup
-    u = User.create!(username: 'Example User', email: 'user@example.com', password: 'foobar', password_confirmation: 'foobar')
-    @car = Car.create!(user_id: u.id, make: 'Honda', model: 'Civic', year: 2011, color: 'blue', license_plate: '3asd234')
+    u = User.create!(
+      username: 'ExampleUser', 
+      email: 'user@example.com', 
+      password: 'foobar', 
+      password_confirmation: 'foobar')
+
+    @car = Car.create!(
+      user_id: u.id, 
+      make: 'Honda', 
+      model: 'Civic', 
+      year: 2011, 
+      color: 'blue', 
+      license_plate: '3asd234')
+    
     puts "New car valid?: #{@car.valid?}"
   end
 

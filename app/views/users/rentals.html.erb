@@ -6,37 +6,27 @@
   <%= render 'users/nav' %>
 <% end %>
 <section class="container m-top card-wrapper">
-  <h2>Rentals as an Owner</h2>
-  <hr>
-  <% if @rides_sold.length == 0 %>
+  <% if @owner_rentals_count == 0 %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented out your car to anyone yet.</p>
       <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
       <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
     </div>
-  <% else %>
-    <%= render @rides_sold %>
   <% end %>
-  <% if @rides_sold.length > 0 %>
-    <div class="text-right">
-      <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
-    </div>
+  <% if @owner_rentals_count + @renter_rentals_count == 0 %>
+    <hr>
   <% end %>
-</section>
-<section class="container m-top card-wrapper">
-  <h2>Rentals as a Renter</h2>
-  <hr>
-  <% if @rides_bought.length == 0 %>
+  <% if @renter_rentals_count == 0 %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented anyone else's car yet.</p>
       <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>
       <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
     </div>
-  <% else %>
-    <%= render @rides_bought %>
   <% end %>
-  <% if @rides_bought.length > 0 %>
+  <%= render @rentals, owners: @owners, renters: @renters, cars: @cars %>
+  <% if @rentals.length > 0 %>
     <div class="text-right">
+      <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
       <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base', role: 'button' %>
     </div>
   <% end %>

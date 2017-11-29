@@ -11,7 +11,7 @@
   <hr>
   <p id="start-location" hidden><%= @rental.start_location %></p>
   <p id="end-location" hidden><%= @rental.end_location %></p>
-  <%= render @rental %>
+  <%= render @rental, owner: @owner, renter: @renter, car: @car %>
 </section>
 <section class="container m-top">
   <div class="row">

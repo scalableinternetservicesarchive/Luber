@@ -14,11 +14,11 @@
 
 
   <load>
-    <arrivalphase phase="1" duration="1" unit="minute">
-      <users arrivalrate="10" unit="second"></users>
+    <arrivalphase phase="1" duration="5" unit="second">
+      <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
-    <arrivalphase phase="2" duration="2" unit="minute">
-      <users arrivalrate="100" unit="second"></users>
+    <arrivalphase phase="2" duration="5" unit="second">
+      <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
   </load>
 
@@ -35,21 +35,13 @@
 
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
-
       <request>
         <http url='/' version='1.1' method='GET'></http>
       </request>
 
       <request>
-        <dyn_variable name="nonce" header="www-authenticate/nonce"/>
-        <dyn_variable name="realm" header="www-authenticate/realm"/>
-        <http url="/login" method="GET" version="1.1"/>
-      </request>
-
-      <request subst="true">
-       <dyn_variable name="nonce" header="authentication-info/nextnonce"/>
-       <http url="/login" method="GET" version="1.1">
-         <www_authenticate userid="a@a.com" passwd="123456" type="digest" realm="%%_realm%%" nonce="%%_nonce%%"/>
+       <http url="/login" method="POST" version="1.1">
+         <www_authenticate userid="Michael" passwd="123456" type="digest" />
        </http>
      </request>
 

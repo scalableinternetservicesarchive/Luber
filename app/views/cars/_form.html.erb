@@ -26,12 +26,12 @@
     <%= f.text_field :color, class: 'form-control', placeholder: 'Blue' %>
   </div>
   <div class="form-group">
-    <%= f.label 'License Plate Number' %>
-    <%= f.text_field :plate_number, class: 'form-control', placeholder: '1234567' %>
+    <%= f.label 'License Plate' %>
+    <%= f.text_field :license_plate, class: 'form-control', placeholder: '1234567' %>
   </div>
   <div class="form-group">
     <%= f.label :tags %>
-    <%= f.text_field :all_tags, class: 'form-control', placeholder: 'Sporty, Trendy, Off-road' %>
+    <%= f.text_field :all_tags, class: 'form-control', placeholder: 'sporty, trendy, off-road' %>
   </div>
   <div class="text-center">
     <%= f.submit yield(:submit_label), class: 'btn btn-lg btn-base mt-3' %>

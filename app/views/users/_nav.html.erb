@@ -2,29 +2,19 @@
   <nav class="container">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <%= link_to overview_user_path, class: action_name == 'overview' ? 'nav-link active' : 'nav-link' do %>
-          <%= icon('info-circle') %> Overview
-        <% end %>
+        <%= link_to icon('info-circle')+"Overview", overview_user_path, class: action_name == 'overview' ? 'nav-link active' : 'nav-link' %>
       </li>
       <li class="nav-item">
-        <%= link_to rentals_user_path, class: action_name == 'rentals' ? 'nav-link active' : 'nav-link' do %>
-          <%= icon('exchange') %> My Rentals
-        <% end %>
+        <%= link_to icon('exchange')+"My Rentals", rentals_user_path, class: action_name == 'rentals' ? 'nav-link active' : 'nav-link' %>
       </li>
       <li class="nav-item">
-        <%= link_to cars_user_path, class: action_name == 'cars' ? 'nav-link active' : 'nav-link' do %>
-          <%= icon('car') %> My Cars
-        <% end %>
+        <%= link_to icon('car')+"My Cars", cars_user_path, class: action_name == 'cars' ? 'nav-link active' : 'nav-link' %>
       </li>
       <li class="nav-item">
-        <%= link_to history_user_path, class: 'nav-link disabled' do %>
-          <%= icon('history') %> History
-        <% end %>
+        <%= link_to icon('history')+"History", history_user_path, class: action_name == 'history' ? 'nav-link active' : 'nav-link' %>
       </li>
       <li class="nav-item">
-        <%= link_to settings_user_path, class: action_name == 'settings' ? 'nav-link active' : 'nav-link' do %>
-          <%= icon('cog') %> Settings
-        <% end %>
+        <%= link_to icon('cog')+"Settings", settings_user_path, class: action_name == 'settings' ? 'nav-link active' : 'nav-link' %>
       </li>
     </ul>
   </nav>

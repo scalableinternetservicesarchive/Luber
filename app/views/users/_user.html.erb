@@ -1,0 +1,51 @@
+<div class="card<%= action_name == 'show' ? '' : ' mb-4' %>">
+  <div class="card-body">
+    <div class="list-group">
+      <p class="list-group-item">
+        <%= icon('user', class: 'fa-fw') %><%#
+        %><%= user.username %><%#
+      %></p>
+      <p class="list-group-item">
+        <%= icon('id-card-o', class: 'fa-fw') %><%#
+        %><%= user.first_name.present? && user.last_name.present? ? user.first_name+' '+user.last_name : (user.first_name.present? ? user.first_name : (user.last_name.present? ? user.last_name : '')) %><%#
+        %><span class="font-italic">
+          <%= session[:user_id] == user.id ? (user.first_name.blank? && user.last_name.blank? ? '(Add a first and last name)' : (user.first_name.blank? ? ' (Add a first name)' : (user.last_name.blank? ? ' (Add a last name)' : ''))) : (user.first_name.present? || user.last_name.present? ? '' : '(This user has not provided a first or last name)') %><%#
+        %></span>
+      </p>
+      <p class="list-group-item">
+        <%= icon('globe', class: 'fa-fw') %><%#
+        %><%= user.city.present? && user.state.present? ? user.city+', '+user.state : (user.city.present? ? user.city : (user.state.present? ? user.state : '')) %><%#
+        %><span class="font-italic">
+          <%= session[:user_id] == user.id ? (user.city.blank? && user.state.blank? ? '(Add a city and state)' : (user.city.blank? ? ' (Add a city)' : (user.state.blank? ? ' (Add a state)' : ''))) : (user.city.present? || user.state.present? ? '' : '(This user has not provided a city or state)') %><%#
+        %></span>
+      </p>
+      <p class="list-group-item">
+        <%= icon('envelope-o', class: 'fa-fw') %><%#
+        %><%= user.email %><%#
+      %></p>
+      <div class="row">
+        <div class="col-auto fs-1">
+          <p class="list-group-item">
+            <%= icon('clone', class: 'fa-fw') %><%#
+            %><%= user.admin ? 'Admin User' : 'Standard User' %><%#
+          %></p>
+        </div>
+        <div class="col-auto ml-auto">
+          <%# Buttons to interact with this User %>
+          <% if controller_name == 'rentals' && action_name == 'show' %> <%# Only show View button on a rental post page %>
+            <%= link_to icon('search')+"View", user, class: 'btn btn-outline-base ml-1', role: 'button' %>
+          <% else %>
+            <%# If it's your own profile, you can edit it. %>
+            <% if current_user?(user) %> 
+              <%= link_to icon('pencil')+"Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
+            <%# Else, if you're an admin and 'user' isn't, you can promote or delete them %>
+            <% elsif current_admin? and not user.admin %>
+              <%= link_to icon('arrow-up')+'Promote to Admin', promote_user_path, method: :patch, class: 'btn btn-outline-danger', role: 'button' %>
+              <%= link_to icon('times')+"Admin Delete", user, method: :delete, data: { confirm: 'Are you sure you want to permanently delete this user using admin powers?' }, class: 'btn btn-outline-danger ml-1', role: 'button' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

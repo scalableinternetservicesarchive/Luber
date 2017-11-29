@@ -8,10 +8,11 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :username
       t.string :email
       t.string :password_digest
-      t.boolean :admin
-      t.datetime :logged_in_at
-      t.datetime :logged_out_at
+      t.boolean :admin, default: false
+      t.datetime :signed_in_at
       t.timestamps
     end
+    add_index :users, :email, unique: true
+    add_index :users, :username, unique: true
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115174054) do
+ActiveRecord::Schema.define(version: 20171119063345) do
 
   create_table "cars", force: :cascade do |t|
     t.integer "user_id"
@@ -18,7 +18,15 @@ ActiveRecord::Schema.define(version: 20171115174054) do
     t.string "model"
     t.integer "year"
     t.string "color"
-    t.string "plate_number"
+    t.string "license_plate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "logs", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "action"
+    t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -26,18 +34,21 @@ ActiveRecord::Schema.define(version: 20171115174054) do
   create_table "rentals", force: :cascade do |t|
     t.integer "owner_id"
     t.integer "renter_id"
+    t.boolean "renter_visible", default: true
     t.integer "car_id"
+    t.integer "status", default: 0
     t.string "start_location"
+    t.float "start_longitude"
+    t.float "start_latitude"
     t.string "end_location"
+    t.float "end_longitude"
+    t.float "end_latitude"
     t.datetime "start_time"
     t.datetime "end_time"
     t.text "price"
-    t.integer "status", default: 0
     t.string "terms"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "start_latitude"
-    t.float "start_longitude"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -64,12 +75,12 @@ ActiveRecord::Schema.define(version: 20171115174054) do
     t.string "username"
     t.string "email"
     t.string "password_digest"
-    t.boolean "admin"
-    t.datetime "logged_in_at"
-    t.datetime "logged_out_at"
+    t.boolean "admin", default: false
+    t.datetime "signed_in_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
 end

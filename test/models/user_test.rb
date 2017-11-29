@@ -2,8 +2,11 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(username: "Example User", email:"user@example.com",
-                      password: "foobar", password_confirmation: "foobar")
+    @user = User.new(
+      username: "ExampleUser", 
+      email:"user@example.com",
+      password: "foobar", 
+      password_confirmation: "foobar")
   end
 
   test "should be valid" do
@@ -32,7 +35,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "email validation should accept valid addresses" do
     valid_addresses = %w[user@example.com bigLITTLE@derp.COM wea.rcn.u@earol.co.uk
-                         alice+bob@baz.car hello_world@afece.acxd]
+      alice+bob@baz.car hello_world@afece.acxd]
     valid_addresses.each do |valid_address|
       @user.email = valid_address
       assert @user.valid?, "#{valid_addresses.inspect} should be valid"
@@ -41,7 +44,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "email validation should reject invalid addresses" do
     invalid_addresses = %w[poop*pee@gmail.com foo@bar..com george.com w@q.com@u.org
-                            jokes@on+u.c++ /jello/tastes/weird@bar.co.uk]
+      jokes@on+u.c++ /jello/tastes/weird@bar.co.uk]
     invalid_addresses.each do |invalid_address|
       @user.email = invalid_address
       assert_not @user.valid?, "#{invalid_address.inspect} should be invalid"
@@ -72,10 +75,10 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test "db seed file: each user should have 2 avail and 2 purchased rentals" do
+  test "db seed file: each user should have 5 rentals" do
     Rails.application.load_seed
     User.all.each do |u|
-      assert_equal Rental.where(owner_id: u.id).count, 4
+      assert_equal Rental.where(owner_id: u.id).count, 5
     end
   end
 end

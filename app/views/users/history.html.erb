@@ -5,6 +5,12 @@
 <% if session[:user_id] == @user.id %>
   <%= render 'users/nav' %>
 <% end %>
-<section class="container m-top">
-  <h1>Coming soon...</h1>
+<section class="container m-top card-wrapper">
+  <% @logs.each do |day, day_logs| %>
+    <h2><%= day.strftime("%A, %b. %-d %Y").to_s %></h2>
+    <hr>
+    <% day_logs.each do |log| %>
+      <%= render log %>
+    <% end %>
+  <% end %>
 </section>

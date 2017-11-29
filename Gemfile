@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+
 gem 'rails-controller-testing'
 
 # Use Capistrano for deployment
@@ -42,11 +43,30 @@ gem 'autoprefixer-rails', '~> 7.1.6'
 # Use Font Awesome or neat icons
 gem 'font-awesome-sass', '~> 4.7.0'
 
+
+# Pagination
+# jpp
+# https://www.railstutorial.org/book/updating_and_deleting_users#sec-pagination
+gem 'will_paginate',           '3.1.5'
+gem 'bootstrap-will_paginate', '1.0.0'
+
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'foundation-rails'
+
+gem 'geocoder'
+
+gem 'groupdate'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
+  # Strip whitespace for test validations
+  gem 'htmlcompressor', '~> 0.3.1'
 end
 
 group :development do
@@ -60,12 +80,6 @@ group :development do
   gem 'rails_real_favicon'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-gem 'foundation-rails'
 group :production do
   gem 'pg'
 end
-
-gem 'geocoder'

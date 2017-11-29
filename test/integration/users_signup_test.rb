@@ -4,14 +4,16 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'valid signup redirects a new user to overview page' do
     get signup_path
     assert_difference 'User.count', 1 do
-    post signup_path, params: { user: { username: 'Example User',
-                                       email: 'user@example.com',
-                                       password: 'foobar',
-                                       password_confirmation: 'foobar' } }
+    post signup_path, params: { 
+      user: { 
+        username: 'ExampleUser',
+        email: 'user@example.com',
+        password: 'foobar',
+        password_confirmation: 'foobar' } }
     end
     follow_redirect!
     assert_template 'users/overview'
-    assert is_logged_in?
+    assert is_signed_in?
     assert_not flash.blank?
   end
 
@@ -26,10 +28,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
 
     assert_no_difference 'User.count' do
-      post signup_path, params: { user: { username: '',
-                                         email: 'user@invalid',
-                                         password: 'foo',
-                                         password_confirmation: 'bar' } }
+      post signup_path, params: { 
+        user: { 
+          username: '',
+          email: 'user@invalid',
+          password: 'foo',
+          password_confirmation: 'bar' } }
     end
     
 

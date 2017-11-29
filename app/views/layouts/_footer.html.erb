@@ -2,54 +2,40 @@
   <nav class="footer-nav">
     <div class="container">
       <div class="row">
-        <div class="col-6">
+        <div class="col">
           <p>Sitemap</p>
         </div>
-        <div class="col-6">
+        <div class="col">
           <p>Development</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
+        <div class="col">
           <ul>
             <li>
-              <%= link_to home_path, class: 'footer-entry' do %>
-                <%= icon('home') %> Home
-              <% end %>
+              <%= link_to icon('home')+"Home", home_path, class: 'footer-entry' %>
             </li>
             <li>
-              <%= link_to about_path, class: 'footer-entry' do %>
-                <%= icon('comments-o') %> About
-              <% end %>
+              <%= link_to icon('comments-o')+"About", about_path, class: 'footer-entry' %>
             </li>
             <li>
-              <%= link_to faq_path, class: 'footer-entry' do %>
-                <%= icon('question-circle') %> FAQ
-              <% end %>
+              <%= link_to icon('question-circle')+"FAQ", faq_path, class: 'footer-entry' %>
             </li>
             <li>
-              <%= link_to contact_path, class: 'footer-entry' do %>
-                <%= icon('envelope') %> Contact Us
-              <% end %>
+              <%= link_to icon('envelope')+"Contact Us", contact_path, class: 'footer-entry' %>
             </li>
             <li>
-              <%= link_to privacy_path, class: 'footer-entry' do %>
-                <%= icon('search') %> Privacy Policy
-              <% end %>
+              <%= link_to icon('eye')+"Privacy Policy", privacy_path, class: 'footer-entry' %>
             </li>
           </ul>
         </div>
-        <div class="col-6">
+        <div class="col">
           <ul>
             <li>
-              <%= link_to 'https://github.com/scalableinternetservices/Luber', class: 'footer-entry', target: '_blank' do %>
-                <%= icon('github') %> GitHub
-              <% end %>
+              <%= link_to icon('github')+"GitHub", 'https://github.com/scalableinternetservices/Luber', class: 'footer-entry', target: '_blank' %>
             </li>
             <li>
-              <%= link_to 'https://github.com/scalableinternetservices/Luber/issues', class: 'footer-entry', target: '_blank' do %>
-                <%= icon('exclamation-triangle') %> Issues
-              <% end %>
+              <%= link_to icon('exclamation-triangle')+"Issues", 'https://github.com/scalableinternetservices/Luber/issues', class: 'footer-entry', target: '_blank' %>
             </li>
             <li>
               <p class="footer-entry"><%= icon('copyright') %> 2017 Luber. All rights reserved.</p>

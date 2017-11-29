@@ -17,5 +17,11 @@ module LuberApp
     config.generators do |g|
       g.scaffold_stylesheet false
     end
+
+    # Use javascript (.js) instead of coffeescript (.coffee)
+    # https://stackoverflow.com/questions/24232570/how-to-configure-rails-3-2-4-to-generate-js-instead-of-js-coffee-by-default
+    config.generators do |g|
+      g.javascript_engine :js
+    end
   end
 end

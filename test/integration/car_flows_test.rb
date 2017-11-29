@@ -2,9 +2,20 @@ require 'test_helper'
 
 class CarFlowsTest < ActionDispatch::IntegrationTest
   def setup
-    User.create!(username: 'RickSanchez', email: 'rick@sanchez.com', password: 'foobar', password_confirmation: 'foobar')
+    User.create!(
+      username: 'RickSanchez', 
+      email: 'rick@sanchez.com', 
+      password: 'foobar', 
+      password_confirmation: 'foobar')
     @user = User.where(username: 'RickSanchez').take
-    @car = Car.create!(user_id: @user.id, make: 'Ford', model: 'Mustang', year: 2000, color: 'red', license_plate: '8DEF234')
+
+    @car = Car.create!(
+      user_id: @user.id, 
+      make: 'Ford', 
+      model: 'Mustang', 
+      year: 2000, 
+      color: 'red', 
+      license_plate: '8DEF234')
   end
 
   teardown do
@@ -12,7 +23,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test 'create, modify, and delete a car successfully' do
-    log_in_as(@user, password: 'foobar')
+    sign_in_as(@user, password: 'foobar')
     get new_car_url
     assert_template 'cars/new'
 
@@ -31,8 +42,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'users/cars'
     assert_not flash.blank?
-    assert_select 'p', 'Ford'
-    assert_select 'p', 'Aspire'
+    assert_select 'p', 'Ford Aspire'
     assert_select 'p', '1992'
     assert_select 'p', 'White'
     assert_select 'p', 'License Plate: 1ABC234'
@@ -63,8 +73,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
     assert_equal 2004, mycar.year
     assert_equal 'White', mycar.color
     assert_equal '3BNE098', mycar.license_plate
-    assert_select 'p', 'Toyota'
-    assert_select 'p', 'Prius'
+    assert_select 'p', 'Toyota Prius'
     assert_select 'p', '2004'
     assert_select 'p', 'White'
     assert_select 'p', 'License Plate: 3BNE098'

@@ -5,13 +5,9 @@
         <%= image_tag 'luber-logo.png', class: 'd-inline-block align-top', alt: 'Luber' %>
       </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <% if logged_in? %>
-            <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
-        <% else %>
-            <%= link_to 'Login or signup to start posting!', login_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
-        <% end %>
+        <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base ml-auto mr-4', role: 'button' %>
         <ul class="navbar-nav">
-          <% if logged_in? %>
+          <% if signed_in? %>
             <li>
               <%= link_to icon('exchange')+"Rentals", rentals_path, class: 'nav-link' %>
             </li>
@@ -19,14 +15,14 @@
               <%= link_to icon('user-circle')+current_user.username, current_user, class: 'nav-link' %>
             </li>
             <li>
-              <%= link_to icon('sign-out')+"Logout", logout_path, method: :delete, class: 'nav-link' %>
+              <%= link_to icon('sign-out')+"Sign Out", signout_path, method: :delete, class: 'nav-link' %>
             </li>
           <% else %>
             <li>
-              <%= link_to icon('user-o')+"Signup", signup_path, class: 'nav-link' %>
+              <%= link_to icon('user-o')+"Sign Up", signup_path, class: 'nav-link' %>
             </li>
             <li>
-              <%= link_to icon('sign-in')+"Login", login_path, class: 'nav-link' %>
+              <%= link_to icon('sign-in')+"Sign In", signin_path, class: 'nav-link' %>
             </li>
           <% end %>
         </ul>

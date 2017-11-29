@@ -29,7 +29,7 @@
     email: "user#{i}@boo.com",
     password: "foobar",
     admin: false,
-    logged_in_at: DateTime.now )
+    signed_in_at: DateTime.now )
 end
 
 User.create!(
@@ -41,7 +41,7 @@ User.create!(
   email: "a@a.com",
   password: "foobar",
   admin: true,
-  logged_in_at: DateTime.now )
+  signed_in_at: DateTime.now )
 
 p "Created #{User.count} users"
 
@@ -50,7 +50,8 @@ p "Created #{User.count} users"
 ###############################################
 
 car_makes = ['Toyota','Ford','Nissan','BMW','Mazda','Mercedes','Volkswagen','Audi','Kia','Hyundai','Subaru']
-car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','Tacoma','Outback','Forester','Equinox','Explorer','Mustang','Camaro','Tacoma','Odyssey','Silverado','Escape','Corolla','Tahoe','Fusion','Charger']
+car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','Tacoma','Outback','Forester',
+  'Equinox','Explorer','Mustang','Camaro','Tacoma','Odyssey','Silverado','Escape','Corolla','Tahoe','Fusion','Charger']
 car_colors = ['Red','Orange','Yellow','Green','Blue','Purple','Black','White','Gray','Silver']
 
 # Car.destroy_all
@@ -71,7 +72,17 @@ p "Created #{Car.count} cars"
 # Rentals
 ###############################################
 
-all_locations = ["Los Angeles, CA", "San Diego, CA", "San Jose, CA", "San Francisco, CA", "Fresno, CA", "Sacramento, CA", "Long Beach, CA", "Oakland, CA", "Bakersfield, CA", "Anaheim, CA", "Santa Ana, CA", "Riverside, CA", "Stockton, CA", "Chula Vista, CA", "Irvine, CA", "Fremont, CA", "San Bernardino, CA", "Modesto, CA", "Oxnard, CA", "Fontana, CA", "Moreno Valley, CA", "Huntington Beach, CA", "Glendale, CA", "Santa Clarita, CA", "Garden Grove, CA", "Oceanside, CA", "Rancho Cucamonga, CA", "Santa Rosa, CA", "Ontario, CA", "Elk Grove, CA", "Corona, CA", "Lancaster, CA", "Palmdale, CA", "Salinas, CA", "Hayward, CA", "Pomona, CA", "Escondido, CA", "Sunnyvale, CA", "Torrance, CA", "Pasadena, CA", "Orange, CA", "Fullerton, CA", "Thousand Oaks, CA", "Visalia, CA", "Roseville, CA", "Concord, CA", "Simi Valley, CA", "East Los Angeles, CA", "Santa Clara, CA", "Victorville, CA", "Vallejo, CA", "Berkeley, CA", "El Monte, CA", "Downey, CA", "Costa Mesa, CA", "Carlsbad, CA", "Inglewood, CA", "Fairfield, CA", "Ventura, CA", "Temecula, CA", "Antioch, CA", "Richmond, CA", "West Covina, CA", "Murrieta, CA", "Norwalk, CA", "Daly City, CA", "Burbank, CA", "Santa Maria, CA", "El Cajon, CA", "San Mateo, CA", "Rialto, CA", "Clovis, CA"];
+all_locations = ["Los Angeles, CA", "San Diego, CA", "San Jose, CA", "San Francisco, CA", "Fresno, CA", "Sacramento, CA", 
+  "Long Beach, CA", "Oakland, CA", "Bakersfield, CA", "Anaheim, CA", "Santa Ana, CA", "Riverside, CA", "Stockton, CA", 
+  "Chula Vista, CA", "Irvine, CA", "Fremont, CA", "San Bernardino, CA", "Modesto, CA", "Oxnard, CA", "Fontana, CA", 
+  "Moreno Valley, CA", "Huntington Beach, CA", "Glendale, CA", "Santa Clarita, CA", "Garden Grove, CA", "Oceanside, CA", 
+  "Rancho Cucamonga, CA", "Santa Rosa, CA", "Ontario, CA", "Elk Grove, CA", "Corona, CA", "Lancaster, CA", "Palmdale, CA", 
+  "Salinas, CA", "Hayward, CA", "Pomona, CA", "Escondido, CA", "Sunnyvale, CA", "Torrance, CA", "Pasadena, CA", "Orange, CA", 
+  "Fullerton, CA", "Thousand Oaks, CA", "Visalia, CA", "Roseville, CA", "Concord, CA", "Simi Valley, CA", "East Los Angeles, CA", 
+  "Santa Clara, CA", "Victorville, CA", "Vallejo, CA", "Berkeley, CA", "El Monte, CA", "Downey, CA", "Costa Mesa, CA", 
+  "Carlsbad, CA", "Inglewood, CA", "Fairfield, CA", "Ventura, CA", "Temecula, CA", "Antioch, CA", "Richmond, CA", 
+  "West Covina, CA", "Murrieta, CA", "Norwalk, CA", "Daly City, CA", "Burbank, CA", "Santa Maria, CA", "El Cajon, CA", 
+  "San Mateo, CA", "Rialto, CA", "Clovis, CA"];
 all_terms = [
  "Take time to know yourself.",
  "A narrow focus brings big results.",
@@ -153,7 +164,8 @@ p "Created #{Rental.count} rental posts"
 ###############################################
 
 # Tag.destroy_all
-all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'moon-roof', 'smoking', 'tinted', 'fold-down-seats', 'curtains','cup-holders','arm-rests','bed','fridge','leather','stereo','backseat-tv','satellite-dish']
+all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'moon-roof', 'smoking', 
+  'tinted', 'fold-down-seats', 'curtains','cup-holders','arm-rests','bed','fridge','leather','stereo','backseat-tv','satellite-dish']
 all_tags.each do |t|
     Tag.create!(name: t)
 end

@@ -12,8 +12,7 @@ class RentalTest < ActiveSupport::TestCase
       end_time: "Jan 5, 2019",
       price: "100.12",
       status: 1,
-      terms: "no-smoking"
-    )
+      terms: "no-smoking")
   end
 
   test "integer price ok" do

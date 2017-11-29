@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
   before_action :set_car, only: [:edit, :update, :destroy]
-  before_action :logged_in_user, only: [:new, :edit, :create, :update, :destroy]
+  before_action :signed_in_user, only: [:new, :edit, :create, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /cars/new
@@ -117,10 +117,10 @@ class CarsController < ApplicationController
   end
 
   # before filters for authorization
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = "Please log in or register before messing with them cars."
-      redirect_to login_url
+  def signed_in_user
+    unless signed_in?
+      flash[:danger] = "Please sign in or register before messing with them cars."
+      redirect_to signin_url
     end
   end
 

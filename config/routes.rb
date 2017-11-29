@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'contact', to: 'statics#contact'
   get 'privacy', to: 'statics#privacy'
 
-  resources :users, param: :username, :except => [:index, :new, :create] do
+  resources :users, param: :username, except: [:index, :new, :create] do
     member do
       get 'overview'
       get 'rentals'
@@ -20,9 +20,9 @@ Rails.application.routes.draw do
   get 'signup', to: 'users#new'
   post 'signup', to: 'users#create'
 
-  get 'login', to: 'sessions#new'
-  post 'login', to: 'sessions#create'
-  delete 'logout', to: 'sessions#destroy'
+  get 'signin', to: 'sessions#new'
+  post 'signin', to: 'sessions#create'
+  delete 'signout', to: 'sessions#destroy'
   
   resources :rentals do
     member do
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :cars, :except => [:index, :show]
-  get 'tags/:tag', to: 'cars#tag_search', as: "tag"
+  resources :cars, except: [:index, :show]
+  get 'tags/:tag', to: 'cars#tag_search', as: 'tag'
 
 end

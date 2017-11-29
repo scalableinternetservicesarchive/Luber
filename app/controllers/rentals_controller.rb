@@ -1,6 +1,6 @@
 class RentalsController < ApplicationController
   before_action :set_rental, only: [:rent, :cancel, :remove]
-  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :signed_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_progress, only: [:show]
 
@@ -211,10 +211,10 @@ class RentalsController < ApplicationController
   end
 
   # Before filters for authorization
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = 'Please login before accessing rental posts'
-      redirect_to login_url
+  def signed_in_user
+    unless signed_in?
+      flash[:danger] = 'Please sign in before accessing rental posts'
+      redirect_to signin_url
     end
   end
 

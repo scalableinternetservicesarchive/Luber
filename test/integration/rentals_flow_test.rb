@@ -7,16 +7,14 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
       email: 'rick@sanchez.com',
       password: 'foobar',
       password_confirmation: 'foobar',
-      logged_in_at: DateTime.now
-    )
+      signed_in_at: DateTime.now)
 
     @user2 = User.create!(
       username: 'MortySanchez',
       email: 'morty@sanchez.com',
       password: 'foobar',
       password_confirmation: 'foobar',
-      logged_in_at: DateTime.now
-    )
+      signed_in_at: DateTime.now)
 
     @car = Car.create!(
       user_id: @user.id,
@@ -24,8 +22,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
       model: 'Mustang',
       year: 2000,
       color: 'Red',
-      license_plate: '8DEF234'
-    )
+      license_plate: '8DEF234')
 
     @rental = Rental.create!(
       owner_id: @user.id,
@@ -37,12 +34,11 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
       end_time: '210294-10-18 20:20:37',
       price: 1.53,
       status: 0,
-      terms: 'My terms'
-    )
+      terms: 'My terms')
   end
 
   test 'successfully create, modify, cancel, and delete a rental post' do
-    log_in_as(@user, password: 'foobar')
+    sign_in_as(@user, password: 'foobar')
     get new_rental_url
     assert_template 'rentals/new'
     assert_select 'option', 'Red, 2000 Ford Mustang' # check that my cars are listed
@@ -121,7 +117,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'successfully apply and cancel a rental post' do
-    log_in_as(@user2, password: 'foobar')
+    sign_in_as(@user2, password: 'foobar')
     get rental_url(@rental)
     assert_template 'rentals/show'
     assert_select 'a[href=?][data-method=patch]', rent_rental_path(@rental)

@@ -1,23 +1,35 @@
 <div class="card<%= action_name == 'show' ? '' : ' mb-4' %>">
   <div class="card-body">
     <div class="list-group">
-      <p class="list-group-item"><%= icon('car', class: 'fa-fw') %><%= car.make %></p>
-      <p class="list-group-item"><%= icon('taxi', class: 'fa-fw') %><%= car.model %></p>
-      <p class="list-group-item"><%= icon('calendar', class: 'fa-fw') %><%= car.year %></p>
-      <p class="list-group-item"><%= icon('paint-brush', class: 'fa-fw') %><%= car.color %></p>
-      <p class="list-group-item"><%= icon('barcode', class: 'fa-fw') %>License Plate: <%= car.license_plate %></p>
+      <p class="list-group-item">
+        <%= icon('car', class: 'fa-fw') %><%#
+        %><%= car.make %> <%= car.model %><%#
+      %></p>
+      <p class="list-group-item">
+        <%= icon('calendar', class: 'fa-fw') %><%#
+        %><%= car.year %><%#
+      %></p>
+      <p class="list-group-item">
+        <%= icon('paint-brush', class: 'fa-fw') %><%#
+        %><%= car.color %><%#
+      %></p>
+      <p class="list-group-item">
+        <%= icon('barcode', class: 'fa-fw') %><%#
+        %>License Plate: <%= car.license_plate %><%#
+      %></p>
       <div class="row">
         <div class="col-auto fs-1">
-          <p class="list-group-item mb-2"><%= icon('tags', class: 'fa-fw') %>Tags:
-            <% car.tags.each do |tag_group| %>
-              <% tag_group.name.split(' ').each do |tag| %>
-                <span class="badge badge-tag"><%= tag %></span>
+          <p class="list-group-item mb-2"><%= icon('tags', class: 'fa-fw') %>Tags: <%#
+            %><% car.tags.each do |tag_group| %><%#
+              %><% tag_group.name.split(' ').each do |tag| %><%#
+                %><span class="badge badge-tag"><%= tag %></span>
               <% end %>
             <% end %>
           </p>
         </div>
         <div class="col-auto ml-auto">
-          <% if session[:user_id] == car.user_id %>
+          <%# Buttons to interact with this Car %>
+          <% if session[:user_id] == car.user_id %> <%# If you're the owner, can edit or delete %>
             <%= link_to icon('pencil')+"Edit", edit_car_path(car), class: 'btn btn-outline-success mr-1', role: 'button' %>
             <%= link_to icon('times')+"Delete", car, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
           <% end %>

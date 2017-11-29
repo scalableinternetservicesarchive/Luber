@@ -2,7 +2,7 @@ class User < ApplicationRecord
   before_save { self.first_name.present? ? self.first_name = first_name[0,1].upcase + first_name[1,first_name.length] : nil }
   before_save { self.last_name.present? ? self.last_name = last_name[0,1].upcase + last_name[1,last_name.length] : nil }
   before_save { self.city.present? ? self.city = city.titleize : nil }
-  before_save { self.state.present? ? self.state = state.titleize : nil }
+  before_save { self.state.present? ? self.state = self.state = state[0,1].upcase + state[1,state.length] : nil }
   before_save { self.email = email.downcase }
 
   has_many :rentals

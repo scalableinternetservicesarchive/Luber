@@ -6,9 +6,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
         username: 'RickSanchez',
         email: 'rick@sanchez.com',
         password: 'password',
-        admin: false
-    )
-
+        admin: false)
     @user = User.where(username: 'RickSanchez').take
   end
 
@@ -17,7 +15,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
   end
 
   test 'successful edit' do
-    log_in_as(@user)
+    sign_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
     patch user_path(@user), params: {
@@ -34,7 +32,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
   end
 
   test 'unsuccessful edit' do
-    log_in_as(@user)
+    sign_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
     patch user_path(@user), params: {

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :cars, :history, :settings, :promote]
-  before_action :logged_in_user, only: [:edit, :update]
+  before_action :signed_in_user, only: [:edit, :update]
   before_action :correct_user, only: [:edit, :update]
   before_action :set_progress, only: [:overview, :rentals]
 
@@ -17,14 +17,14 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @user.touch(:logged_in_at)
+      @user.touch(:signed_in_at)
 
       Log.create!(
         user_id: @user.id, 
         action: 0, 
         content: 'Created my Account (Welcome!)')
 
-      log_in @user
+      sign_in @user
       flash[:success] = 'Account successfully created. Welcome to Luber!'
       redirect_to overview_user_path(session[:user_username])
     else
@@ -93,7 +93,7 @@ class UsersController < ApplicationController
       @or_owners, @or_renters, @or_cars = [], [], []
       @recent_owner_rentals.each do |rental|
         @or_owners << User.find(rental.owner_id)
-        @or_renters << User.find(rental.renter_id)
+        rental.renter_id.nil? ? @or_renters << nil : @or_renters << User.find(rental.renter_id)
         @or_cars << Car.find(rental.car_id)
       end
     end
@@ -163,10 +163,10 @@ class UsersController < ApplicationController
   end
 
   # Before filters for authorization
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = 'Please login first'
-      redirect_to login_path
+  def signed_in_user
+    unless signed_in?
+      flash[:danger] = 'Please sign in first'
+      redirect_to signin_path
     end
   end
 

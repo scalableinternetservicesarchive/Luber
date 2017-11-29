@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def show
     if @user.id == session[:user_id]
-      redirect_to overview_user_path(session[:user_username]), status: 301
+      redirect_to overview_user_path(session[:user_username])
     end
   end
 
@@ -109,7 +109,8 @@ class UsersController < ApplicationController
   end
 
   def rentals
-    @rentals = Rental.where(['owner_id = ? OR renter_id = ?', @user.id, @user.id])
+    @per_page_count = 4
+    @rentals = Rental.where(['owner_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: @per_page_count )
     @owner_rentals_count, @renter_rentals_count = 0, 0
     @owners, @renters, @cars = [], [], []
     @rentals.each do |rental|
@@ -121,11 +122,13 @@ class UsersController < ApplicationController
   end
 
   def cars
-    @cars = Car.where(user_id: @user.id)
+    @per_page_count = 4
+    @cars = Car.where(user_id: @user.id).paginate( page: params[:page], per_page: @per_page_count )
   end
 
   def history
-    @logs = Log.where(user_id: @user.id).order(updated_at: :desc).group_by_day(reverse: true){ |l| l.updated_at }
+    @per_page_count = 8
+    @logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
   end
 
   def settings

@@ -1,5 +1,6 @@
 <% provide(:title, "My Rentals") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+<% params[:page] ? page = params[:page] : page = 1 %>
 
 <%= render 'users/banner' %>
 <% if session[:user_id] == @user.id %>
@@ -12,8 +13,6 @@
       <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
       <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
     </div>
-  <% end %>
-  <% if @owner_rentals_count + @renter_rentals_count == 0 %>
     <hr>
   <% end %>
   <% if @renter_rentals_count == 0 %>
@@ -22,12 +21,21 @@
       <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>
       <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
     </div>
+    <% if @owner_rentals_count + @renter_rentals_count != 0 %>
+      <hr>
+    <% end %>
   <% end %>
-  <%= render @rentals, owners: @owners, renters: @renters, cars: @cars %>
   <% if @rentals.length > 0 %>
+    <%= render @rentals, owners: @owners, renters: @renters, cars: @cars %>
+    <%= will_paginate @rentals, 
+      class: 'mb-5',
+      page_links: false, 
+      previous_label: icon('arrow-left'), 
+      next_label: icon('arrow-right'),
+      link_separator: "<p>#{page} / #{@rentals.total_pages}</p>" %>
     <div class="text-right">
       <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
-      <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base', role: 'button' %>
+      <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base ml-1', role: 'button' %>
     </div>
   <% end %>
 </section>

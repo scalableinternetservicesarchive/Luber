@@ -142,6 +142,53 @@ footer {
   }
 }
 
+// Pagination
+// -------------------------
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+
+  li {
+    @extend .page-item;
+
+    a {
+      @extend .page-link;
+      color: $primary;
+      background-color: transparent;
+      border-color: $primary;
+    }
+
+    a.hover, 
+    a:hover {
+      color: white;
+      background-color: $primary;
+      border-color: $primary;
+    }
+
+    a.active, 
+    a:active,
+    a.focus, 
+    a:focus {
+      color: white;
+      background-color: $darker-accent;
+      border-color: $light-accent;
+      box-shadow: 0 0 0 3px $primary-shadow;
+    }
+  }
+
+  li.disabled a {
+    background-color: transparent;
+  }
+
+  p {
+    margin: 0;
+    align-self: center;
+    color: $darker-base;
+  }
+}
+
 // Buttons
 // -------------------------
 
@@ -241,7 +288,7 @@ a.disabled {
 .card-wrapper {
   .card-header {
     color: white;
-    background: linear-gradient(to bottom right, $primary, $secondary);
+    background: linear-gradient(var(--angle), $primary, $secondary);
   }
 
   .card-body {

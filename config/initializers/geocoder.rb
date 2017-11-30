@@ -1,20 +1,6 @@
 if Rails.env.test?
   Geocoder.configure(:lookup => :test)
-  # Particular Look up
-  Geocoder::Lookup::Test.add_stub(
-    "Santa Barbara, CA", [
-      {
-        'latitude'     => 34.3987087,
-        'longitude'    => -119.8198962,
-        'address'      => 'Santa Barbara, CA, USA',
-        'state'        => 'California',
-        'state_code'   => 'CA',
-        'country'      => 'United States',
-        'country_code' => 'US'
-      }
-    ]
-  )
-  #default stub
+  #default lookup
   Geocoder::Lookup::Test.set_default_stub(
     [
       {
@@ -28,6 +14,23 @@ if Rails.env.test?
       }
     ]
   )  
+elsif Rails.env.production?
+  Geocoder.configure(:lookup => :test)
+  #default lookup
+  Geocoder::Lookup::Test.set_default_stub(
+    [
+      {
+        'latitude'     => 34.3987087,
+        'longitude'    => -119.8198962,
+        'address'      => 'Santa Barbara, CA, USA',
+        'state'        => 'California',
+        'state_code'   => 'CA',
+        'country'      => 'United States',
+        'country_code' => 'US'
+      }
+    ]
+  )  
+
 else
   Geocoder.configure(
     # Geocoding options

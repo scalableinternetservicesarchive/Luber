@@ -349,19 +349,19 @@ all_terms = [
  "Take time to know yourself.",
  "A narrow focus brings big results.",
  "Show up fully.",
- "Don't make assumptions.",
+ "Dont make assumptions.",
  "Be patient and persistent.",
  "In order to get, you have to give.",
  "Luck comes from hard work.",
  "Be your best at all times.",
- "Don't try to impress everyone.",
- "Don't be afraid of being afraid.",
+ "Dont try to impress everyone.",
+ "Dont be afraid of being afraid.",
  "Listen to learn.",
- "Life's good, but it's not fair.",
+ "Lifes good, but its not fair.",
  "No task is beneath you.",
- "You can't always get what you want.",
- "Don't make decisions when you are angry or ecstatic.",
- "Don't worry what other people think.",
+ "You cant always get what you want.",
+ "Dont make decisions when you are angry or ecstatic.",
+ "Dont worry what other people think.",
  "Use adversity as an opportunity.",
  "Do what is right, not what is easy.",
  "Dreams remain dreams until you take action.",
@@ -441,7 +441,7 @@ User.all.each do |u|
         d[:renter_visible]  = d[:renter_visible]  ? "TRUE" : "FALSE"
         d[:skip_in_seed]    = d[:skip_in_seed]    ? "TRUE" : "FALSE"
         vals = dict_to_db_str(d,cols,val_delim)
-        vals.gsub! "\"NULL_SHITTY_HACK\"", "NULL"  # Needs to be NULL, not "NULL" in SQL statement.
+        vals.gsub! (val_delim + "NULL_SHITTY_HACK" + val_delim), "NULL"  # Needs to be NULL, not "NULL" in SQL statement.
         sql += i==1 ? vals : ',' + vals
       else      
         d.delete(:id)

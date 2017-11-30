@@ -35,14 +35,14 @@ case Rails.env
 
   when 'test', 'development'
     puts 'in test or dev!'
-    how_many = {user: 10, cars_per_user: 1, rentals_per_car: 3}
+    how_many = {user: 10, cars_per_user: 2, rentals_per_car: 5}
     col_name_delim = "`" # sqlite3
     val_delim = '"'  # sqlite3
     direct_sql_inject = false
 
   when 'production'
     puts 'in production!'
-    how_many = {user: 100, cars_per_user: 20, rentals_per_car: 10}
+    how_many = {user: 100, cars_per_user: 2, rentals_per_car: 5}
     col_name_delim = "" # postgres
     val_delim = "'"  # postgres
     direct_sql_inject = true
@@ -60,13 +60,13 @@ end
 
 def dict_to_db_str(d,cols,delim)
 
-# Usage:
-#
-# > di = {name: "Justin", age: 34, ssn: "\"Um no,\" he said"}
-#   => {:name=>"Justin", :age=>34, :ssn=>"\"Um no,\" he said"}
-# > cols = ["name","age","ssn","nope"]
-# > puts dict_to_db_str(di,cols,"'")
-#   ('Justin', 34, '\'Um no,\' he said', nil)
+  # Usage:
+  #
+  # > di = {name: "Justin", age: 34, ssn: "\"Um no,\" he said"}
+  #   => {:name=>"Justin", :age=>34, :ssn=>"\"Um no,\" he said"}
+  # > cols = ["name","age","ssn","nope"]
+  # > puts dict_to_db_str(di,cols,"'")
+  #   ('Justin', 34, '\'Um no,\' he said', nil)
 
   # puts cols
   # puts d.keys.first.class
@@ -92,7 +92,8 @@ def dict_to_db_str(d,cols,delim)
   return s
 end
 
-
+NOW_DT = DateTime.now
+NOW_STR = NOW_DT.strftime("%FT%T")
 
 ###############################################
 # USERS
@@ -183,9 +184,9 @@ user_ids.each do |i|  # don't use .times, then id will be 0, bad.
       email:        "user#{i}@boo.com",
       password:     PASSWORD,
       admin:        false,
-      signed_in_at: DateTime.now,
-      created_at:   DateTime.now,
-      updated_at:   DateTime.now
+      signed_in_at: NOW_DT,
+      created_at:   NOW_DT,
+      updated_at:   NOW_DT
       }
 
   if i==1  # Make admin
@@ -197,9 +198,9 @@ user_ids.each do |i|  # don't use .times, then id will be 0, bad.
   end
 
   if direct_sql_inject
-    d[:signed_in_at]    = d[:signed_in_at].strftime("%FT%T")
-    d[:created_at]      = d[:created_at].strftime("%FT%T")
-    d[:updated_at]      = d[:updated_at].strftime("%FT%T")
+    d[:signed_in_at]    = NOW_STR
+    d[:created_at]      = NOW_STR
+    d[:updated_at]      = NOW_STR
     d[:admin]           = d[:admin] ? "TRUE" : "FALSE"
     d[:password_digest] = PASSWORD_HASH
     vals = dict_to_db_str(d,cols,val_delim)
@@ -257,15 +258,15 @@ user_ids.each do |uid|  # optimization: reduce # db queries
       year:           (1960..2017).to_a.sample,
       color:          car_colors.sample,
       license_plate:  [(0..9).to_a.sample, ('A'..'Z').to_a.sample(3), (0..9).to_a.sample(3)].join,
-      created_at:     DateTime.now,
-      updated_at:     DateTime.now
+      created_at:     NOW_DT,
+      updated_at:     NOW_DT
     }
 
     users_cars_ids[uid].push i  # remember which car this user owns
 
     if direct_sql_inject
-      d[:created_at]      = d[:created_at].strftime("%FT%T")
-      d[:updated_at]      = d[:updated_at].strftime("%FT%T")
+      d[:created_at]      = NOW_STR
+      d[:updated_at]      = NOW_STR
       vals = dict_to_db_str(d,cols,val_delim)
       sql += i==1 ? vals : ',' + vals
     else      
@@ -396,6 +397,8 @@ all_terms = [
 
 # https://github.com/scalableinternetservices/Luber/issues/107
 deltatimes = [1.weeks, 2.hours, -30.minutes, -1.weeks, -1.weeks]
+TSTARTS = deltatimes.map {|dt| Time.at(Time.now + dt)}
+TENDS   = TSTARTS.map {|tstart| Time.at(tstart + 1.hours)}
 
 # > Rental.column_names
 # => ["id", "owner_id", "renter_id", "renter_visible", "car_id", 
@@ -411,7 +414,7 @@ i = 0
 
 # Avoid using ORM for speed:
 user_ids.each do |uid|
-  users_cars[uid].each do |cid|
+  users_cars_ids[uid].each do |cid|
 
 # old:
 # User.all.each do |u|
@@ -425,9 +428,11 @@ user_ids.each do |uid|
       c1, c2 = all_locations.keys.sample(2)
       lat1,lon1 = all_locations[c1]
       lat2,lon2 = all_locations[c2]
-      dt = deltatimes[ i % deltatimes.length ]
-      tstart = Time.at(Time.now + dt)
-      tend = Time.at(tstart + 1.hours)
+      # dt = deltatimes[ i % deltatimes.length ]
+      # tstart = Time.at(Time.now + dt)
+      # tend = Time.at(tstart + 1.hours)
+      tstart = TSTARTS[i % deltatimes.length]
+      tend = TENDS[i % deltatimes.length]
       status = i % Rental::MAX_STATUS # see rental.rb for meaning
       label = Rental.status_int_to_label(status)
       if label == 'Available' 
@@ -445,7 +450,7 @@ user_ids.each do |uid|
         owner_id:         uid, # u.id,
         renter_id:        renter,
         renter_visible:   true,
-        car_id:           c.id,
+        car_id:           cid, # c.id,
         start_location:   c1,
         end_location:     c2,
         start_latitude:   lat1,
@@ -458,16 +463,16 @@ user_ids.each do |uid|
         status:           status,  
         terms:            terms,
         skip_in_seed:     true,
-        created_at:       DateTime.now,
-        updated_at:       DateTime.now
+        created_at:       NOW_DT,
+        updated_at:       NOW_DT
       }
 
       if direct_sql_inject
         d[:renter_id]       = d[:renter_id].nil?  ? "NULL_SHITTY_HACK" : d[:renter_id]
-        d[:created_at]      = d[:created_at].strftime("%FT%T")
-        d[:updated_at]      = d[:updated_at].strftime("%FT%T")
-        d[:start_time]      = d[:start_time].strftime("%FT%T")
-        d[:end_time]        = d[:end_time].strftime("%FT%T")
+        d[:created_at]      = NOW_STR
+        d[:updated_at]      = NOW_STR
+        d[:start_time]      = NOW_STR
+        d[:end_time]        = NOW_STR
         d[:renter_visible]  = d[:renter_visible]  ? "TRUE" : "FALSE"
         d[:skip_in_seed]    = d[:skip_in_seed]    ? "TRUE" : "FALSE"
         vals = dict_to_db_str(d,cols,val_delim)
@@ -507,6 +512,8 @@ all_tags.each do |t|
     Tag.create!(name: t)
 end
 
+NUM_TAGS = Tag.count
+
 p "Created #{Tag.count} tags"
 p DateTime.now
 
@@ -521,20 +528,24 @@ cols = Tagging.column_names
 delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
 sql = "INSERT INTO taggings (#{delimited_cols.join(',')}) VALUES "
 i = 0
-Car.all.each do |c|
+
+(1..Car.count).each do |cid|
+# Car.all.each do |c|
   # Each car has a couple random non-duplicate tags.
-  Tag.all.sample(2).each do |t|
+  # Tag.all.sample(2).each do |t|
+  # Faster:
+  2.times do |t|
     d = {
       id:         (i+=1),
-      car_id:     c.id,
-      tag_id:     t.id,
-      created_at: DateTime.now,
-      updated_at: DateTime.now      
+      car_id:     cid, # c.id,
+      tag_id:     ((cid + t) % NUM_TAGS)+1, # t.id,
+      created_at: NOW_DT,
+      updated_at: NOW_DT      
     }
 
     if direct_sql_inject
-      d[:created_at]      = d[:created_at].strftime("%FT%T")
-      d[:updated_at]      = d[:updated_at].strftime("%FT%T")
+      d[:created_at]      = NOW_STR
+      d[:updated_at]      = NOW_STR
       vals = dict_to_db_str(d,cols,val_delim)
       sql += i==1 ? vals : ',' + vals
     else      

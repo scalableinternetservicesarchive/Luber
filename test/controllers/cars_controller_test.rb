@@ -6,14 +6,14 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
     @user = User.create!(
       username: "ExampleUser", 
       email:"user@example.com", 
-      password: "foobar", 
-      password_confirmation: "foobar")
+      password: "password", 
+      password_confirmation: "password")
 
     @badboi = User.create!(
       username: "BadBoi", 
       email:"bad@boi.com", 
-      password: "foobar", 
-      password_confirmation: "foobar")
+      password: "password", 
+      password_confirmation: "password")
 
     @car = Car.create!(
       user_id: @user.id, 
@@ -25,13 +25,13 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     get new_car_url
     assert_response :success
   end
 
   test "should create car" do
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     assert_difference('Car.count') do
       post cars_url, params: { 
         car: { 
@@ -47,13 +47,13 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     get edit_car_url(@car)
     assert_response :success
   end
 
   test "should update car" do
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     patch car_url(@car), params: { 
       car: { 
         user_id: @car.user_id, 
@@ -66,7 +66,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy car" do
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     assert_difference('Car.count', -1) do
       delete car_url(@car)
     end
@@ -117,14 +117,14 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect if non-owner tries to edit car" do
-    sign_in_as(@badboi, password: "foobar")
+    sign_in_as(@badboi, password: "password")
     get edit_car_url(@car)
     assert_redirected_to car_url(@car)
     assert_not flash.empty?
   end
 
   test "should redirect if non-owner tries to update car" do
-    sign_in_as(@badboi, password: "foobar")
+    sign_in_as(@badboi, password: "password")
     patch car_url(@car), params: { 
       car: { 
         user_id: @car.user_id, 
@@ -138,14 +138,14 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect if non-owner tries to delete car" do
-    sign_in_as(@badboi, password: "foobar")
+    sign_in_as(@badboi, password: "password")
     delete car_url(@car)
     assert_redirected_to car_url(@car)
     assert_not flash.empty?
   end
 
   test 'should fail to create if car data does not validate' do
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     post cars_url, params: { 
       car: { 
         user_id: @car.user_id,
@@ -160,7 +160,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should fail to update if car data does not validate' do
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     patch car_url(@car), params: { 
       car: { 
         user_id: @car.user_id,

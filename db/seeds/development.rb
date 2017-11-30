@@ -11,7 +11,7 @@
     state: "CA",
     username: "skater4#{i}",
     email: "user#{i}@boo.com",
-    password: "foobar",
+    password: "password",
     admin: false,
     signed_in_at: DateTime.now )
 end
@@ -23,7 +23,7 @@ User.create!(
   state: "CA",
   username: "admin01",
   email: "a@a.com",
-  password: "foobar",
+  password: "password",
   admin: true,
   signed_in_at: DateTime.now )
 

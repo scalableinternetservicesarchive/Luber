@@ -30,7 +30,7 @@ class Rental < ApplicationRecord
   validate :start_time_cannot_be_after_end_time, unless: :skip_in_seed
   validate :end_time_cannot_be_before_start_time, unless: :skip_in_seed
   validate :times_cannot_be_in_the_past, unless: :skip_in_seed
-  validates :price, presence: true, length: { maximum: 8 }, format: { with: VALID_PRICE }
+  validates :price, presence: true, length: { minimum: 1, maximum: 8 }, format: { with: VALID_PRICE }
   validates :terms, allow_blank: true, length: { maximum: 64 }, format: { with: VALID_TERMS }
 
   geocoded_by :start_location, latitude: :start_latitude, longitude: :start_longitude

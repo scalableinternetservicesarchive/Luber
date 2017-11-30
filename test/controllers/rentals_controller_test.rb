@@ -5,15 +5,15 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     @user1 = User.create!(
       username: "Michael", 
       email:"michael@example.com", 
-      password: "foobar", 
-      password_confirmation: "foobar", 
+      password: "password", 
+      password_confirmation: "password", 
       signed_in_at: DateTime.now )
     
     @user2 = User.create!(
       username: "Justin", 
       email:"justin@example.com", 
-      password: "foobar", 
-      password_confirmation: "foobar",
+      password: "password", 
+      password_confirmation: "password",
       signed_in_at: DateTime.now )
 
     @car = Car.create!(
@@ -32,31 +32,32 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       end_location: "Mountain View",
       start_time: "2018-10-17 20:20:37", 
       end_time: "2018-10-18 20:20:37", 
-      price: 1.53, status: 1, 
+      price: 1.53, 
+      status: 1, 
       terms: "My terms" )
   end
 
   test "should get index" do
-    sign_in_as(@user1, password: "foobar")
+    sign_in_as(@user1, password: "password")
     get rentals_url
     assert_response :success
   end
 
   test "should get new" do
-    sign_in_as(@user1, password: "foobar")
+    sign_in_as(@user1, password: "password")
     get new_rental_url
     assert_response :success
   end
 
   test "if user has no cars they can not create a rental post" do
-    sign_in_as(@user2, password: "foobar")
+    sign_in_as(@user2, password: "password")
     get new_rental_url
     assert_redirected_to cars_user_path(@user2.username)
     assert_not flash.empty?
   end
 
   test "should create rental" do
-    sign_in_as(@user1, password: "foobar")
+    sign_in_as(@user1, password: "password")
     assert_difference('Rental.count') do
       post rentals_url, params: { 
         rental: { 
@@ -83,13 +84,13 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
-    sign_in_as(@user1, password: "foobar")
+    sign_in_as(@user1, password: "password")
     get edit_rental_url(@rental)
     assert_response :success
   end
 
   test "should update rental" do
-    sign_in_as(@user1, password: "foobar")
+    sign_in_as(@user1, password: "password")
     patch rental_url(@rental), params: { 
       rental: { 
         user_id: @rental.user_id, 
@@ -108,7 +109,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy rental" do
-    sign_in_as(@user1, password: "foobar")
+    sign_in_as(@user1, password: "password")
     assert_difference('Rental.count', -1) do
       delete rental_url(@rental)
     end
@@ -162,14 +163,14 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect when not owner of rentalpost EDIT' do
-    sign_in_as(@user2, password: "foobar")
+    sign_in_as(@user2, password: "password")
     get edit_rental_url(@rental)
     assert_not flash.empty?
     assert_redirected_to @rental
   end
 
   test 'should redirect when not owner of rentalpost UPDATE' do
-    sign_in_as(@user2, password: "foobar")
+    sign_in_as(@user2, password: "password")
     patch rental_url(@rental), params: { 
       rental: { 
         user_id: @rental.user_id, 
@@ -187,7 +188,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect when not owner of rentalpost DELETE' do
-    sign_in_as(@user2, password: "foobar")
+    sign_in_as(@user2, password: "password")
     delete rental_url(@rental)
     assert_not flash.empty?
     assert_redirected_to @rental

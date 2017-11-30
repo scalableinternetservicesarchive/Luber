@@ -42,14 +42,15 @@ case Rails.env
 
   when 'production'
     puts 'in production!'
-    how_many = {user: 100, cars_per_user: 2, rentals_per_car: 5}
+    how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5}
     col_name_delim = "" # postgres
     val_delim = "'"  # postgres
     direct_sql_inject = true
 end
 
-# Warning: Some weird error if you use direct sql inject
-# in non-production env, even tho it should work.
+# Warning: User_test fails (fails non-NULL constraint) 
+# if you use direct sql inject
+# in non-production env, even tho it should work. 
 
 
 if direct_sql_inject

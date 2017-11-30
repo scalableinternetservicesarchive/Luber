@@ -14,40 +14,143 @@
 # Bryce says: use db:reset at rails console instead of destroying things manually in this file.
 # https://piazza.com/class/j789lo09yai5qx?cid=56
 
+# Update nov 29, 2017: If running in production, 
+
+# 2 issues:
+# 1. make EB seed upon deploy.
+# 2. make this seed file do different things in production vs dev/test.
+
+
+######################################
+# MASS IMPORT
+
+# https://swaac.tamouse.org/swaac/2013/09/03/mass-inserting-data-in-rails-without-killing-your-performance-coffeepowered/
+# https://piazza.com/class/j789lo09yai5qx?cid=78
+
+# require "ar-extensions"
+
+#######################################
+
+case Rails.env
+  when 'test', 'development'
+    puts 'in test or dev!'
+    how_many = {user: 10, cars_per_user: 1, rentals_per_user: 3}
+  when 'production'
+    puts 'in production!'
+    how_many = {user: 10, cars_per_user: 1, rentals_per_user: 4}
+end
+
+
+
+
+
 ###############################################
 # USERS
 ###############################################
 
-# User.destroy_all
-(1..10).to_a.each do |i|
-  User.create!(
-    first_name: "Bob",
-    last_name: "Jones",
-    city: "Goleta",
-    state: "CA",
-    username: "skater4#{i}",
-    email: "user#{i}@boo.com",
-    password: "foobar",
-    admin: false,
-    signed_in_at: DateTime.now )
+
+# Example of direct SQL insertion from the web:
+#
+# TIMES = 10000
+# inserts = []
+# TIMES.times do
+#   inserts.push "(3.0, '2009-01-23 20:21:13', 2, 1)"
+# end
+# sql = "INSERT INTO user_node_scores (`score`, `updated_at`, `node_id`, `user_id`) VALUES #{inserts.join(", ")}"
+# CONN.execute sql
+
+
+# # Minimum Working Example of inserting directly into SQL DB:
+# #
+# # User.column_names
+# #=> ["id", "first_name", "last_name", "city", "state", "username", "email", "password_digest", "admin", "logged_in_at", "created_at", "updated_at"]
+#
+# d1 = { first_name: "Bob", last_name: "Jones", city: "Goleta", state: "CA", username: "skater41", email: "user1@boo.com", password: "foobar", admin: false, signed_in_at: "2017-11-27 20:32:15" }
+# d2 = { first_name: "Justin", last_name: "Jones", city: "Goleta", state: "CA", username: "skater42", email: "user2@boo.com", password: "foobar", admin: false, signed_in_at: "2017-11-27 20:32:35" }
+# inserts = []
+# my_header = ''
+# [d1,d2].each_with_index do |d,i|
+#     d[:id] = i + 999
+#     d[:created_at] = "2017-11-27 20:32:35"
+#     d[:updated_at] = "2017-11-27 20:32:35"
+#     if d[:admin]
+#       d[:admin] = "TRUE"  
+#     else 
+#       d[:admin] = "FALSE"
+#     end
+#     d[:password_digest] = User.digest('foobar')
+#     d.delete(:password)
+#     my_header_elems = d.keys.map {|s| '`' + s.to_s + '`'}
+#     my_header = my_header_elems.join(',')
+#     strs = d.values.map {|e| e.inspect}
+#     inserts.push( '(' +  strs.join(',') + ')')
+#   end
+# big_string = inserts.join(", ")
+# sql = "INSERT INTO users (#{my_header}) VALUES #{big_string}"
+#
+# CONN = ActiveRecord::Base.connection
+# CONN.execute sql
+
+user_cols = User.column_names
+user_header = (user_cols.map {|s| "`#{s}`"}).join(',') 
+sql = "INSERT INTO users (#{user_header}) VALUES "
+
+(1..how_many[:user]).to_a.each do |i|
+
+  d = { 
+      id:           i,
+      first_name:   "Bob",
+      last_name:    "Jones",
+      city:         "Goleta",
+      state:        "CA",
+      username:     "skater4#{i}",
+      email:        "user#{i}@boo.com",
+      password:     "foobar",
+      admin:        false,
+      signed_in_at: DateTime.now,
+      created_at:   DateTime.now,
+      updated_at:   DateTime.now
+      }
+
+  if i==1
+    d.merge!  first_name:   "Mister",
+              last_name:    "Admn",
+              username:     "admin01",
+              email:        "a@a.com",
+              admin:        true
+  end
+
+  if Rails.env.production?
+    d[:signed_in_at]    = d[:signed_in_at].strftime("%FT%T")
+    d[:created_at]      = d[:created_at].strftime("%FT%T")
+    d[:updated_at]      = d[:updated_at].strftime("%FT%T")
+    d[:admin]           = d[:admin] ? "TRUE" : "FALSE"
+    d[:password_digest] = User.digest(d[:password])
+    vals = '(' + (d.values_at(*user_cols.map {|s| s.to_sym}).map {|s| s.inspect}).join(',') + ')'
+    sql += i==1 ? vals : ',' + vals
+  else      
+    d.delete(:id)
+    d.delete(:created_at)
+    d.delete(:updated_at)
+    User.create!(d)
+  end
+  
 end
 
-User.create!(
-  first_name: "Mister",
-  last_name: "Admn",
-  city: "Goleta",
-  state: "CA",
-  username: "admin01",
-  email: "a@a.com",
-  password: "foobar",
-  admin: true,
-  signed_in_at: DateTime.now )
+if Rails.env.production?
+  ActiveRecord::Base.connection.execute sql
+end
 
 p "Created #{User.count} users"
+
 
 ###############################################
 # CARS
 ###############################################
+
+
+#> Car.column_names
+#=> ["id", "user_id", "make", "model", "year", "color", "license_plate", "created_at", "updated_at"]
 
 car_makes = ['Toyota','Ford','Nissan','BMW','Mazda','Mercedes','Volkswagen','Audi','Kia','Hyundai','Subaru']
 car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','Tacoma','Outback','Forester',
@@ -57,13 +160,15 @@ car_colors = ['Red','Orange','Yellow','Green','Blue','Purple','Black','White','G
 # Car.destroy_all
 User.all.each do |u|
   p "Making a car for user #{u.username}"
-  Car.create!(
-    user_id: u.id,
-    make: car_makes.sample,
-    model: car_models.sample,
-    year: (1960..2017).to_a.sample,
-    color: car_colors.sample,
-    license_plate: [(0...9).to_a.sample, ('A'...'Z').to_a.sample(3), (0...9).to_a.sample(3)].join )
+  how_many[:cars_per_user].times do 
+    Car.create!(
+      user_id: u.id,
+      make: car_makes.sample,
+      model: car_models.sample,
+      year: (1960..2017).to_a.sample,
+      color: car_colors.sample,
+      license_plate: [(0...9).to_a.sample, ('A'...'Z').to_a.sample(3), (0...9).to_a.sample(3)].join )
+  end
 end
 
 p "Created #{Car.count} cars"
@@ -71,6 +176,10 @@ p "Created #{Car.count} cars"
 ###############################################
 # Rentals
 ###############################################
+
+
+# ["id", "owner_id", "renter_id", "renter_visible", "car_id", "status", "start_location", "start_longitude", 
+#  "start_latitude", "end_location", "end_longitude", "end_latitude", "start_time", "end_time", "price", "terms", "created_at", "updated_at"]
 
 all_locations = ["Los Angeles, CA", "San Diego, CA", "San Jose, CA", "San Francisco, CA", "Fresno, CA", "Sacramento, CA", 
   "Long Beach, CA", "Oakland, CA", "Bakersfield, CA", "Anaheim, CA", "Santa Ana, CA", "Riverside, CA", "Stockton, CA", 
@@ -185,3 +294,8 @@ Car.all.each do |c|
 end
 
 p "Created #{Tagging.count} taggings"
+
+
+
+
+

@@ -42,7 +42,7 @@ case Rails.env
 
   when 'production'
     puts 'in production!'
-    how_many = {user: 10, cars_per_user: 2, rentals_per_car: 10}
+    how_many = {user: 100, cars_per_user: 20, rentals_per_car: 10}
     col_name_delim = "" # postgres
     val_delim = "'"  # postgres
     direct_sql_inject = true
@@ -51,6 +51,12 @@ end
 # Warning: Some weird error if you use direct sql inject
 # in non-production env, even tho it should work.
 
+
+if direct_sql_inject
+  # turn off logger (we turn it back @ end of file)
+  # (This prevents rails db:seed from spewing)
+  ActiveRecord::Base.logger.level = 1 
+end
 
 def dict_to_db_str(d,cols,delim)
 
@@ -160,7 +166,12 @@ cols = User.column_names
 delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
 sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
 
-(1..how_many[:user]).each do |i|  # don't use .times, then id will be 0, bad.
+PASSWORD = 'foobar'
+PASSWORD_HASH = User.digest(PASSWORD)
+
+user_ids = (1..how_many[:user]).to_a
+
+user_ids.each do |i|  # don't use .times, then id will be 0, bad.
 
   d = { 
       id:           i,
@@ -170,7 +181,7 @@ sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
       state:        "CA",
       username:     "skater4#{i}",
       email:        "user#{i}@boo.com",
-      password:     "foobar",
+      password:     PASSWORD,
       admin:        false,
       signed_in_at: DateTime.now,
       created_at:   DateTime.now,
@@ -190,7 +201,7 @@ sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
     d[:created_at]      = d[:created_at].strftime("%FT%T")
     d[:updated_at]      = d[:updated_at].strftime("%FT%T")
     d[:admin]           = d[:admin] ? "TRUE" : "FALSE"
-    d[:password_digest] = User.digest(d[:password])
+    d[:password_digest] = PASSWORD_HASH
     vals = dict_to_db_str(d,cols,val_delim)
     sql += i==1 ? vals : ',' + vals
   else      
@@ -207,6 +218,7 @@ if direct_sql_inject
 end
 
 p "Created #{User.count} users"
+p DateTime.now
 
 
 ###############################################
@@ -227,12 +239,19 @@ cols = Car.column_names
 delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
 sql = "INSERT INTO cars (#{delimited_cols.join(',')}) VALUES "
 i = 0
-User.all.each do |u|
+
+users_cars_ids = {}  # uid => list_of_his_car_ids
+user_ids.each do |uid|
+  users_cars_ids[uid] = []
+end
+
+# User.all.each do |u|
+user_ids.each do |uid|  # optimization: reduce # db queries 
   how_many[:cars_per_user].times do 
-    p "Making a car for user #{u.username} (total cars: #{i+1})"
+    # p "Making a car for user #{u.username} (total cars: #{i+1})"
     d = {
       id:             (i+=1),
-      user_id:        u.id,
+      user_id:        uid, # u.id,
       make:           car_makes.sample,
       model:          car_models.sample,
       year:           (1960..2017).to_a.sample,
@@ -241,6 +260,8 @@ User.all.each do |u|
       created_at:     DateTime.now,
       updated_at:     DateTime.now
     }
+
+    users_cars_ids[uid].push i  # remember which car this user owns
 
     if direct_sql_inject
       d[:created_at]      = d[:created_at].strftime("%FT%T")
@@ -261,6 +282,7 @@ if direct_sql_inject
 end
 
 p "Created #{Car.count} cars"
+p DateTime.now
 
 ###############################################
 # Rentals
@@ -386,9 +408,16 @@ cols = Rental.column_names
 delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
 sql = "INSERT INTO rentals (#{delimited_cols.join(',')}) VALUES "
 i = 0
-User.all.each do |u|
-  u.cars.each do |c|   # each car gets a bunch of rentals
-    # old: c = Car.where(user_id: u.id).sample
+
+# Avoid using ORM for speed:
+user_ids.each do |uid|
+  users_cars[uid].each do |cid|
+
+# old:
+# User.all.each do |u|
+  # u.cars.each do |c|   # each car gets a bunch of rentals
+
+    # old old: c = Car.where(user_id: u.id).sample
     # p "User #{u.username} owns car id: #{c.id}"
 
     how_many[:rentals_per_car].times do
@@ -404,7 +433,8 @@ User.all.each do |u|
       if label == 'Available' 
         renter = nil 
       else
-        renter = (User.all-[u]).sample.id
+        # renter = (User.all-[u]).sample.id
+        renter = (user_ids-[uid]).sample
       end
       price = rand(10..200)
       terms = all_terms.sample(1)[0]
@@ -412,7 +442,7 @@ User.all.each do |u|
 
       d = {
         id:               (i+=1),
-        owner_id:         u.id,
+        owner_id:         uid, # u.id,
         renter_id:        renter,
         renter_visible:   true,
         car_id:           c.id,
@@ -463,6 +493,7 @@ if direct_sql_inject
 end
 
 p "Created #{Rental.count} rental posts"
+p DateTime.now
 
 ###############################################
 # TAGS
@@ -477,6 +508,7 @@ all_tags.each do |t|
 end
 
 p "Created #{Tag.count} tags"
+p DateTime.now
 
 ###############################################
 # TAGGINGS
@@ -520,8 +552,12 @@ if direct_sql_inject
 end
 
 p "Created #{Tagging.count} taggings"
+p DateTime.now
 
 
-
+# re-enable logger
+if direct_sql_inject
+  ActiveRecord::Base.logger.level = 0
+end
 
 

@@ -152,3 +152,29 @@ WARNING: Never commit this credentials into your repository, or put them anywher
     - can change instance type / number of instances on the fly, don't have to restart EB
 
 1. Try out a bunch of things!
+
+
+### Using the SEED file in production
+
+To use this seed file in production:
+
+1. Log in to EC2
+
+1. cd to your personal directory
+
+1. Then:
+
+        EC2$ git pull
+        EC2$ eb deploy # if it's still running, or 'eb create ...' if not.
+        EC2$ eb ssh -e 'ssh -i ~/luber.pem'
+
+1. Now you're in the production machine (the App Server). Then:
+
+        PRODUCTION-MACHINE$ cd /var/app/current
+
+        PRODUCTION-MACHINE$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Rental.destroy_all ; Tag.destroy_all ; Tagging.destroy_all ; Car.destroy_all ; User.destroy_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
+
+        PRODUCTION-MACHINE$ rails db:seed
+
+
+        

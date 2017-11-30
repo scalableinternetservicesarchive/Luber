@@ -6,7 +6,14 @@ class UserTest < ActiveSupport::TestCase
       username: "ExampleUser", 
       email:"user@example.com",
       password: "foobar", 
-      password_confirmation: "foobar")
+      password_confirmation: "foobar",
+      first_name: "Bob", 
+      last_name: "Jones", 
+      city: "Goleta", 
+      state: "CA", 
+      admin: false, 
+      signed_in_at: "2017-11-30 10:55:36"
+       )
   end
 
   test "should be valid" do

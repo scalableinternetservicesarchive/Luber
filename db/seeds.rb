@@ -32,15 +32,59 @@
 #######################################
 
 case Rails.env
+
   when 'test', 'development'
     puts 'in test or dev!'
     how_many = {user: 10, cars_per_user: 1, rentals_per_car: 3}
+    col_name_delim = "`" # sqlite3
+    val_delim = '"'  # sqlite3
+    direct_sql_inject = false
+
   when 'production'
     puts 'in production!'
     how_many = {user: 10, cars_per_user: 2, rentals_per_car: 10}
+    col_name_delim = "" # postgres
+    val_delim = "'"  # postgres
+    direct_sql_inject = true
 end
 
+# Warning: Some weird error if you use direct sql inject
+# in non-production env, even tho it should work.
 
+
+def dict_to_db_str(d,cols,delim)
+
+# Usage:
+#
+# > di = {name: "Justin", age: 34, ssn: "\"Um no,\" he said"}
+#   => {:name=>"Justin", :age=>34, :ssn=>"\"Um no,\" he said"}
+# > cols = ["name","age","ssn","nope"]
+# > puts dict_to_db_str(di,cols,"'")
+#   ('Justin', 34, '\'Um no,\' he said', nil)
+
+  # puts cols
+  # puts d.keys.first.class
+  # puts cols.first.class
+
+  if d.keys.first.is_a? Symbol and cols.first.is_a? String
+    # puts "need syms"
+    cols.map! {|s| s.to_sym}
+  elsif d.keys.first.is_a? String and cols.first.is_a? Symbol
+    # puts "need strs"
+    cols.map! {|s| s.to_s}
+  end
+  # puts cols
+
+  vs = d.values_at(*cols)
+  # puts vs
+  s = vs.inspect
+  # puts s
+  s[0] = '('
+  s[-1] = ')'
+  s.gsub! '"', delim
+
+  return s
+end
 
 
 
@@ -61,6 +105,8 @@ end
 
 
 # # Minimum Working Example of inserting directly into SQL DB:
+# NOTE: Doesn't work in production (Postgres has different syntax), 
+# see other example below
 # #
 # # User.column_names
 # #=> ["id", "first_name", "last_name", "city", "state", "username", "email", "password_digest", "admin", "logged_in_at", "created_at", "updated_at"]
@@ -96,9 +142,25 @@ end
 #     "username", "email", "password_digest", "admin", 
 #     "signed_in_at", "created_at", "updated_at"]
 
-sql = "INSERT INTO users (#{(User.column_names.map {|s| "`#{s}`"}).join(',')}) VALUES "
 
-how_many[:user].times do |i|
+# Postgres example
+# (Copy/paste to rails c on AWS, which uses Postgres)
+# (That is, from luber@ec2.cs291.com, do this:)
+# $ eb ssh -e 'ssh -i ~/luber.pem'
+# $ cd /var/app/current
+# $ rails c
+#
+# irb> sql = <<EOF
+# irb> INSERT INTO users (id,first_name,last_name,city,state,username,email,password_digest,admin,signed_in_at,created_at,updated_at) VALUES (13,'Bob13','Jones','Goleta','CA','skater413','user13@boo.com','$2a$10$riUtUdM5F5dBaqqi81AIJ.AvJuTscIK/omdLEkmRX1AwhfXnXRmny','FALSE','2017-11-30T17:35:57','2017-11-30T17:35:57','2017-11-30T17:35:57'),(14,'Bob14','Jones','Goleta','CA','skater414','user14@boo.com','$2a$10$riUtUdM5F5dBaqqi81AIJ.AvJuTscIK/omdLEkmRX1AwhfXnXRmny','FALSE','2017-11-30T17:35:57','2017-11-30T17:35:57','2017-11-30T17:35:57') 
+# irb> EOF
+# irb> sql = sql.strip
+# irb> ActiveRecord::Base.connection.execute sql
+
+cols = User.column_names
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
+
+(1..how_many[:user]).each do |i|  # don't use .times, then id will be 0, bad.
 
   d = { 
       id:           i,
@@ -123,13 +185,13 @@ how_many[:user].times do |i|
               admin:        true
   end
 
-  if Rails.env.production?
+  if direct_sql_inject
     d[:signed_in_at]    = d[:signed_in_at].strftime("%FT%T")
     d[:created_at]      = d[:created_at].strftime("%FT%T")
     d[:updated_at]      = d[:updated_at].strftime("%FT%T")
     d[:admin]           = d[:admin] ? "TRUE" : "FALSE"
     d[:password_digest] = User.digest(d[:password])
-    vals = '(' + (d.values_at(*User.column_names.map {|s| s.to_sym}).map {|s| s.inspect}).join(',') + ')'
+    vals = dict_to_db_str(d,cols,val_delim)
     sql += i==1 ? vals : ',' + vals
   else      
     d.delete(:id)
@@ -140,7 +202,7 @@ how_many[:user].times do |i|
   
 end
 
-if Rails.env.production?
+if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
@@ -161,7 +223,9 @@ car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Ch
 car_colors = ['Red','Orange','Yellow','Green','Blue','Purple','Black','White','Gray','Silver']
 
 
-sql = "INSERT INTO cars (#{(Car.column_names.map {|s| "`#{s}`"}).join(',')}) VALUES "
+cols = Car.column_names
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO cars (#{delimited_cols.join(',')}) VALUES "
 i = 0
 User.all.each do |u|
   how_many[:cars_per_user].times do 
@@ -173,15 +237,15 @@ User.all.each do |u|
       model:          car_models.sample,
       year:           (1960..2017).to_a.sample,
       color:          car_colors.sample,
-      license_plate:  [(0...9).to_a.sample, ('A'...'Z').to_a.sample(3), (0...9).to_a.sample(3)].join,
+      license_plate:  [(0..9).to_a.sample, ('A'..'Z').to_a.sample(3), (0..9).to_a.sample(3)].join,
       created_at:     DateTime.now,
       updated_at:     DateTime.now
     }
 
-    if Rails.env.production?
+    if direct_sql_inject
       d[:created_at]      = d[:created_at].strftime("%FT%T")
       d[:updated_at]      = d[:updated_at].strftime("%FT%T")
-      vals = '(' + (d.values_at(*Car.column_names.map {|s| s.to_sym}).map {|s| s.inspect}).join(',') + ')'
+      vals = dict_to_db_str(d,cols,val_delim)
       sql += i==1 ? vals : ',' + vals
     else      
       d.delete(:id)
@@ -192,7 +256,7 @@ User.all.each do |u|
   end
 end
 
-if Rails.env.production?
+if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
@@ -318,7 +382,9 @@ deltatimes = [1.weeks, 2.hours, -30.minutes, -1.weeks, -1.weeks]
 #     "start_time", "end_time", "price", "terms", 
 #     "created_at", "updated_at"]
 
-sql = "INSERT INTO rentals (#{(Rental.column_names.map {|s| "`#{s}`"}).join(',')}) VALUES "
+cols = Rental.column_names
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO rentals (#{delimited_cols.join(',')}) VALUES "
 i = 0
 User.all.each do |u|
   u.cars.each do |c|   # each car gets a bunch of rentals
@@ -340,7 +406,7 @@ User.all.each do |u|
       else
         renter = (User.all-[u]).sample.id
       end
-      price = rand(10...200)
+      price = rand(10..200)
       terms = all_terms.sample(1)[0]
       # puts terms
 
@@ -366,7 +432,7 @@ User.all.each do |u|
         updated_at:       DateTime.now
       }
 
-      if Rails.env.production?
+      if direct_sql_inject
         d[:renter_id]       = d[:renter_id].nil?  ? "NULL_SHITTY_HACK" : d[:renter_id]
         d[:created_at]      = d[:created_at].strftime("%FT%T")
         d[:updated_at]      = d[:updated_at].strftime("%FT%T")
@@ -374,7 +440,7 @@ User.all.each do |u|
         d[:end_time]        = d[:end_time].strftime("%FT%T")
         d[:renter_visible]  = d[:renter_visible]  ? "TRUE" : "FALSE"
         d[:skip_in_seed]    = d[:skip_in_seed]    ? "TRUE" : "FALSE"
-        vals = '(' + (d.values_at(*Rental.column_names.map {|s| s.to_sym}).map {|s| s.inspect}).join(',') + ')'
+        vals = dict_to_db_str(d,cols,val_delim)
         vals.gsub! "\"NULL_SHITTY_HACK\"", "NULL"  # Needs to be NULL, not "NULL" in SQL statement.
         sql += i==1 ? vals : ',' + vals
       else      
@@ -392,7 +458,7 @@ User.all.each do |u|
   end
 end
 
-if Rails.env.production?
+if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
@@ -419,7 +485,9 @@ p "Created #{Tag.count} tags"
 # > Tagging.column_names
 # => ["id", "car_id", "tag_id", "created_at", "updated_at"]
 
-sql = "INSERT INTO taggings (#{(Tagging.column_names.map {|s| "`#{s}`"}).join(',')}) VALUES "
+cols = Tagging.column_names
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO taggings (#{delimited_cols.join(',')}) VALUES "
 i = 0
 Car.all.each do |c|
   # Each car has a couple random non-duplicate tags.
@@ -432,10 +500,10 @@ Car.all.each do |c|
       updated_at: DateTime.now      
     }
 
-    if Rails.env.production?
+    if direct_sql_inject
       d[:created_at]      = d[:created_at].strftime("%FT%T")
       d[:updated_at]      = d[:updated_at].strftime("%FT%T")
-      vals = '(' + (d.values_at(*Tagging.column_names.map {|s| s.to_sym}).map {|s| s.inspect}).join(',') + ')'
+      vals = dict_to_db_str(d,cols,val_delim)
       sql += i==1 ? vals : ',' + vals
     else      
       d.delete(:id)
@@ -447,7 +515,7 @@ Car.all.each do |c|
   end
 end
 
-if Rails.env.production?
+if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 

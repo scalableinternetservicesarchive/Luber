@@ -11,9 +11,11 @@
 ###############################################
 
 Stat.create!(
-  total_users_deleted: 0,
-  total_rentals_deleted: 0,
-  total_cars_deleted: 0 )
+  total_deleted_users: 0,
+  total_deleted_rentals: 0,
+  total_deleted_cars: 0 )
+
+puts 'Created Global Stat object'
 
 ###############################################
 # LOAD ENVIRONMENT-SPECIFIC SEED DATA

@@ -7,7 +7,7 @@
   <%= render 'users/nav' %>
 <% end %>
 <section class="container m-top card-wrapper">
-  <% if @owner_rentals_count == 0 %>
+  <% if @user.deleted_owner_rentals == 0 && %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented out your car to anyone yet.</p>
       <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
@@ -15,7 +15,7 @@
     </div>
     <hr>
   <% end %>
-  <% if @renter_rentals_count == 0 %>
+  <% if @user.deleted_renter_rentals == 0 %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented anyone else's car yet.</p>
       <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :stats
   root 'statics#home'
 
   get 'home', to: 'statics#home'

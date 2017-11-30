@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :cars, :history, :settings, :promote]
-  before_action :signed_in_user, only: [:edit, :update]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :set_user, only: [:show, :destroy, :cars, :history, :settings, :promote]
+  before_action :signed_in_user, only: [:edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_progress, only: [:overview, :rentals]
 
   def show
     if @user.id == session[:user_id]
-      redirect_to overview_user_path(session[:user_username]), status: 301
+      redirect_to overview_user_path(session[:user_username])
     end
   end
 
@@ -87,6 +87,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user.destroy
+
+    @stats = Stat.first
+    @stats.update_attribute(:total_deleted_users, @stats.total_deleted_users + 1)
+
+    respond_to do |format|
+      flash[:success] = 'Account successfully deleted'
+      format.html { redirect_to root_url }
+    end
+  end
+
   def overview
     @recent_owner_rentals = Rental.where(owner_id: @user.id).limit(3)
     if @recent_owner_rentals.length > 0
@@ -109,11 +121,11 @@ class UsersController < ApplicationController
   end
 
   def rentals
-    @rentals = Rental.where(['owner_id = ? OR renter_id = ?', @user.id, @user.id])
-    @owner_rentals_count, @renter_rentals_count = 0, 0
+    @per_page_count = 4
+    @owner_rentals_count = Rental.where(owner_id: @user.id).length
+    @rentals = Rental.where(['owner_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @renters, @cars = [], [], []
     @rentals.each do |rental|
-      rental.owner_id == @user.id ? @owner_rentals_count += 1 : @renter_rentals_count += 1
       @owners << User.find(rental.owner_id)
       rental.renter_id.nil? ? @renters << nil : @renters << User.find(rental.renter_id)
       @cars << Car.find(rental.car_id)
@@ -121,11 +133,13 @@ class UsersController < ApplicationController
   end
 
   def cars
-    @cars = Car.where(user_id: @user.id)
+    @per_page_count = 4
+    @cars = Car.where(user_id: @user.id).paginate( page: params[:page], per_page: @per_page_count )
   end
 
   def history
-    @logs = Log.where(user_id: @user.id).order(updated_at: :desc).group_by_day(reverse: true){ |l| l.updated_at }
+    @per_page_count = 8
+    @logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
   end
 
   def settings

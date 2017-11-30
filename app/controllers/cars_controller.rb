@@ -85,6 +85,9 @@ class CarsController < ApplicationController
 
     @car.destroy
 
+    @stats = Stat.first
+    @stats.update_attribute(:total_deleted_cars, @stats.total_deleted_cars + 1)
+
     Log.create!(
       user_id: session[:user_id], 
       action: 2, 

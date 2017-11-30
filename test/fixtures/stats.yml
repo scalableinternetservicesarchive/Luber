@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  total_deleted_users: 1
+  total_deleted_rentals: 1
+  total_deleted_cars: 1
+
+two:
+  total_deleted_users: 1
+  total_deleted_rentals: 1
+  total_deleted_cars: 1

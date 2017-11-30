@@ -1,16 +1,24 @@
 <% provide(:title, "My History") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+<% params[:page] ? page = params[:page] : page = 1 %>
 
 <%= render 'users/banner' %>
 <% if session[:user_id] == @user.id %>
   <%= render 'users/nav' %>
 <% end %>
 <section class="container m-top card-wrapper">
-  <% @logs.each do |day, day_logs| %>
-    <h2><%= day.strftime("%A, %b. %-d %Y").to_s %></h2>
-    <hr>
-    <% day_logs.each do |log| %>
-      <%= render log %>
-    <% end %>
+  <% if @logs.length > 0 %>
+    <%= render @logs %>
+    <%= will_paginate @logs, 
+      class: 'mb-5',
+      page_links: false, 
+      previous_label: icon('arrow-left'), 
+      next_label: icon('arrow-right'),
+      link_separator: "<p>#{page} / #{@logs.total_pages}</p>" %>
+  <% else %>
+    <div class="text-center">
+      <p class="font-italic">Looks like you don't have any logs yet.</p>
+      <p>Wait but that can't be...</p>
+    </div>
   <% end %>
 </section>

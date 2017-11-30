@@ -7,7 +7,8 @@ class RentalsController < ApplicationController
   # GET /rentals
   # GET /rentals.json
   def index
-    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: 8 )
+    @per_page_count = 8
+    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @cars = [], []
     @available_rentals.each do |rental|
       @owners << User.find(rental.owner_id)
@@ -182,9 +183,16 @@ class RentalsController < ApplicationController
   # DELETE /rentals/1.json
   def destroy
     start_time = @rental.start_time.dup
+    owner_user = User.find(@rental.owner_id)
+    rental_user = User.find(@rental.renter_id)
     car = Car.find(@rental.car_id)
 
     @rental.destroy
+
+    @stats = Stat.first
+    @stats.update_attribute(:total_deleted_rentals, @stats.total_deleted_rentals + 1)
+    owner_user.update_attribute(:deleted_owner_rentals, owner_user.deleted_owner_rentals + 1)
+    rental_user.update_attribute(:deleted_renter_rentals, rental_user.deleted_renter_rentals + 1)
 
     Log.create!(
       user_id: session[:user_id], 

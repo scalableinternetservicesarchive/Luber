@@ -9,6 +9,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :email
       t.string :password_digest
       t.boolean :admin, default: false
+      t.integer :deleted_owner_rentals, default: 0
+      t.integer :deleted_renter_rentals, default: 0
       t.datetime :signed_in_at
       t.timestamps
     end

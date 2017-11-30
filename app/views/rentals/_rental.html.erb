@@ -39,7 +39,7 @@
       <p class="list-group-item">
         <%= icon('key', class: 'fa-fw') %><%#
         %>Owner: <%= link_to owner.username, user_path(owner.username) %><%#
-        %><%= rental.owner_id == session[:user_id] ? '<span class="font-italic"> (You are the owner)</span>'.html_safe : '' %><%#
+        %><%= rental.user_id == session[:user_id] ? '<span class="font-italic"> (You are the owner)</span>'.html_safe : '' %><%#
       %></p>
       <% unless rental.renter_id.nil? %>
         <p class="list-group-item">
@@ -68,7 +68,7 @@
             <%= link_to icon('search')+"View", rental, class: 'btn btn-outline-base ml-1', role: 'button' %>
           <% end %>
           <% case session[:user_id] %>
-          <% when rental.owner_id %>
+          <% when rental.user_id %>
             <%# If you own this rental, you can view, edit, cancel, or delete it %>
             <% if rental.get_status_label.in? ['Available', 'Upcoming'] %>
             <%# If available or upcoming, you can edit or cancel it %>

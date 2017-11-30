@@ -31,7 +31,7 @@ class RentalPaginationTest < ActionDispatch::IntegrationTest
     50.times do |i|
       @tmp_rentals.push(
         Rental.create!(
-          owner_id: @user2.id,
+          user_id: @user2.id,
           renter_id: nil,
           car_id: @car.id,
           start_location: "sb, ca",

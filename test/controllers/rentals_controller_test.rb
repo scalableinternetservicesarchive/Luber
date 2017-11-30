@@ -25,7 +25,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       license_plate: "3asd123" )
 
     @rental = Rental.create!(
-      owner_id: @user1.id, 
+      user_id: @user1.id, 
       renter_id: @user2.id, 
       car_id: @car.id, 
       start_location: "Santa Barbara", 
@@ -60,7 +60,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Rental.count') do
       post rentals_url, params: { 
         rental: { 
-          owner_id: @rental.owner_id, 
+          user_id: @rental.user_id, 
           renter_id: @rental.renter_id, 
           car_id: @rental.car_id, 
         start_location: @rental.start_location, 
@@ -92,7 +92,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user1, password: "foobar")
     patch rental_url(@rental), params: { 
       rental: { 
-        owner_id: @rental.owner_id, 
+        user_id: @rental.user_id, 
         renter_id: @rental.renter_id, 
         car_id: @rental.car_id, 
         start_location: @rental.start_location, 
@@ -124,7 +124,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
 
     post rentals_url, params: { 
       rental: { 
-        owner_id: @rental.owner_id, 
+        user_id: @rental.user_id, 
         renter_id: @rental.renter_id, 
         car_id: @rental.car_id,
         start_location: @rental.start_location, 
@@ -143,7 +143,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
 
     patch rental_url(@rental), params: { 
       rental: { 
-        owner_id: @rental.owner_id, 
+        user_id: @rental.user_id, 
         renter_id: @rental.renter_id, 
         car_id: @rental.car_id,
         start_location: @rental.start_location, 
@@ -172,7 +172,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user2, password: "foobar")
     patch rental_url(@rental), params: { 
       rental: { 
-        owner_id: @rental.owner_id, 
+        user_id: @rental.user_id, 
         renter_id: @rental.renter_id, 
         car_id: @rental.car_id,
         start_location: @rental.start_location, 

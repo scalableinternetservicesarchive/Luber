@@ -79,8 +79,9 @@ rentalHeaderColor = function() {
     return;
   }
 
+  var angles = [0, 5, 45, 90, 135, 175, 180, 185, 225, 270, 315, 355];
   var headers = $('.card-header');
   for(var i = 0; i < headers.length; i++) {
-    headers[i].style.setProperty('--angle', String(Math.floor(Math.random() * 360))+"deg");
+    headers[i].style.setProperty('--angle', String(angles[Math.floor(Math.random()*angles.length)]+"deg"));
   }
 }

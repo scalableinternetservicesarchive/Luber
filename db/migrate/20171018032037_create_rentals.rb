@@ -1,7 +1,7 @@
 class CreateRentals < ActiveRecord::Migration[5.0]
   def change
     create_table :rentals do |t|
-      t.integer :owner_id
+      t.integer :user_id
       t.integer :renter_id
       t.boolean :renter_visible, default: true
       t.integer :car_id

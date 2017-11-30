@@ -25,7 +25,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
       license_plate: '8DEF234')
 
     @rental = Rental.create!(
-      owner_id: @user.id,
+      user_id: @user.id,
       renter_id: nil,
       car_id: @car.id,
       start_location: 'Santa Barbara',

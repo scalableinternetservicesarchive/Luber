@@ -1,7 +1,19 @@
 class Rental < ApplicationRecord
   before_save :geocode_endpoints
+  after_save { 
+    if self.renter_id_before_last_save == nil && self.renter_id.present?
+      renter = User.find(self.renter_id)
+      renter.update_attribute(:renter_rentals_count, renter.renter_rentals_count + 1)
+    end
+  }
+  after_destroy { 
+    if self.renter_id.present?
+      renter = User.find(self.renter_id)
+      renter.update_attribute(:renter_rentals_count, renter.renter_rentals_count - 1)
+    end
+  }
 
-  has_one :user, through: :owner_id
+  belongs_to :user, counter_cache: true
   has_one :car
 
   attr_accessor :skip_in_seed
@@ -10,7 +22,7 @@ class Rental < ApplicationRecord
   VALID_PRICE = /\A\d+(\.\d\d)?\z/
   VALID_TERMS = /\A[\w~!@#$%&*()+=\[\]\\|:'"\/?., -]*\z/i
 
-  validates :owner_id, presence: true
+  validates :user_id, presence: true
   validates :car_id, presence: true
   validates :status, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 4, only_integer: true }
   validates :start_location, presence: true, length: { minimum: 3, maximum: 256 }, format: { with: VALID_LOCATION }

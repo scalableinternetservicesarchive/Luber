@@ -78,7 +78,7 @@ class UserTest < ActiveSupport::TestCase
   test "db seed file: each user should have 5 rentals" do
     Rails.application.load_seed
     User.all.each do |u|
-      assert_equal Rental.where(owner_id: u.id).count, 5
+      assert_equal Rental.where(user_id: u.id).count, 5
     end
   end
 end

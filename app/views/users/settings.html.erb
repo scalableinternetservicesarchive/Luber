@@ -73,21 +73,21 @@
           <%= icon('car', class: 'fa-fw') %><%#
           %>Cars:<%#
           %><span class="ml-auto"><%#
-            %><%= @cars_count %><%#
+            %><%= @user.cars_count %><%#
           %></span>
         </p>
         <p class="list-group-item d-flex align-items-center">
           <%= icon('key', class: 'fa-fw') %><%#
           %>Rentals As Owner:<%#
           %><span class="ml-auto"><%#
-            %><%= @rides_sold_count %><%#
+            %><%= @user.rentals_count %><%#
           %></span>
         </p>
         <p class="list-group-item d-flex align-items-center">
           <%= icon('mobile', class: 'fa-fw') %><%#
           %>Rentals As Renter:<%#
           %><span class="ml-auto"><%#
-            %><%= @rides_bought_count %><%#
+            %><%= @user.renter_rentals_count %><%#
           %></span>
         </p>
         <hr>

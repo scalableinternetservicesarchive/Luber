@@ -98,8 +98,6 @@ all_terms = [
 User.all.each do |u|
   c = Car.where(user_id: u.id).sample
 
-  # p "User #{u.username} owns car id: #{c.id}"
-
   # https://github.com/scalableinternetservices/Luber/issues/107
   # Generate 1 post with a start and end date sampling in the future, no renter, and status as available
   # Generate 1 post with a start and end date sampling in the (near) future and status as upcoming
@@ -126,7 +124,7 @@ User.all.each do |u|
     puts terms
 
     Rental.create!(
-      owner_id: u.id,
+      user_id: u.id,
       renter_id: renter,
       car_id: c.id,
       start_location: c1,

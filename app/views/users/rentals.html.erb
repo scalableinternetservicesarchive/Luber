@@ -7,23 +7,22 @@
   <%= render 'users/nav' %>
 <% end %>
 <section class="container m-top card-wrapper">
-  <% if @user.deleted_owner_rentals == 0 && %>
+  <% if @user.rentals_count == 0 %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented out your car to anyone yet.</p>
       <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
       <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
     </div>
+  <% end %>
+  <% if @user.rentals_count == 0 || @user.renter_rentals_count == 0 %>
     <hr>
   <% end %>
-  <% if @user.deleted_renter_rentals == 0 %>
+  <% if @user.renter_rentals_count == 0 %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented anyone else's car yet.</p>
       <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>
       <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
     </div>
-    <% if @owner_rentals_count + @renter_rentals_count != 0 %>
-      <hr>
-    <% end %>
   <% end %>
   <% if @rentals.length > 0 %>
     <%= render @rentals, owners: @owners, renters: @renters, cars: @cars %>

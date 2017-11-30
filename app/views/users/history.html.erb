@@ -7,14 +7,20 @@
   <%= render 'users/nav' %>
 <% end %>
 <section class="container m-top card-wrapper">
-  <% if @logs.length > 0 %>
-    <%= render @logs %>
-    <%= will_paginate @logs, 
+  <% if @page_logs.length > 0 %>
+    <% @day_logs.each do |day, logs| %>
+      <h2><%= day.strftime("%A, %b. %-d %Y").to_s %></h2>
+      <hr>
+      <% logs.each do |log| %>
+        <%= render log %>
+      <% end %>
+    <% end %>
+    <%= will_paginate @page_logs, 
       class: 'mb-5',
       page_links: false, 
       previous_label: icon('arrow-left'), 
       next_label: icon('arrow-right'),
-      link_separator: "<p>#{page} / #{@logs.total_pages}</p>" %>
+      link_separator: "<p>#{page} / #{@page_logs.total_pages}</p>" %>
   <% else %>
     <div class="text-center">
       <p class="font-italic">Looks like you don't have any logs yet.</p>

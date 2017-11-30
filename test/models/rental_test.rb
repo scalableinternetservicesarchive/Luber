@@ -3,7 +3,7 @@ require 'test_helper'
 class RentalTest < ActiveSupport::TestCase
   def setup
     @rental = Rental.new(
-      owner_id: 1,
+      user_id: 1,
       renter_id: 2,
       car_id: 1,
       start_location: "la, ca",

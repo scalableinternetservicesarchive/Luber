@@ -10,13 +10,6 @@
 # SEED DATA FOR ALL ENVIRONMENTS
 ###############################################
 
-Stat.create!(
-  total_deleted_users: 0,
-  total_deleted_rentals: 0,
-  total_deleted_cars: 0 )
-
-puts 'Created Global Stat object'
-
 ###############################################
 # LOAD ENVIRONMENT-SPECIFIC SEED DATA
 ###############################################

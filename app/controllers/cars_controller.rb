@@ -16,10 +16,7 @@ class CarsController < ApplicationController
   # POST /cars.json
   def create
     @car = Car.new(car_params)
-
-    if session[:user_id]
-      @car.user_id = session[:user_id]
-    end
+    @car.user_id = session[:user_id]
 
     respond_to do |format|
       if @car.save
@@ -84,9 +81,6 @@ class CarsController < ApplicationController
     original_car = @car.dup
 
     @car.destroy
-
-    @stats = Stat.first
-    @stats.update_attribute(:total_deleted_cars, @stats.total_deleted_cars + 1)
 
     Log.create!(
       user_id: session[:user_id], 

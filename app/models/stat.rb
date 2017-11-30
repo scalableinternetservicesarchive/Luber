@@ -1,2 +1,0 @@
-class Stat < ApplicationRecord
-end

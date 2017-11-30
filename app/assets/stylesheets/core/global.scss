@@ -247,19 +247,35 @@ a.disabled {
 // Misc
 // -------------------------
 
-.alert {
-  border-radius: 0;
+.alert-wrapper {
+  overflow-y: hidden;
+  max-height: 80px;
+  transition-property: all;
+  transition-duration: .5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
-  .fa {
-    cursor: pointer;
-  }
+  .alert {
+    border-radius: 0;
 
-  button.focus,
-  button:focus {
-    outline: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+    .fa {
+      cursor: pointer;
+    }
+
+    button.focus,
+    button:focus {
+      outline: none !important;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+    }
+
+    .close {
+      opacity: 0.3;
+    }
   }
+}
+
+.alert-wrapper.closed {
+  max-height: 0;
 }
   
 .banner {

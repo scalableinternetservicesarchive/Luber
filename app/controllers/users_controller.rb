@@ -90,9 +90,6 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
 
-    @stats = Stat.first
-    @stats.update_attribute(:total_deleted_users, @stats.total_deleted_users + 1)
-
     respond_to do |format|
       flash[:success] = 'Account successfully deleted'
       format.html { redirect_to root_url }
@@ -100,11 +97,11 @@ class UsersController < ApplicationController
   end
 
   def overview
-    @recent_owner_rentals = Rental.where(owner_id: @user.id).limit(3)
+    @recent_owner_rentals = Rental.where(user_id: @user.id).limit(3)
     if @recent_owner_rentals.length > 0
       @or_owners, @or_renters, @or_cars = [], [], []
       @recent_owner_rentals.each do |rental|
-        @or_owners << User.find(rental.owner_id)
+        @or_owners << User.find(rental.user_id)
         rental.renter_id.nil? ? @or_renters << nil : @or_renters << User.find(rental.renter_id)
         @or_cars << Car.find(rental.car_id)
       end
@@ -113,7 +110,7 @@ class UsersController < ApplicationController
     if @recent_renter_rentals.length > 0
       @rr_owners, @rr_renters, @rr_cars = [], [], []
       @recent_renter_rentals.each do |rental|
-        @rr_owners << User.find(rental.owner_id)
+        @rr_owners << User.find(rental.user_id)
         @rr_renters << User.find(rental.renter_id)
         @rr_cars << Car.find(rental.car_id)
       end
@@ -122,11 +119,10 @@ class UsersController < ApplicationController
 
   def rentals
     @per_page_count = 4
-    @owner_rentals_count = Rental.where(owner_id: @user.id).length
-    @rentals = Rental.where(['owner_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: @per_page_count )
+    @rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @renters, @cars = [], [], []
     @rentals.each do |rental|
-      @owners << User.find(rental.owner_id)
+      @owners << User.find(rental.user_id)
       rental.renter_id.nil? ? @renters << nil : @renters << User.find(rental.renter_id)
       @cars << Car.find(rental.car_id)
     end
@@ -138,14 +134,12 @@ class UsersController < ApplicationController
   end
 
   def history
-    @per_page_count = 8
-    @logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+    @per_page_count = 6
+    @page_logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+    @day_logs = @page_logs.group_by_day(reverse: true){ |l| l.updated_at }
   end
 
   def settings
-    @cars_count = Car.where(user_id: @user.id).length
-    @rides_sold_count = Rental.where(owner_id: @user.id).length
-    @rides_bought_count = Rental.where(renter_id: @user.id).length
   end
 
   # PATCH /users/1/promote
@@ -194,7 +188,7 @@ class UsersController < ApplicationController
   def set_progress
     @user = User.find_by(username: params[:username])
     @rentals = Rental.where([
-      '(renter_id = ? OR owner_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
+      '(renter_id = ? OR user_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
       @user.id, @user.id, 1, DateTime.now, 2, DateTime.now])
     @rentals.each do |rental|
       if rental.end_time < DateTime.now
@@ -202,7 +196,7 @@ class UsersController < ApplicationController
 
         car = Car.find(rental.car_id)
         owner_log = Log.create!(
-          user_id: rental.owner_id, 
+          user_id: rental.user_id, 
           action: 3, 
           content: 'Completed renting my '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' to the renter ('+User.find(rental.renter_id).username+')')
         owner_log.touch(time: rental.end_time)
@@ -210,7 +204,7 @@ class UsersController < ApplicationController
         renter_log = Log.create!(
           user_id: rental.renter_id, 
           action: 3, 
-          content: 'Completed renting a '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(rental.owner_id).username+')')
+          content: 'Completed renting a '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(rental.user_id).username+')')
         renter_log.touch(time: rental.end_time)
       else
         rental.update_attribute(:status, 2)

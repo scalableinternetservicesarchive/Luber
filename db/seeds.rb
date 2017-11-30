@@ -513,10 +513,12 @@ all_tags.each do |t|
     Tag.create!(name: t)
 end
 
-NUM_TAGS = Tag.count
+TAG_IDS = Tag.ids
 
 p "Created #{Tag.count} tags"
 p DateTime.now
+
+
 
 ###############################################
 # TAGGINGS
@@ -530,7 +532,9 @@ delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
 sql = "INSERT INTO taggings (#{delimited_cols.join(',')}) VALUES "
 i = 0
 
-(1..Car.count).each do |cid|
+
+
+(1..Car.count).to_a.each do |cid|
 # Car.all.each do |c|
   # Each car has a couple random non-duplicate tags.
   # Tag.all.sample(2).each do |t|
@@ -539,7 +543,7 @@ i = 0
     d = {
       id:         (i+=1),
       car_id:     cid, # c.id,
-      tag_id:     ((cid + t) % NUM_TAGS)+1, # t.id,
+      tag_id:     TAG_IDS[(cid + t) % TAG_IDS.length], # t.id,
       created_at: NOW_DT,
       updated_at: NOW_DT      
     }

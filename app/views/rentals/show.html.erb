@@ -2,8 +2,22 @@
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
 <section class="container-fluid banner">
-  <div class="container">
+  <div class="container text-center">
     <h1>Rental Post #<%= params[:id] %></h1>
+    <p class="mb-1">Created at <%#
+      %><%= @rental.created_at.strftime("%l:%M %p") %> on <%= @rental.created_at.strftime("%A, %b. %-d %Y") %><%#
+    %></p>
+    <% if @rental.updated_at > @rental.created_at %>
+      <p class="font-italic mb-0">Last updated at <%#
+        %><%= @rental.updated_at.strftime("%l:%M %p") %><%#
+        %><% if @rental.updated_at.to_date > @rental.created_at.to_date %><%#
+          %> on <%= @rental.updated_at.strftime("%A, %b. %-d") %><%#
+          %><% if @rental.updated_at.year > @rental.created_at.year %><%#
+            %> <%= @rental.updated_at.strftime("%Y") %><%#
+          %><% end %><%#
+        %><% end %><%#
+      %></p>
+    <% end %>
   </div>
 </section>
 <section class="container m-top card-wrapper">

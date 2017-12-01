@@ -78,20 +78,21 @@ How to run load-tests with Tsung
 
 [Quickstart](quickstart)
 
-1. [Launch your app on Elastic Beanstalk](launch-your-app-on-elastic-beanstalk)
-    1. [SSH into AWS EC2](ssh-into-aws-ec2)
-    1. [From EC2, start Elastic Beanstalk](from-ec2-start-elastic-beanstalk)
-    1. [Monitor EB from the AWS console in web browser](monitor-eb-from-the-aws-console-in-web-browser)
-    1. [Seed the DB](seed-the-db)
-    1. [Verify app works](verify-app-workd)
-1. [Run Tsung against your app](run-tsung-against-your-app])
-    1. [Use CloudFormation to create a Tsung machine and SSH into it](use-cloudformation-to-create-a-tsung-machine-and-ssh-into-it)
-    1. [Copy XML files to Tsung](copy-xml-files-to-tsung)
-    1. [Run Tsung](run-tsung)
-    1. [Download Tsung data](download-tsung-data)
-1. [Rapid reset for another Tsung test](rapid-reset-for-another-tsung-test)
+1. [Launch your app on Elastic Beanstalk](#launch-your-app-on-elastic-beanstalk)
+    1. [SSH into AWS EC2](#ssh-into-aws-ec2)
+    1. [From EC2, start Elastic Beanstalk](#from-ec2-start-elastic-beanstalk)
+    1. [Monitor EB from the AWS console in web browser](#monitor-eb-from-the-aws-console-in-web-browser)
+    1. [Seed the DB](#seed-the-db)
+    1. [Verify app works](#verify-app-workd)
+1. [Run Tsung against your app](#run-tsung-against-your-app])
+    1. [Use CloudFormation to create a Tsung machine and SSH into it](#use-cloudformation-to-create-a-tsung-machine-and-ssh-into-it)
+    1. [Copy XML files to Tsung](#copy-xml-files-to-tsung)
+    1. [Run Tsung](#run-tsung)
+    1. [Download Tsung data](#download-tsung-data)
+1. [Rapid reset for another Tsung test](#rapid-reset-for-another-tsung-test)
 
 [Tips](tips)
+
 [Resources](resources)
 
 

@@ -76,30 +76,27 @@ How to run load-tests with Tsung
 
 **Outline:**
 
-1. [Quickstart](quickstart)
+[Quickstart](quickstart)
+
 1. [Launch your app on Elastic Beanstalk](launch-your-app-on-elastic-beanstalk)
-    1. [SSH into AWS EC2]
-    1. [From EC2, start Elastic Beanstalk]
-    1. [Monitor EB from the AWS console in web browser]
-    1. [Seed the DB]
-    1. [Verify app works]
+    1. [SSH into AWS EC2](ssh-into-aws-ec2)
+    1. [From EC2, start Elastic Beanstalk](from-ec2-start-elastic-beanstalk)
+    1. [Monitor EB from the AWS console in web browser](monitor-eb-from-the-aws-console-in-web-browser)
+    1. [Seed the DB](seed-the-db)
+    1. [Verify app works](verify-app-workd)
 1. [Run Tsung against your app](run-tsung-against-your-app])
-    1. [Use CloudFormation to create a machine w/ Tsung]
-    1. [SSH into Tsung machine]
-    1. [Copy XML files to Tsung]
-    1. [Run Tsung]
-    1. [Download Tsung data]    
-1. [Rapid reset for another Tsung test]
-    1. [Change DB machine]
-    1. [Change # instances]
-    1. [Change seed file]
-    1. [Change code]
+    1. [Use CloudFormation to create a Tsung machine and SSH into it](use-cloudformation-to-create-a-tsung-machine-and-ssh-into-it)
+    1. [Copy XML files to Tsung](copy-xml-files-to-tsung)
+    1. [Run Tsung](run-tsung)
+    1. [Download Tsung data](download-tsung-data)
+1. [Rapid reset for another Tsung test](rapid-reset-for-another-tsung-test)
+
+[Tips](tips)
+[Resources](resources)
 
 
 
-
-Quickstart 
------------
+## Quickstart 
 
 (if you know what you're doing)
 
@@ -145,13 +142,13 @@ Quickstart
 
 
 
-### 1. Launch your app on Elastic Beanstalk
+## Launch your app on Elastic Beanstalk
 
-1. SSH into AWS EC2
+### SSH into AWS EC2
 
-    1. Download our secret key `luber.pem` from this Piazza thread *(if don't have `luber.pem` already)* 
+    1. Download our secret key `luber.pem` from Piazza *(if don't have `luber.pem` already)* 
 
-    (Search [Piazza](https://piazza.com/class/j789lo09yai5qx) for `aws credentials luber` )
+        - (Search [Piazza](https://piazza.com/class/j789lo09yai5qx) for `aws credentials luber` )
 
     1. ssh into our EC2 instance
 
@@ -167,7 +164,7 @@ Quickstart
             git clone https://github.com/scalableinternetservices/Luber.git
             cd Luber
 
-1. From EC2, start Elastic Beanstalk
+### From EC2, start Elastic Beanstalk
 
     - Ensure you're in your git repo
         - `git status` should not say "Not a git repository"
@@ -252,7 +249,7 @@ Quickstart
     
 
 
-1. Monitor EB from the AWS console in web browser
+### Monitor EB from the AWS console in web browser
 
     1. Log in: 
 
@@ -265,7 +262,7 @@ Quickstart
 
     1. When it's finished deploying, see the tiny URL near the top. Visit it in a web browser to verify it works.
 
-1. Seed the DB
+### Seed the DB
 
     1. SSH into the app server and go to the rails installation:
 
@@ -285,102 +282,103 @@ Quickstart
 
                 APP-SERVER$ DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:reset
 
-1. Verify app works
+### Verify app works
 
-    - Now your app should be populated with data.
+- Now your app should be populated with data.
 
-### 1. Run Tsung against your app
+## Run Tsung against your app
 
-    - This part assumes your app is already running, see [Launch your app on Elastic Beanstalk]()
-
-    1. Use CloudFormation to create a Tsung machine and SSH into it
-
-        1. Visit [AWS CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new)
-
-            - Account ID or Alias: `bboe-ucsb`
-            - IAM user name: luber
-            - Password: see `luber@ec2.cs291.com:~/luber.txt`
-
-        1. Use for the "S3 template URL": https://cs291.s3.amazonaws.com/Tsung.json
-
-        1. Pick a Stack Name of the form `luber-justin`.
-
-        1. App instance type: m3.medium
-
-        1. Team name (pulldown): luber
-
-        1. "Next", "Next", "Create"
-
-            - You should now be at the CloudFormation "Stacks" page.
-
-        1. If your Stack Name doesn't appear in the table, refresh after a couple secs.
-
-        1. Should see "CREATE_IN_PROGRESS" under Status. Wait until created.
-
-        1. Check your Stack Name, then under "Outputs" tab:
-
-            1. Note the **Tsung IP address**.
-            1. Use the SSH cmd to log in to the EC2 Tsung machine (from a fresh terminal, don't need to do it from EC2). 
-            1. Open the Tsung IP addr in browser tab to see the **Tsung Dashboard**.
-
-        1. In the ssh session, see `simple.xml`, our tsung test.
-
-            - This machine will be destroyed after 45 inactive minutes, so if you edit `simple.xml` be sure to `rsync` it to your local machine.
-
-        1. In the Tsung file `simple.xml` change the line 
-
-                server host="www.google.com" 
-
-            to the AWS EB URL where your app is running. (See the AWS Console > Elastic Beanstalk > your deployed app.)
-
-            Example:
-
-                  <servers>
-                    <server host="luber-justin.dckugbigqr.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
-                  </servers>            
-
-    1. Copy XML files to Tsung
-
-            my-laptop$ cd your-tsung-xmls/
-            my-laptop$ rsync -auvLe 'ssh -i luber.pem' *.xml ec2-user@52.41.232.150:~
-
-        Note: When ssh'd into the Tsung machine, `ifconfig` lists some weird IP addr, this is NOT the IP to use. Use the IP from the browser's Tsung dashboard, found in [CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/).
+- This part assumes your app is already running on Elastic Beanstalk, see [Launch your app on Elastic Beanstalk](launch-your-app-on-elastic-beanstalk)
 
 
-    1. Run Tsung
+### Use CloudFormation to create a Tsung machine and SSH into it
 
-        1. Start Tsung:
+1. Visit [AWS CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new)
 
-                tsung -f simple.xml -k start
+    - Account ID or Alias: `bboe-ucsb`
+    - IAM user name: luber
+    - Password: see `luber@ec2.cs291.com:~/luber.txt`
 
-        1. (Tsung runs.)
+1. Use for the "S3 template URL": https://cs291.s3.amazonaws.com/Tsung.json
 
-        1. Look at Graphs in the Tsung dashboard. Neato.
+1. Pick a Stack Name of the form `luber-justin`.
 
-    1. Download Tsung data
+1. App instance type: m3.medium
 
-        1. When Tsung is finished, `rsync` over the logs & data to your local machine:
+1. Team name (pulldown): luber
 
-                 rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:~ .
+1. "Next", "Next", "Create"
 
-        1. Don't put tsung data into our repo, you'll probably want to experiment with Tsung. Maybe put each log into a folder with a README of which commit hash code you ran in EB, and which Tsung file you used, and how you changed the site (vertical / horiz scaling etc) to accommodate the load.
+    - You should now be at the CloudFormation "Stacks" page.
 
-1. Rapid reset for another Tsung test
-    1. Make new Tsung XML file 
-    1. Change DB machine & # instances
-        - AWS elastic beanstalk > all applications > luber > luber-michael > sidebar > configuration
-        - Can change instance type / number of instances on the fly, don't have to restart EB (no `eb create` etc)
-        - Note: Bryce said no load balancer. Fix # instnaces to max of what you'll need.
-    1. Change seed file (more users, cars, rentals, etc)
-        - Lives on app server, `/var/app/current/db/seeds.rb`.
-        - Re-seed the db, see: [Seed the DB](seed-the-db)
-    1. Change code (like try Rails caching, see )
+1. If your Stack Name doesn't appear in the table, refresh after a couple secs.
+
+1. Should see "CREATE_IN_PROGRESS" under Status. Wait until created.
+
+1. Check your Stack Name, then under "Outputs" tab:
+
+    1. Note the **Tsung IP address**.
+    1. Use the SSH cmd to log in to the EC2 Tsung machine (from a fresh terminal, don't need to do it from EC2). 
+    1. Open the Tsung IP addr in browser tab to see the **Tsung Dashboard**.
+
+1. In the ssh session, see `simple.xml`, our tsung test.
+
+    - This machine will be destroyed after 45 inactive minutes, so if you edit `simple.xml` be sure to `rsync` it to your local machine.
+
+1. In the Tsung file `simple.xml` change the line 
+
+        server host="www.google.com" 
+
+    to the AWS EB URL where your app is running. (See the AWS Console > Elastic Beanstalk > your deployed app.)
+
+    Example:
+
+          <servers>
+            <server host="luber-justin.dckugbigqr.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+          </servers>            
+
+### Copy XML files to Tsung
+
+    my-laptop$ cd your-tsung-xmls/
+    my-laptop$ rsync -auvLe 'ssh -i luber.pem' *.xml ec2-user@52.41.232.150:~
+
+Note: When ssh'd into the Tsung machine, `ifconfig` lists some weird IP addr, this is NOT the IP to use. Use the IP from the browser's Tsung dashboard, found in [CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/).
+
+
+### Run Tsung
+
+1. Start Tsung:
+
+        tsung -f simple.xml -k start
+
+1. (Tsung runs.)
+
+1. Look at Graphs in the Tsung dashboard. Neato.
+
+### Download Tsung data
+
+    1. When Tsung is finished, `rsync` over the logs & data to your local machine:
+
+             rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:~ .
+
+    1. Don't put tsung data into our repo, you'll probably want to experiment with Tsung. Maybe put each log into a folder with a README of which commit hash code you ran in EB, and which Tsung file you used, and how you changed the site (vertical / horiz scaling etc) to accommodate the load.
+
+### Rapid reset for another Tsung test
+
+1. Make new Tsung XML file 
+1. Change DB machine & # instances
+    - AWS elastic beanstalk > all applications > luber > luber-michael > sidebar > configuration
+    - Can change instance type / number of instances on the fly, don't have to restart EB (no `eb create` etc)
+    - Note: Bryce said no load balancer. Fix # instnaces to max of what you'll need.
+1. Change seed file (more users, cars, rentals, etc)
+    - Lives on app server, `/var/app/current/db/seeds.rb`.
+    - Re-seed the db, see: [Seed the DB](seed-the-db)
+1. Change code (like try Rails caching, see class notes)
 
 
 
 
-Tips
------
+## Tips
 
 - Note: sometimes AWS EB console can warn you that you're overloading it:
 
@@ -404,8 +402,8 @@ Tips
 
 
 
-References
-----------
+## References
+
 
 - [README from Bryce's 'demo' repo](https://github.com/scalableinternetservices/demo_rails514_beanstalk)
 

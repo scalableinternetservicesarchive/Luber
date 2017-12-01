@@ -182,11 +182,11 @@ How to run load-tests with Tsung
 
     - for 'hello world':
 
-        eb create -db.engine postgres -db.i db.t2.micro -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a --single luber-justin
+            eb create -db.engine postgres -db.i db.t2.micro -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a --single luber-justin
 
     - for Tsung testing:
 
-        eb create -db.engine postgres -db.i db.m3.medium -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a -i m3.medium luber-justin
+            eb create -db.engine postgres -db.i db.m3.medium -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a -i m3.medium luber-justin
 
     - *Note*: `-db.i` (the db machine) can be one of
 
@@ -272,10 +272,10 @@ How to run load-tests with Tsung
 
 1. SSH into the app server and go to the rails installation:
 
-    EC2$ eb ssh -e 'ssh -i ~/luber.pem'
-    APP-SERVER$ cd /var/app/current
+        EC2$ eb ssh -e 'ssh -i ~/luber.pem'
+        APP-SERVER$ cd /var/app/current
 
-1. Delete contents of db and re-seed:
+1. On the app server's rails installation, delete contents of db and re-seed:
            
 
         APP-SERVER$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ;  User.delete_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
@@ -294,7 +294,7 @@ How to run load-tests with Tsung
 
 ## Run Tsung against your app
 
-- This part assumes your app is already running on Elastic Beanstalk, see [Launch your app on Elastic Beanstalk](launch-your-app-on-elastic-beanstalk)
+- This part assumes your app is already running on Elastic Beanstalk, see [Launch your app on Elastic Beanstalk](#launch-your-app-on-elastic-beanstalk)
 
 
 ### Use CloudFormation to create a Tsung machine and SSH into it

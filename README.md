@@ -5,11 +5,13 @@
 Table of Contents
 -----------------
 
+
 - [About](#about)
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
 - [Team Members](#team-members)
 - [How to run load-tests with Tsung](#how-to-run-load-tests-with-tsung)
+
 
 
 About
@@ -172,8 +174,11 @@ How to run load-tests with Tsung
 ### From EC2, start Elastic Beanstalk
 
 - Ensure you're ssh'd into EC2 (see above)
+
 - Ensure you're in your git repo
+
     - `git status` should not say "Not a git repository"
+
 - Try to deploy EB: 
 
         eb deploy luber-justin ( <-- your env name here)

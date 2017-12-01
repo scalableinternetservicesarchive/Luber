@@ -5,7 +5,11 @@
 Table of Contents
 -----------------
 
-- [About](about)
+- [About](#about)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [Team Members](#team-members)
+- [How to run load-tests with Tsung](#how-to-run-load-tests-with-tsung)
 
 
 About
@@ -76,7 +80,7 @@ How to run load-tests with Tsung
 
 **Outline:**
 
-[Quickstart](quickstart)
+[Quickstart](#quickstart)
 
 1. [Launch your app on Elastic Beanstalk](#launch-your-app-on-elastic-beanstalk)
     1. [SSH into AWS EC2](#ssh-into-aws-ec2)
@@ -91,9 +95,9 @@ How to run load-tests with Tsung
     1. [Download Tsung data](#download-tsung-data)
 1. [Rapid reset for another Tsung test](#rapid-reset-for-another-tsung-test)
 
-[Tips](tips)
+[Tips](#tips)
 
-[Resources](resources)
+[Resources](#resources)
 
 
 

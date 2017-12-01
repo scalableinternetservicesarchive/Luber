@@ -9,17 +9,19 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="luber-michael.j2zayzetn4.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+    <server host="0.0.0.0" port="3000" type="tcp"></server>
   </servers>
 
 
   <load>
     <arrivalphase phase="1" duration="1" unit="minute">
-      <users arrivalrate="10" unit="second"></users>
+      <users arrivalrate="1000" unit="second"></users>
     </arrivalphase>
-    <arrivalphase phase="2" duration="2" unit="minute">
-      <users arrivalrate="100" unit="second"></users>
+
+    <arrivalphase phase="2" duration="10" unit="minute">
+      <users arrivalrate="2000" unit="second"></users>
     </arrivalphase>
+
   </load>
 
   <options>
@@ -35,24 +37,24 @@
 
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
+        <transaction name="post_car_rental">
+          <request>
+            <http url="/signin" method="POST" version="1.1" contents="session[email]=as@as.com&amp;session[password]=123456&amp;commit=Login" content_type="application/x-www-form-urlencoded" />
+          </request>
 
-      <request>
-        <http url='/' version='1.1' method='GET'></http>
-      </request>
+          <request>
+            <http url="/cars" method="POST" version="1.1" contents="car[make]=Ford&amp;car[model]=Mustang&amp;car[year]=2017&amp;car[color]=Red&amp;car[license_plate]=1234567&amp;car[all_tags]=trendy&amp;commit=Add+Car"/>
+          </request>
 
-      <request>
-        <dyn_variable name="nonce" header="www-authenticate/nonce"/>
-        <dyn_variable name="realm" header="www-authenticate/realm"/>
-        <http url="/signin" method="GET" version="1.1"/>
-      </request>
+          <request>
+            <http url="/rentals" method="POST" version="1.1" contents="rental[car_id]=12&amp;rental[start_location]=Santa+Barbara&amp;rental[end_location]=Sunnyvale&amp;rental[start_time(2i)]=11&amp;rental[start_time(3i)]=30&amp;rental[start_time(1i)]=2017&amp;rental[start_time(4i)]=05&amp;rental[start_time(5i)]=00&amp;rental[end_time(2i)]=11&amp;rental[end_time(3i)]=30&amp;rental[end_time(1i)]=2017&amp;rental[end_time(4i)]=05&amp;rental[end_time(5i)]=00&amp;rental[price]=123.45&amp;commit=Create+Rental+Post"/>
+          </request>
 
-      <request subst="true">
-       <dyn_variable name="nonce" header="authentication-info/nextnonce"/>
-       <http url="/signin" method="GET" version="1.1">
-         <www_authenticate userid="a@a.com" passwd="123456" type="digest" realm="%%_realm%%" nonce="%%_nonce%%"/>
-       </http>
-     </request>
+          <request>
+            <http url="/signout" method="DELETE" version="1.1" />
+          </request>
 
+        </transaction>
     </session>
   </sessions>
 </tsung>

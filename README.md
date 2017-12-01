@@ -77,13 +77,13 @@ How to run load-tests with Tsung
 **Outline:**
 
 1. [Quickstart](quickstart)
-1. [Launch your app on Elastic Beanstalk](1. Launch your app on Elastic Beanstalk)
+1. [Launch your app on Elastic Beanstalk](launch-your-app-on-elastic-beanstalk)
     1. [SSH into AWS EC2]
     1. [From EC2, start Elastic Beanstalk]
     1. [Monitor EB from the AWS console in web browser]
     1. [Seed the DB]
     1. [Verify app works]
-1. [Run Tsung against your app]
+1. [Run Tsung against your app](run-tsung-against-your-app])
     1. [Use CloudFormation to create a machine w/ Tsung]
     1. [SSH into Tsung machine]
     1. [Copy XML files to Tsung]
@@ -147,149 +147,149 @@ Quickstart
 
 ### 1. Launch your app on Elastic Beanstalk
 
-    1. SSH into AWS EC2
+1. SSH into AWS EC2
 
-        1. Download our secret key `luber.pem` from this Piazza thread *(if don't have `luber.pem` already)* 
+    1. Download our secret key `luber.pem` from this Piazza thread *(if don't have `luber.pem` already)* 
 
-        (Search [Piazza](https://piazza.com/class/j789lo09yai5qx) for `aws credentials luber` )
+    (Search [Piazza](https://piazza.com/class/j789lo09yai5qx) for `aws credentials luber` )
 
-        1. ssh into our EC2 instance
+    1. ssh into our EC2 instance
 
-                ssh -i luber.pem luber@ec2.cs291.com
+            ssh -i luber.pem luber@ec2.cs291.com
 
-        1. on EC2, make your own dir to launch EB from:
-            
-                mkdir Justin
-                cd Justin
-
-        1. clone our repo *(if not done already)*
-
-                git clone https://github.com/scalableinternetservices/Luber.git
-                cd Luber
-
-    1. From EC2, start Elastic Beanstalk
-
-        - Ensure you're in your git repo
-            - `git status` should not say "Not a git repository"
-        - Try to deploy EB: 
-
-                eb deploy luber-justin ( <-- your env name here)
-
-        - If `eb deploy` yields "No environment" error, need to `eb create`:
-
-            - for 'hello world':
-
-                eb create -db.engine postgres -db.i db.t2.micro -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a --single luber-justin
-
-            - for Tsung testing:
-
-                eb create -db.engine postgres -db.i db.m3.medium -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a -i m3.medium luber-justin
-
-            - *Note*: `-db.i` (the db machine) can be one of
-
-                - db.m3.medium
-                - db.m3.large
-                - db.m3.xlarge
-                - db.m3.2xlarge
-                - db.r3.large
-                - db.r3.xlarge
-                - db.r3.2xlarge
-                - (you can use the c3-instance types if CPU bound)
-                - [AWS docs on instance types](https://aws.amazon.com/ec2/instance-types/)
-
-
-            - *Note*: `-i` (the app server) can be one of
-
-                - m3.medium
-                - m3.large
-                - m3.xlarge
-                - m3.2xlarge
-                - c3.large
-                - c3.xlarge
-                - c3.2xlarge
-                - c3.4xlarge            
-                - [AWS docs on instance types](https://aws.amazon.com/ec2/instance-types/)
-
-            - **Note**: `SECRET_KEY_BASE` (base of key that encrypts cookies) should be long alphanumeric string, for example from
-
-                    head -c 100 </dev/urandom | hexdump | head -n 1 | cut -d" " -f2- | tr -d " "
-
-        - If `eb create` yields error "has not been set up with the EB CLI", need to `eb init`, then do `eb create` again:
-
-                eb init
-
-            - IMPORTANT: "Select region", use the default. Otherwise the keypairs won't show up later.
-
-            - "Select an application to use": make a new one, with your name ("luber-justin")
-
-            - Select a keypair: 'luber' (your team name)
-
-
-        - `eb use luber-justin` to make this your default (later can use `eb list` to see list of deployments).
-
-            - When you update the code, can do `eb deploy` instead of `eb create` -- faster.
-
-        - Output from `eb deploy` or `eb create`:
-
-                Creating application version archive "app-541a-171128_215113".
-                Uploading luber-justin/app-541a-171128_215113.zip to S3. This may take a while.
-                Upload Complete.
-                Environment details for: luber-justin
-                  Application name: luber-justin
-                  Region: us-west-2
-                  Deployed Version: app-541a-171128_215113
-                  Environment ID: e-zwqrwahpna
-                  Platform: arn:aws:elasticbeanstalk:us-west-2::platform/Puma with Ruby 2.4 running on 64bit Amazon Linux/2.6.1
-                  Tier: WebServer-Standard
-                  CNAME: UNKNOWN
-                  Updated: 2017-11-28 21:51:17.422000+00:00
-                Printing Status:
-                INFO: createEnvironment is starting.
-                INFO: Using elasticbeanstalk-us-west-2-671946291905 as Amazon S3 storage bucket for environment data.
-                INFO: Created security group named: awseb-e-zwqrwahpna-stack-AWSEBSecurityGroup-WY9IFP478JLS
-                INFO: Created EIP: 54.191.49.249
-                INFO: Creating RDS database named: aa3e7jh8yi6knq. This may take a few minutes.
+    1. on EC2, make your own dir to launch EB from:
         
+            mkdir Justin
+            cd Justin
+
+    1. clone our repo *(if not done already)*
+
+            git clone https://github.com/scalableinternetservices/Luber.git
+            cd Luber
+
+1. From EC2, start Elastic Beanstalk
+
+    - Ensure you're in your git repo
+        - `git status` should not say "Not a git repository"
+    - Try to deploy EB: 
+
+            eb deploy luber-justin ( <-- your env name here)
+
+    - If `eb deploy` yields "No environment" error, need to `eb create`:
+
+        - for 'hello world':
+
+            eb create -db.engine postgres -db.i db.t2.micro -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a --single luber-justin
+
+        - for Tsung testing:
+
+            eb create -db.engine postgres -db.i db.m3.medium -db.user u --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a -i m3.medium luber-justin
+
+        - *Note*: `-db.i` (the db machine) can be one of
+
+            - db.m3.medium
+            - db.m3.large
+            - db.m3.xlarge
+            - db.m3.2xlarge
+            - db.r3.large
+            - db.r3.xlarge
+            - db.r3.2xlarge
+            - (you can use the c3-instance types if CPU bound)
+            - [AWS docs on instance types](https://aws.amazon.com/ec2/instance-types/)
 
 
-    1. Monitor EB from the AWS console in web browser
+        - *Note*: `-i` (the app server) can be one of
 
-        1. Log in: 
+            - m3.medium
+            - m3.large
+            - m3.xlarge
+            - m3.2xlarge
+            - c3.large
+            - c3.xlarge
+            - c3.2xlarge
+            - c3.4xlarge            
+            - [AWS docs on instance types](https://aws.amazon.com/ec2/instance-types/)
 
-            - [AWS console](https://console.aws.amazon.com/console/home)
-            - Account ID or alias: `bboe-ucsb`
-            - IAM user name: luber
-            - password: contained in the file `luber@ec2.cs291.com:~/luber.txt`
+        - **Note**: `SECRET_KEY_BASE` (base of key that encrypts cookies) should be long alphanumeric string, for example from
 
-        1. Under `Menu` > `Services` > `Elastic Beanstalk` > `All Applications`, see your EB deployment name, eg, `luber-justin`. Click it to get to its dashboard.
+                head -c 100 </dev/urandom | hexdump | head -n 1 | cut -d" " -f2- | tr -d " "
 
-        1. When it's finished deploying, see the tiny URL near the top. Visit it in a web browser to verify it works.
+    - If `eb create` yields error "has not been set up with the EB CLI", need to `eb init`, then do `eb create` again:
 
-    1. Seed the DB
+            eb init
 
-        1. SSH into the app server and go to the rails installation:
+        - IMPORTANT: "Select region", use the default. Otherwise the keypairs won't show up later.
 
-            EC2$ eb ssh -e 'ssh -i ~/luber.pem'
-            APP-SERVER$ cd /var/app/current
+        - "Select an application to use": make a new one, with your name ("luber-justin")
 
-        1. Delete contents of db and re-seed:
-                   
+        - Select a keypair: 'luber' (your team name)
 
-                APP-SERVER$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ;  User.delete_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
 
-                APP-SERVER$ rails db:seed
+    - `eb use luber-justin` to make this your default (later can use `eb list` to see list of deployments).
 
-            - Note: `delete_all` doesn't obey foreign-key constraints, so is faster than `destroy_all`. 
+        - When you update the code, can do `eb deploy` instead of `eb create` -- faster.
 
-            - Note: This didn't work:
+    - Output from `eb deploy` or `eb create`:
 
-                    APP-SERVER$ DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:reset
+            Creating application version archive "app-541a-171128_215113".
+            Uploading luber-justin/app-541a-171128_215113.zip to S3. This may take a while.
+            Upload Complete.
+            Environment details for: luber-justin
+              Application name: luber-justin
+              Region: us-west-2
+              Deployed Version: app-541a-171128_215113
+              Environment ID: e-zwqrwahpna
+              Platform: arn:aws:elasticbeanstalk:us-west-2::platform/Puma with Ruby 2.4 running on 64bit Amazon Linux/2.6.1
+              Tier: WebServer-Standard
+              CNAME: UNKNOWN
+              Updated: 2017-11-28 21:51:17.422000+00:00
+            Printing Status:
+            INFO: createEnvironment is starting.
+            INFO: Using elasticbeanstalk-us-west-2-671946291905 as Amazon S3 storage bucket for environment data.
+            INFO: Created security group named: awseb-e-zwqrwahpna-stack-AWSEBSecurityGroup-WY9IFP478JLS
+            INFO: Created EIP: 54.191.49.249
+            INFO: Creating RDS database named: aa3e7jh8yi6knq. This may take a few minutes.
+    
 
-    1. Verify app works
 
-        - Now your app should be populated with data.
+1. Monitor EB from the AWS console in web browser
 
-1. Run Tsung against your app
+    1. Log in: 
+
+        - [AWS console](https://console.aws.amazon.com/console/home)
+        - Account ID or alias: `bboe-ucsb`
+        - IAM user name: luber
+        - password: contained in the file `luber@ec2.cs291.com:~/luber.txt`
+
+    1. Under `Menu` > `Services` > `Elastic Beanstalk` > `All Applications`, see your EB deployment name, eg, `luber-justin`. Click it to get to its dashboard.
+
+    1. When it's finished deploying, see the tiny URL near the top. Visit it in a web browser to verify it works.
+
+1. Seed the DB
+
+    1. SSH into the app server and go to the rails installation:
+
+        EC2$ eb ssh -e 'ssh -i ~/luber.pem'
+        APP-SERVER$ cd /var/app/current
+
+    1. Delete contents of db and re-seed:
+               
+
+            APP-SERVER$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ;  User.delete_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
+
+            APP-SERVER$ rails db:seed
+
+        - Note: `delete_all` doesn't obey foreign-key constraints, so is faster than `destroy_all`. 
+
+        - Note: This didn't work:
+
+                APP-SERVER$ DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:reset
+
+1. Verify app works
+
+    - Now your app should be populated with data.
+
+### 1. Run Tsung against your app
 
     - This part assumes your app is already running, see [Launch your app on Elastic Beanstalk]()
 

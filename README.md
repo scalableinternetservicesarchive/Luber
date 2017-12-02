@@ -109,7 +109,7 @@ How to run load-tests with Tsung
 
 1. Log in to EC2
 
-    ssh -i luber.pem luber@ec2.cs291.com
+        ssh -i luber.pem luber@ec2.cs291.com
 
 1. `cd` to Luber in your personal directory
 

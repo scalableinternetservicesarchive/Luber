@@ -579,8 +579,10 @@ end
 # Reset ids of each table, so Rails knows where to start 
 # Otherwise User.create!(...) will fail due to duplicate id.
 # Source: https://stackoverflow.com/questions/2097052/rails-way-to-reset-seed-on-id-field
-['users','cars','rentals','tags','taggings'].each do |t|
-  ActiveRecord::Base.connection.reset_pk_sequence!(t)
+if direct_sql_inject
+  ['users','cars','rentals','tags','taggings'].each do |t|
+    ActiveRecord::Base.connection.reset_pk_sequence!(t)
+  end
 end
 
 

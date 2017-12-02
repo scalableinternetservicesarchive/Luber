@@ -90,7 +90,7 @@ How to run load-tests with Tsung
     1. [Monitor EB from the AWS console in web browser](#monitor-eb-from-the-aws-console-in-web-browser)
     1. [Seed the DB](#seed-the-db)
     1. [Verify app works](#verify-app-works)
-1. [Run Tsung against your app](#run-tsung-against-your-app])
+1. [Run Tsung against your app](#run-tsung-against-your-app)
     1. [Use CloudFormation to create a Tsung machine and SSH into it](#use-cloudformation-to-create-a-tsung-machine-and-ssh-into-it)
     1. [Copy XML files to Tsung](#copy-xml-files-to-tsung)
     1. [Run Tsung](#run-tsung)

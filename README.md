@@ -368,11 +368,11 @@ Note: When ssh'd into the Tsung machine, `ifconfig` lists some weird IP addr, th
 
 ### Download Tsung data
 
-    1. When Tsung is finished, `rsync` over the logs & data to your local machine:
+1. When Tsung is finished, `rsync` over the logs & data to your local machine:
 
-             rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:~ .
+         rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:~ .
 
-    1. Don't put tsung data into our repo, you'll probably want to experiment with Tsung. Maybe put each log into a folder with a README of which commit hash code you ran in EB, and which Tsung file you used, and how you changed the site (vertical / horiz scaling etc) to accommodate the load.
+1. Don't put tsung data into our repo, you'll probably want to experiment with Tsung. Maybe put each log into a folder with a README of which commit hash code you ran in EB, and which Tsung file you used, and how you changed the site (vertical / horiz scaling etc) to accommodate the load.
 
 ### Rapid reset for another Tsung test
 

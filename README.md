@@ -122,11 +122,11 @@ How to run load-tests with Tsung
 
         EC2$ eb ssh -e 'ssh -i ~/luber.pem'
 
-    - Now you're in the production machine (the App Server). Then:
+    - Now you're in the production machine (the App Server). Delete all the db's data (note: order you delete the models is imporant to avoid foreign key errors):
 
             APP-SERVER$ cd /var/app/current
 
-            APP-SERVER$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Rental.delete_all ; Tag.delete_all ; Tagging.delete_all ; Car.delete_all ; User.delete_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
+            APP-SERVER$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ; User.delete_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
 
             APP-SERVER$ rails db:seed
 

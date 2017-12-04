@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(version: 20171119063345) do
     t.string "last_name"
     t.string "city"
     t.string "state"
+    t.string "about"
+    t.string "meetup"
     t.string "username"
     t.string "email"
     t.string "password_digest"

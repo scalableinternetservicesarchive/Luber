@@ -1,26 +1,24 @@
 <% provide(:title, "Sign In") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<section class="container align-slef-center m-top">
+<section class="container align-slef-center mt-5">
   <h1 class="text-center">Sign In</h1>
-  <div class="row">
-    <div class="col"></div>
-    <div class="col">
+  <div class="row justify-content-center mt-4">
+    <div class="col-4">
       <%= form_for(:session, url: signin_path) do |f| %>
         <div class="form-group">
           <%= f.label :email %>
-          <%= f.email_field :email, class: 'form-control', placeholder: 'Email' %>
+          <%= f.email_field :email, class: 'form-control' %>
         </div>
         <div class="form-group">
           <%= f.label :password %>
-          <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
+          <%= f.password_field :password, class: 'form-control' %>
         </div>
-        <div class="text-center">
-          <%= f.submit 'Login', class: 'btn btn-lg btn-base mt-3' %>
-          <%= link_to "Don't have an Account? Sign Up here!", signup_path, class: 'account-access-link mt-4' %>
+        <div class="text-center mt-5">
+          <%= f.submit 'Login', class: 'btn btn-lg btn-base' %>
+          <%= link_to "Don't have an Account? Sign Up here!", signup_path, class: 'account-access-link mt-3' %>
         </div>
       <% end %>
     </div>
-    <div class="col"></div>
   </div>
 </section>

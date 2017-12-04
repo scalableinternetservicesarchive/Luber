@@ -1,9 +1,12 @@
-.rental-icon {
-  margin-left: 0.55rem;
+.rental-arrow-icon {
+  margin-left: $spacer * 0.5;
 }
 
 #map-start,
 #map-end {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   height: 40vh;
   width: 95%;
   box-shadow: -1px 1px 4px $object-shadow;

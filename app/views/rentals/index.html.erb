@@ -3,11 +3,12 @@
 <% params[:page] ? page = params[:page] : page = 1 %>
 
 <section class="container-fluid banner">
-  <div class="container">
+  <div class="container text-center">
     <h1>Available Rentals</h1>
+    <p><%= @total_available_rentals %> currently available</p>
   </div>
 </section>
-<section class="container card-wrapper m-top">
+<section class="container mt-5">
   <% if @available_rentals.length > 0 %>
     <%= render @available_rentals, owners: @owners, cars: @cars %>
     <%= will_paginate @available_rentals, 

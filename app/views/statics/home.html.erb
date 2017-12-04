@@ -1,7 +1,7 @@
 <% provide(:title, "Home") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<section class="jumbotron jumbotron-fluid d-flex" id="hero-background">
+<section class="jumbotron jumbotron-fluid" id="hero-background">
   <div class="container align-self-center">
     <div class="row flex-column" id="hero-content">
       <h1 class="col-12 text-center display-1">Introducing, Luber</h1>
@@ -13,20 +13,20 @@
     </div>
   </div>
 </section>
-<section class="jumbotron jumbotron-fluid d-flex" id="using-luber-background">
+<section class="jumbotron jumbotron-fluid hero-panel" id="using-luber-background">
   <div class="container align-self-center">
     <div class="row">
       <h1 class="col text-center mb-5">Using Luber is simple</h1>
     </div>
     <div class="row text-center mb-4">
       <div class="col">
-        <%= image_tag 'luber-step-1.png', alt: 'Step 1' %>
+        <%= image_tag 'luber-step-1.png', class: 'img-fluid', alt: 'Step 1' %>
       </div>
       <div class="col">
-        <%= image_tag 'luber-step-2.png', alt: 'Step 2' %>
+        <%= image_tag 'luber-step-2.png', class: 'img-fluid', alt: 'Step 2' %>
       </div>
       <div class="col">
-        <%= image_tag 'luber-step-3.png', alt: 'Step 3' %>
+        <%= image_tag 'luber-step-3.png', class: 'img-fluid', alt: 'Step 3' %>
       </div>
     </div>
     <div class="row text-center">
@@ -42,11 +42,39 @@
     </div>
   </div>
 </section>
-<section class="jumbotron jumbotron-fluid d-flex" id="promo-video-background">
+<section class="jumbotron jumbotron-fluid hero-panel" id="luber-stats-background">
   <div class="container align-self-center">
     <div class="row">
       <div class="col">
-        <iframe src="https://player.vimeo.com/video/144076317" width="640" height="271" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <h1>Luber by the numbers</h1>
+        <p>Join our ever-growing community of users who share our belief in making transportation more accessible to all</p>
+      </div>
+      <div class="col">
+        <div class="list-group">
+          <p class="list-group-item">
+            <%= icon('user', class: 'fa-fw fa-3x') %><%#
+            %><%= @total_users_count %> users<%#
+          %></p>
+          <p class="list-group-item">
+            <%= icon('car', class: 'fa-fw fa-3x') %><%#
+            %><%= @total_cars_count %> registered vechicles<%#
+          %></p>
+          <p class="list-group-item">
+            <%= icon('exchange', class: 'fa-fw fa-3x') %><%#
+            %><%= @total_rentals_count %> rental posts<%#
+          %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="jumbotron jumbotron-fluid hero-panel" id="promo-video-background">
+  <div class="container align-self-center">
+    <div class="row">
+      <div class="col">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://player.vimeo.com/video/144076317" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
       </div>
       <div class="col">
         <h1>Experience the insight behind Luber</h1>

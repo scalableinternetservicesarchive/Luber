@@ -1,13 +1,11 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :destroy, :cars, :history, :settings, :promote]
+  before_action :set_user, only: [:destroy, :cars, :history, :settings, :promote]
   before_action :signed_in_user, only: [:edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_progress, only: [:overview, :rentals]
 
   def show
-    if @user.id == session[:user_id]
-      redirect_to overview_user_path(session[:user_username])
-    end
+    redirect_to overview_user_path
   end
 
   def new
@@ -36,23 +34,29 @@ class UsersController < ApplicationController
   end
 
   def update
-    check_params = user_params
-    check_params['first_name'] = new_val_check(check_params['first_name'])
-    check_params['last_name'] = new_val_check(check_params['last_name'])
-    check_params['city'] = new_val_check(check_params['city'])
-    check_params['state'] = new_val_check(check_params['state'])
+    mutable_params = user_params
+    mutable_params.delete(:first_name) if mutable_params[:first_name].blank?
+    mutable_params.delete(:last_name) if mutable_params[:last_name].blank?
+    mutable_params.delete(:city) if mutable_params[:city].blank?
+    mutable_params.delete(:state) if mutable_params[:state].blank?
+    mutable_params.delete(:about) if mutable_params[:about].blank?
+    mutable_params.delete(:meetup) if mutable_params[:meetup].blank?
+    mutable_params.delete(:password) if mutable_params[:password].blank?
+    mutable_params.delete(:password_confirmation) if mutable_params[:password_confirmation].blank?
 
     original_user = @user.dup
 
-    if @user.update(check_params)
+    if @user.update(mutable_params)
       updates = []
-      original_user.first_name == @user.first_name ? nil : updates.push('First Name')
-      original_user.last_name == @user.last_name ? nil : updates.push('Last Name')
-      original_user.city == @user.city ? nil : updates.push('City')
-      original_user.state == @user.state ? nil : updates.push('State')
-      original_user.username == @user.username ? nil : updates.push('Username')
-      original_user.email == @user.email ? nil : updates.push('Email')
-      original_user.password == @user.password ? nil : updates.push('Password')
+      updates.push('First Name') if original_user.first_name != @user.first_name
+      updates.push('Last Name') if original_user.last_name != @user.last_name
+      updates.push('City') if original_user.city != @user.city
+      updates.push('State') if original_user.state != @user.state
+      updates.push('About') if original_user.about != @user.about
+      updates.push('Meetup Preferences') if original_user.meetup != @user.meetup
+      updates.push('Username') if original_user.username != @user.username
+      updates.push('Email') if original_user.email != @user.email
+      updates.push('Password') if original_user.password != @user.password
 
       if updates.length() > 0
         update_str = ''
@@ -71,10 +75,10 @@ class UsersController < ApplicationController
         Log.create!(
           user_id: session[:user_id], 
           action: 1, 
-          content: 'Updated the '+update_str+' of my Account')
+          content: 'Updated the '+update_str+' of my Profile')
       end
 
-      flash[:success] = 'Account successfully updated'
+      flash[:success] = 'Profile successfully updated'
       redirect_to overview_user_path(session[:user_username])
     else
       # Need to manually rollback if username length is 0 otherwise a UrlGeneration error occurs
@@ -131,6 +135,10 @@ class UsersController < ApplicationController
   def cars
     @per_page_count = 4
     @cars = Car.where(user_id: @user.id).paginate( page: params[:page], per_page: @per_page_count )
+    @owners = []
+    @cars.each do |car|
+      @owners << User.find(car.user_id)
+    end
   end
 
   def history
@@ -162,7 +170,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :city, :state, :username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:first_name, :last_name, :city, :state, :about, :meetup, :username, :email, :password, :password_confirmation)
   end
 
   # Use callbacks to share common setup or constraints between actions

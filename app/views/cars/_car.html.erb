@@ -18,7 +18,7 @@
         %>License Plate: <%= car.license_plate %><%#
       %></p>
       <div class="row">
-        <div class="col-auto fs-1">
+        <div class="col-auto">
           <p class="list-group-item mb-2"><%= icon('tags', class: 'fa-fw') %>Tags: <%#
             %><% car.tags.each do |tag_group| %><%#
               %><% tag_group.name.split(' ').each do |tag| %><%#
@@ -27,11 +27,18 @@
             <% end %>
           </p>
         </div>
-        <div class="col-auto ml-auto">
+        <div class="col-auto card-buttons ml-auto">
           <%# Buttons to interact with this Car %>
-          <% if session[:user_id] == car.user_id %> <%# If you're the owner, can edit or delete %>
+          <%# If you're the owner, can edit or delete it %>
+          <% if session[:user_id] == car.user_id %>
             <%= link_to icon('pencil')+"Edit", edit_car_path(car), class: 'btn btn-outline-success mr-1', role: 'button' %>
-            <%= link_to icon('times')+"Delete", car, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger', role: 'button' %>
+            <%# Don't show the delete button on the rentals#show page %>
+            <% if controller_name == 'users' %>
+              <%= link_to icon('times')+"Delete", car, method: :delete, data: { confirm: 'Are you sure you want to permanently delete this car?' }, class: 'btn btn-outline-danger', role: 'button' %>
+            <% end %>
+          <%# If you're an admin, you can delete it %>
+          <% elsif current_admin? && !owner.admin %>
+            <%= link_to icon('times')+"Admin Delete", rental, method: :delete, data: { confirm: 'Are you sure you want to permanently delete this car using admin powers?' }, class: 'btn btn-outline-danger ml-1', role: 'button' %>
           <% end %>
         </div>
       </div>

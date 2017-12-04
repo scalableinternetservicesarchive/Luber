@@ -1,36 +1,40 @@
 .log-entry {
+  margin-bottom: $spacer * 1.5;
+
   .card-body {
-    padding: 0.75rem;
+    padding: $spacer * 0.75;
+
+    .log-icon {
+      display: flex;
+      align-items: center;
+      border-right: solid 0.3rem;
+      padding-left: 1.6rem;
+      padding-right: 1.25rem;
+    }
+
+    .log-content {
+      font-size: 1.2rem;
+    }
+
+    .log-green {
+      color: $green;
+      border-color: $green;
+    }
+
+    .log-red {
+      color: $red;
+      border-color: $red;
+    }
+
+    .log-purple {
+      color: $primary;
+      border-color: $primary;
+    }
+
+    .log-time {
+      font-size: 0.85rem;
+      color: $dark-gray;
+      margin-bottom: 0.2rem
+    }
   }
-
-  .log-icon {
-    border-right: solid 0.3rem;
-    padding-left: 1.6rem;
-    padding-right: 1.25rem;
-  }
-
-  .log-time {
-    font-size: 0.85rem;
-    color: $darker-base;
-    margin-bottom: 0.2rem
-  }
-
-  .log-content {
-    font-size: 1.25rem;
-  }
-}
-
-.log-green {
-  color: $green;
-  border-color: $green;
-}
-
-.log-red {
-  color: $red;
-  border-color: $red;
-}
-
-.log-purple {
-  color: $primary;
-  border-color: $primary;
 }

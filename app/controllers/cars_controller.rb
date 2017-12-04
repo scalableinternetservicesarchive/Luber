@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
   before_action :set_car, only: [:edit, :update, :destroy]
-  before_action :signed_in_user, only: [:new, :edit, :create, :update, :destroy]
+  before_action :signed_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /cars/new
@@ -43,12 +43,12 @@ class CarsController < ApplicationController
     respond_to do |format|
       if @car.update(car_params)
         updates = []
-        original_car.color == @car.color ? nil : updates.push('Color')
-        original_car.year == @car.year ? nil : updates.push('Year')
-        original_car.make == @car.make ? nil : updates.push('Make')
-        original_car.model == @car.model ? nil : updates.push('Model')
-        original_car.license_plate == @car.license_plate ? nil : updates.push('License Plate')
-        original_car_tags == @car.all_tags ? nil : updates.push('Tags')
+        updates.push('Make') if original_car.make != @car.make
+        updates.push('Model') if original_car.model != @car.model
+        updates.push('Year') if original_car.year != @car.year
+        updates.push('Color') if original_car.color != @car.color
+        updates.push('License Plate') if original_car.license_plate != @car.license_plate
+        updates.push('Tags') if original_car_tags != @car.all_tags
 
         if updates.length() > 0
           update_str = ''

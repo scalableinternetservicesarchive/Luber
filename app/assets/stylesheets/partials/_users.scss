@@ -3,7 +3,8 @@
 }
 
 #profile-nav {
-  border-top: 2px solid #ccc;
+  margin-top: 0;
+  border-top: 2px solid $light-gray;
 
   .nav-tabs {
     border-bottom: none;
@@ -23,7 +24,7 @@
     .nav-link.active {
       color: white;
       background-color: $darker-accent;
-      border-color: $darker-accent #ccc #ccc;
+      border-color: $darker-accent $light-gray $light-gray;
     }
 
     .nav-link.disabled {
@@ -31,11 +32,22 @@
     }
 
     .nav-link:focus, .nav-link:hover {
-      border-color: #ccc;
+      border-color: $light-gray;
     }
 
     .nav-link.active:focus, .nav-link.active:hover {
-      border-color: $darker-accent #ccc #ccc;
+      border-color: $darker-accent $light-gray $light-gray;
+    }
+  }
+}
+
+#users-settings {
+  .list-group-item {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: auto;
     }
   }
 }

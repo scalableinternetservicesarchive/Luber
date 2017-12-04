@@ -1,43 +1,62 @@
 <%= form_for(rental) do |f| %>
-  <% if rental.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(rental.errors.count, "error") %> prohibited this rental from being saved:</h2>
-      <ul>
-        <% rental.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= render 'shared/error_messages', target: rental %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label 'Start Location' %>
+        <%= f.text_field :start_location, class: 'form-control', placeholder: 'Los Angeles' %>
+      </div>
     </div>
-  <% end %>
-  <div class="form-group">
-    <%= f.label :car_id, class: 'd-block' %>
-    <%= f.select :car_id, @cars.collect { |car| [car.color << ', ' << car.year.to_s << ' ' << car.make << ' ' << car.model, car.id] }, {}, class: 'form-control' %>
   </div>
-  <div class="form-group">
-    <%= f.label 'Start Location' %>
-    <%= f.text_field :start_location, class: 'form-control', placeholder: 'Los Angeles' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label 'End Location' %>
+        <%= f.text_field :end_location, class: 'form-control', placeholder: 'San Francisco' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label 'End Location' %>
-    <%= f.text_field :end_location, class: 'form-control', placeholder: 'San Francisco' %>
+  <div class="row">
+    <div class="col">
+      <%= f.label 'Start Time' %>
+      <div class="form-group">
+        <%= f.datetime_select :start_time, { order: [:month, :day, :year], ampm: true, minute_step: 15 }, class: 'form-control date-select' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label 'Start Time', class: 'd-block' %>
-    <%= f.datetime_select :start_time, class: 'form-control', order: [:month, :day, :year], ampm: true, minute_step: 15 %>
+  <div class="row">
+    <div class="col">
+      <%= f.label 'End Time' %>
+      <div class="form-group">
+        <%= f.datetime_select :end_time, { order: [:month, :day, :year], ampm: true, minute_step: 15 }, class: 'form-control date-select' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label 'End Time', class: 'd-block' %>
-    <%= f.datetime_select :end_time, class: 'form-control', order: [:month, :day, :year], ampm: true, minute_step: 15 %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :car_id %>
+        <%= f.select :car_id, @cars.collect { |car| [car.color << ', ' << car.year.to_s << ' ' << car.make << ' ' << car.model, car.id] }, {include_blank: 'Select Car'}, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="col">
+      <%= f.label :price %>
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <%= f.text_field :price, class: 'form-control', placeholder: '123.45' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :price %>
-    <%= f.text_field :price, class: 'form-control', placeholder: '123.45' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :terms %>
+        <%= f.text_area :terms, rows: 2, class: 'form-control', placeholder: 'Terms to be followed by the renter' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :terms %>
-    <%= f.text_field :terms, class: 'form-control', placeholder: 'Terms to be followed by renters' %>
-  </div>
-  <div class="text-center">
-    <%= f.submit yield(:submit_label), class: 'btn btn-lg btn-base mt-3' %>
+  <div class="text-center mt-5">
+    <%= f.submit 'Submit', class: 'btn btn-lg btn-base m-2' %>
+    <%= link_to 'Cancel', rentals_user_path(current_user), class: 'btn btn-lg btn-danger m-2', role: 'button' %>
   </div>
 <% end %>

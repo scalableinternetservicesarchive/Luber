@@ -6,9 +6,9 @@
 <% if session[:user_id] == @user.id %>
   <%= render 'users/nav' %>
 <% end %>
-<section class="container m-top card-wrapper">
+<section class="container mt-5">
   <% if @cars.length > 0 %>
-    <%= render @cars %>
+    <%= render @cars, owners: @owners %>
     <%= will_paginate @cars, 
       class: 'mb-5',
       page_links: false, 

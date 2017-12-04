@@ -1,8 +1,3 @@
-// Set a dynamic footer height since rails debug may/may not be showing
-margins = function() {
-  $('main').css('margin-bottom', $('footer').height() + 36);
-}
-
 // Set a background color and timeout for alerts to make the fade look cleaner
 alerts = function() {
   if($('.alert')) {

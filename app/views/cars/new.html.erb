@@ -1,18 +1,15 @@
-<% provide(:title, "Add Car") %>
+<% provide(:title, "Add A Car") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
-<% provide(:submit_label, "Add Car") %>
 
 <section class="container-fluid banner">
-  <div class="container">
-    <h1>Add Car</h1>
+  <div class="container text-center">
+    <h1>Add A Car</h1>
   </div>
 </section>
-<section class="container align-slef-center m-top">
-  <div class="row">
-    <div class="col"></div>
-    <div class="col-6">
+<section class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-7">
       <%= render 'form', car: @car %>
     </div>
-    <div class="col"></div>
   </div>
 </section>

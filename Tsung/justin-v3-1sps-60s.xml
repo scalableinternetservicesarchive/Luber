@@ -15,8 +15,8 @@
 
 
   <load>
-    <arrivalphase phase="1" duration="10" unit="second" wait_all_sessions_end="true">
-      <users interarrival="10" unit="second"></users>
+    <arrivalphase phase="1" duration="30" unit="second" wait_all_sessions_end="true">
+      <users interarrival="1" unit="second"></users>
     </arrivalphase>
 <!--     <arrivalphase phase="2" duration="60" unit="second" wait_all_sessions_end="true">
       <users arrivalrate="2" unit="second"></users>
@@ -69,8 +69,12 @@
 
       <!-- Pick random user  -->
       <!-- WARNING: assumes you've seeded the db with at least 1000 users named User2, User3, ... -->
-      <setdynvars sourcetype="random_number" start="2" end="10">
+      <setdynvars sourcetype="random_number" start="2" end="1000">
         <var name="random_user_number" />
+      </setdynvars>
+
+      <setdynvars sourcetype="file" fileid="userlist.csv" delimiter=";" order="iter">
+	<var name="random_user_number" />
       </setdynvars>
 
       <!-- Get home -->

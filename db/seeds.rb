@@ -134,15 +134,18 @@ $all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'S
 ###############################################
 
 case Rails.env
+  puts '========================='
   when 'test', 'development'
     puts 'IN LOCAL MODE (' + Rails.env + ')'
-    $how_many = {user: 10, cars_per_user: 2, rentals_per_car: 5}
+    puts '========================='
+    $how_many = {user: 10, cars_per_user: 1, rentals_per_car: 5}
     $col_name_delim = "`" # sqlite3
     $val_delim = '"'  # sqlite3
     $direct_sql_inject = false
     load(Rails.root.join( 'db', 'seeds', 'local.rb'))
   when 'production'
     puts 'IN REMOTE MODE (production)'
+    puts '========================='
     $how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5}
     $col_name_delim = "" # postgres
     $val_delim = "'"  # postgres

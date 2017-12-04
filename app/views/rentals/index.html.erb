@@ -18,15 +18,19 @@
       previous_label: icon('arrow-left'), 
       next_label: icon('arrow-right'),
       link_separator: "<p>#{page} / #{@available_rentals.total_pages}</p>" } %>
-    <div class="row justify-content-between">
-      <div class="col-auto">
-        <div class="input-group">
-          <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
-          <span class="input-group-btn">
-            <%= link_to 'Go to Page', rentals_path, class: 'btn btn-base', role: 'button' %>
-          </span>
+    <% if @total_available_rentals > @per_page_count %>
+      <div class="row justify-content-between">
+        <div class="col-auto">
+          <div class="input-group">
+            <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
+            <span class="input-group-btn">
+              <%= link_to 'Go to Page', rentals_path, class: 'btn btn-base', role: 'button' %>
+            </span>
+          </div>
         </div>
-      </div>
+    <% else %>
+      <div class="row justify-content-end">
+    <% end %>
       <div class="col-auto">
         <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
       </div>

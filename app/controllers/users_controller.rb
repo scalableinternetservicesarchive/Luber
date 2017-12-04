@@ -122,10 +122,10 @@ class UsersController < ApplicationController
   end
 
   def rentals
-    total_rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).count
-    per_page_count = 4
-    params[:page] = validate_page(params[:page], total_rentals, per_page_count)
-    @rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: per_page_count )
+    @total_rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).count
+    @per_page_count = 4
+    params[:page] = validate_page(params[:page], @total_rentals, @per_page_count)
+    @rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @renters, @cars = [], [], []
     @rentals.each do |rental|
       @owners << User.find(rental.user_id)
@@ -135,10 +135,10 @@ class UsersController < ApplicationController
   end
 
   def cars
-    total_cars = Car.where(user_id: @user.id).count
-    per_page_count = 4
-    params[:page] = validate_page(params[:page], total_cars, per_page_count)
-    @cars = Car.where(user_id: @user.id).paginate( page: params[:page], per_page: per_page_count )
+    @total_cars = Car.where(user_id: @user.id).count
+    @per_page_count = 4
+    params[:page] = validate_page(params[:page], @total_cars, @per_page_count)
+    @cars = Car.where(user_id: @user.id).paginate( page: params[:page], per_page: @per_page_count )
     @owners = []
     @cars.each do |car|
       @owners << User.find(car.user_id)
@@ -146,10 +146,10 @@ class UsersController < ApplicationController
   end
 
   def history
-    total_logs = Log.where(user_id: @user.id).count
-    per_page_count = 6
-    params[:page] = validate_page(params[:page], total_logs, per_page_count)
-    @page_logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: per_page_count )
+    @total_logs = Log.where(user_id: @user.id).count
+    @per_page_count = 6
+    params[:page] = validate_page(params[:page], @total_logs, @per_page_count)
+    @page_logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
     @day_logs = @page_logs.group_by_day(reverse: true){ |l| l.updated_at }
   end
 

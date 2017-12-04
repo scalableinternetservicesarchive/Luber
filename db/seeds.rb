@@ -577,9 +577,9 @@ p "Created #{Tagging.count} taggings"
 p DateTime.now
 
 
-# re-enable logger
+# re-enable logger at 'warn' level (don't overload log when load testing.)
 if direct_sql_inject
-  ActiveRecord::Base.logger.level = 0
+  ActiveRecord::Base.logger.level = :warn
 end
 
 # Reset ids of each table, so Rails knows where to start 

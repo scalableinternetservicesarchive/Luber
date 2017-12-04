@@ -17,13 +17,13 @@
 ###############################################
 
 # Car resources
-car_makes = ['Toyota','Ford','Nissan','BMW','Mazda','Mercedes','Volkswagen','Audi','Kia','Hyundai','Subaru']
-car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','Tacoma','Outback','Forester',
+$all_car_makes = ['Toyota','Ford','Nissan','BMW','Mazda','Mercedes','Volkswagen','Audi','Kia','Hyundai','Subaru']
+$all_car_models = ['Civic','Accord','Camry','F-150','Wrangler','Highlander','Grand Cherokee','Tacoma','Outback','Forester',
   'Equinox','Explorer','Mustang','Camaro','Tacoma','Odyssey','Silverado','Escape','Corolla','Tahoe','Fusion','Charger']
-car_colors = ['Red','Orange','Yellow','Green','Blue','Purple','Black','White','Gray','Silver']
+$all_car_colors = ['Red','Orange','Yellow','Green','Blue','Purple','Black','White','Gray','Silver']
 
 # Rental resources
-all_locations = {
+$all_locations = {
   "Los Angeles, CA"       => [34.0194, -118.411],
   "San Diego, CA"         => [32.8153, -117.135],
   "San Jose, CA"          => [37.2969, -121.819],
@@ -97,7 +97,7 @@ all_locations = {
   "Rialto, CA"            => [34.1118, -117.388],
   "Clovis, CA"            => [36.8289, -119.687]
 }
-all_terms = [
+$all_terms = [
  "Take time to know yourself.",
  "A narrow focus brings big results.",
  "Show up fully.",
@@ -125,7 +125,7 @@ all_terms = [
  "Believe in yourself."]
 
 # Tag resources
-all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'moon-roof', 'smoking', 
+$all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'SUV', 'off-road', 'moon-roof', 'smoking', 
   'tinted', 'fold-down-seats', 'curtains','cup-holders','arm-rests','bed','fridge','leather','stereo','backseat-tv','satellite-dish']
 
 
@@ -136,16 +136,16 @@ all_tags = ['no-smoking', 'sunroof', '5-seater', 'sporty', 'child-car-seat', 'SU
 case Rails.env
   when 'test', 'development'
     puts 'IN LOCAL MODE (' + Rails.env + ')'
-    how_many = {user: 10, cars_per_user: 2, rentals_per_car: 5}
-    col_name_delim = "`" # sqlite3
-    val_delim = '"'  # sqlite3
-    direct_sql_inject = false
+    $how_many = {user: 10, cars_per_user: 2, rentals_per_car: 5}
+    $col_name_delim = "`" # sqlite3
+    $val_delim = '"'  # sqlite3
+    $direct_sql_inject = false
     load(Rails.root.join( 'db', 'seeds', 'local.rb'))
   when 'production'
     puts 'IN REMOTE MODE (production)'
-    how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5}
-    col_name_delim = "" # postgres
-    val_delim = "'"  # postgres
-    direct_sql_inject = true
+    $how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5}
+    $col_name_delim = "" # postgres
+    $val_delim = "'"  # postgres
+    $direct_sql_inject = true
     load(Rails.root.join( 'db', 'seeds', 'remote.rb'))
 end

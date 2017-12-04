@@ -18,7 +18,7 @@
 # if you use direct sql inject
 # in non-production env, even tho it should work. 
 
-if direct_sql_inject
+if $direct_sql_inject
   # turn off logger (we turn it back @ end of file)
   # (This prevents rails db:seed from spewing)
   ActiveRecord::Base.logger.level = 1 
@@ -129,13 +129,13 @@ NOW_STR = NOW_DT.strftime("%FT%T")
 ###############################################
 
 cols = User.column_names
-delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+delimited_cols = cols.map {|s| $col_name_delim + "#{s}" + $col_name_delim}
 sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
 
 PASSWORD = 'password'
 PASSWORD_HASH = User.digest(PASSWORD)
 
-user_ids = (1..how_many[:user]).to_a
+user_ids = (1..$how_many[:user]).to_a
 
 user_ids.each do |i|  # don't use .times, then id will be 0, bad.
 
@@ -162,13 +162,13 @@ user_ids.each do |i|  # don't use .times, then id will be 0, bad.
               admin:        true
   end
 
-  if direct_sql_inject
+  if $direct_sql_inject
     d[:signed_in_at]    = NOW_STR
     d[:created_at]      = NOW_STR
     d[:updated_at]      = NOW_STR
     d[:admin]           = d[:admin] ? "TRUE" : "FALSE"
     d[:password_digest] = PASSWORD_HASH
-    vals = dict_to_db_str(d,cols,val_delim)
+    vals = dict_to_db_str(d,cols,$val_delim)
     sql += i==1 ? vals : ',' + vals
   else      
     d.delete(:id)
@@ -179,7 +179,7 @@ user_ids.each do |i|  # don't use .times, then id will be 0, bad.
   
 end
 
-if direct_sql_inject
+if $direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
@@ -195,7 +195,7 @@ puts DateTime.now
 #=> ["id", "user_id", "make", "model", "year", "color", "license_plate", "created_at", "updated_at"]
 
 cols = Car.column_names
-delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+delimited_cols = cols.map {|s| $col_name_delim + "#{s}" + $col_name_delim}
 sql = "INSERT INTO cars (#{delimited_cols.join(',')}) VALUES "
 i = 0
 
@@ -206,15 +206,15 @@ end
 
 # User.all.each do |u|
 user_ids.each do |uid|  # optimization: reduce # db queries 
-  how_many[:cars_per_user].times do 
+  $how_many[:cars_per_user].times do 
     # puts "Making a car for user #{u.username} (total cars: #{i+1})"
     d = {
       id:             (i+=1),
       user_id:        uid, # u.id,
-      make:           car_makes.sample,
-      model:          car_models.sample,
+      make:           $all_car_makes.sample,
+      model:          $all_car_models.sample,
       year:           (1960..2017).to_a.sample,
-      color:          car_colors.sample,
+      color:          $all_car_colors.sample,
       license_plate:  [(0..9).to_a.sample, ('A'..'Z').to_a.sample(3), (0..9).to_a.sample(3)].join,
       created_at:     NOW_DT,
       updated_at:     NOW_DT
@@ -222,10 +222,10 @@ user_ids.each do |uid|  # optimization: reduce # db queries
 
     users_cars_ids[uid].push i  # remember which car this user owns
 
-    if direct_sql_inject
+    if $direct_sql_inject
       d[:created_at]      = NOW_STR
       d[:updated_at]      = NOW_STR
-      vals = dict_to_db_str(d,cols,val_delim)
+      vals = dict_to_db_str(d,cols,$val_delim)
       sql += i==1 ? vals : ',' + vals
     else      
       d.delete(:id)
@@ -236,7 +236,7 @@ user_ids.each do |uid|  # optimization: reduce # db queries
   end
 end
 
-if direct_sql_inject
+if $direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
@@ -259,7 +259,7 @@ TENDS   = TSTARTS.map {|tstart| Time.at(tstart + 1.hours)}
 #     "created_at", "updated_at"]
 
 cols = Rental.column_names
-delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+delimited_cols = cols.map {|s| $col_name_delim + "#{s}" + $col_name_delim}
 sql = "INSERT INTO rentals (#{delimited_cols.join(',')}) VALUES "
 i = 0
 
@@ -274,11 +274,11 @@ user_ids.each do |uid|
     # old old: c = Car.where(user_id: u.id).sample
     # puts "User #{u.username} owns car id: #{c.id}"
 
-    how_many[:rentals_per_car].times do
+    $how_many[:rentals_per_car].times do
 
-      c1, c2 = all_locations.keys.sample(2)
-      lat1,lon1 = all_locations[c1]
-      lat2,lon2 = all_locations[c2]
+      c1, c2 = $all_locations.keys.sample(2)
+      lat1,lon1 = $all_locations[c1]
+      lat2,lon2 = $all_locations[c2]
       # dt = deltatimes[ i % deltatimes.length ]
       # tstart = Time.at(Time.now + dt)
       # tend = Time.at(tstart + 1.hours)
@@ -293,7 +293,7 @@ user_ids.each do |uid|
         renter = (user_ids-[uid]).sample
       end
       price = rand(10..200)
-      terms = all_terms.sample(1)[0]
+      terms = $all_terms.sample(1)[0]
       # puts terms
 
       d = {
@@ -318,7 +318,7 @@ user_ids.each do |uid|
         updated_at:       NOW_DT
       }
 
-      if direct_sql_inject
+      if $direct_sql_inject
         d[:renter_id]       = d[:renter_id].nil?  ? "NULL_SHITTY_HACK" : d[:renter_id]
         d[:created_at]      = NOW_STR
         d[:updated_at]      = NOW_STR
@@ -326,8 +326,8 @@ user_ids.each do |uid|
         d[:end_time]        = NOW_STR
         d[:renter_visible]  = d[:renter_visible]  ? "TRUE" : "FALSE"
         d[:skip_in_seed]    = d[:skip_in_seed]    ? "TRUE" : "FALSE"
-        vals = dict_to_db_str(d,cols,val_delim)
-        vals.gsub! (val_delim + "NULL_SHITTY_HACK" + val_delim), "NULL"  # Needs to be NULL, not "NULL" in SQL statement.
+        vals = dict_to_db_str(d,cols,$val_delim)
+        vals.gsub! ($val_delim + "NULL_SHITTY_HACK" + $val_delim), "NULL"  # Needs to be NULL, not "NULL" in SQL statement.
         sql += i==1 ? vals : ',' + vals
       else      
         d.delete(:id)
@@ -344,7 +344,7 @@ user_ids.each do |uid|
   end
 end
 
-if direct_sql_inject
+if $direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
@@ -360,7 +360,7 @@ puts DateTime.now
 
 ###############################################
 
-all_tags.each do |t|
+$all_tags.each do |t|
     Tag.create!(name: t)
 end
 
@@ -378,7 +378,7 @@ puts DateTime.now
 # => ["id", "car_id", "tag_id", "created_at", "updated_at"]
 
 cols = Tagging.column_names
-delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+delimited_cols = cols.map {|s| $col_name_delim + "#{s}" + $col_name_delim}
 sql = "INSERT INTO taggings (#{delimited_cols.join(',')}) VALUES "
 i = 0
 
@@ -396,10 +396,10 @@ i = 0
       updated_at: NOW_DT      
     }
 
-    if direct_sql_inject
+    if $direct_sql_inject
       d[:created_at]      = NOW_STR
       d[:updated_at]      = NOW_STR
-      vals = dict_to_db_str(d,cols,val_delim)
+      vals = dict_to_db_str(d,cols,$val_delim)
       sql += i==1 ? vals : ',' + vals
     else      
       d.delete(:id)
@@ -411,7 +411,7 @@ i = 0
   end
 end
 
-if direct_sql_inject
+if $direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
@@ -420,14 +420,14 @@ puts DateTime.now
 
 
 # re-enable logger
-if direct_sql_inject
+if $direct_sql_inject
   ActiveRecord::Base.logger.level = 0
 end
 
 # Reset ids of each table, so Rails knows where to start 
 # Otherwise User.create!(...) will fail due to duplicate id.
 # Source: https://stackoverflow.com/questions/2097052/rails-way-to-reset-seed-on-id-field
-if direct_sql_inject
+if $direct_sql_inject
   ['users','cars','rentals','tags','taggings'].each do |t|
     ActiveRecord::Base.connection.reset_pk_sequence!(t)
   end

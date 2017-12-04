@@ -9,8 +9,9 @@
 
   <!-- Server side setup -->
   <servers>
-<!--    <server host="luber-justin2.j2zayzetn4.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server> -->
-    <server host="luber-justin.dckugbigqr.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server> 
+    <server host="haha-fill-this-in-silly-goose" port="80" type="tcp"></server> 
+    <!-- <server host="luber-justin2.j2zayzetn4.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>  -->
+    <!-- <server host="luber-justin.dckugbigqr.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server> -->
 
   </servers>
 
@@ -19,9 +20,10 @@
     <arrivalphase phase="1" duration="30" unit="second" wait_all_sessions_end="true">
       <users interarrival="1" unit="second"></users>
     </arrivalphase>
-<!--     <arrivalphase phase="2" duration="60" unit="second" wait_all_sessions_end="true">
+    <arrivalphase phase="2" duration="60" unit="second" wait_all_sessions_end="true">
       <users arrivalrate="2" unit="second"></users>
     </arrivalphase>
+<!--
     <arrivalphase phase="3" duration="60" unit="second" wait_all_sessions_end="true">
       <users arrivalrate="4" unit="second"></users>
     </arrivalphase>
@@ -72,6 +74,12 @@
 
 
 <!-- NOTE: Each of the next 6 steps is a transaction, and has a 1-second static thinktime to simulate a real user. -->
+
+<!-- Notes:
+- can't have transaction w/in other transactions?
+- dyn_variables need to be inside <request>
+  - http://lists.process-one.net/pipermail/tsung-users/2006-April/000024.html
+-->
 
 <!-- SIGN IN -->
 <transaction name="SIGN_IN">

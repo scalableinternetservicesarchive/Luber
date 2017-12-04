@@ -171,7 +171,7 @@ sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
 PASSWORD = 'foobar'
 PASSWORD_HASH = User.digest(PASSWORD)
 
-debugger
+# debugger
 
 user_ids = (1..how_many[:user]).to_a
 empty_user_ids = ((how_many[:user]+1)..(how_many[:user]+how_many[:empty_user])).to_a

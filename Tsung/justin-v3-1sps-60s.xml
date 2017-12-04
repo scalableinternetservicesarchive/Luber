@@ -9,8 +9,9 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="luber-justin2.j2zayzetn4.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
-<!--    <server host="luber-justin.dckugbigqr.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server> -->
+<!--    <server host="luber-justin2.j2zayzetn4.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server> -->
+    <server host="luber-justin.dckugbigqr.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server> 
+
   </servers>
 
 
@@ -40,6 +41,12 @@
     <option type="ts_http" name="user_agent">
       <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
     </option>
+
+    <!-- <option name="file_server"  value="/home/ec2-user/userlist.csv"></option> -->
+
+    <option name="file_server" id='userlist' value="/home/ec2-user/userlist.csv"></option>
+
+
   </options>
 
 
@@ -69,12 +76,14 @@
 
       <!-- Pick random user  -->
       <!-- WARNING: assumes you've seeded the db with at least 1000 users named User2, User3, ... -->
-      <setdynvars sourcetype="random_number" start="2" end="1000">
-        <var name="random_user_number" />
-      </setdynvars>
+      <!-- <setdynvars sourcetype="random_number" start="2" end="1000"> -->
+      <!--   <var name="random_user_number" /> -->
+      <!-- </setdynvars> -->
 
-      <setdynvars sourcetype="file" fileid="userlist.csv" delimiter=";" order="iter">
+<!-- http://tsung.erlang-projects.org/user_manual/conf-advanced-features.html#reading-external-file -->
+      <setdynvars sourcetype="file" fileid="userlist" delimiter="," order="random">
 	<var name="random_user_number" />
+	<var name="throwaway_field" />
       </setdynvars>
 
       <!-- Get home -->

@@ -16,7 +16,7 @@ class Car < ApplicationRecord
   validates :make, presence: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_MAKE }
   validates :model, presence: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_MODEL }
   validates :color, presence: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_COLOR }
-  validates :year, numericality: { greater_than: 1900, less_than: DateTime.now.year + 3, only_integer: true }
+  validates :year, numericality: { greater_than: 1899, less_than: DateTime.now.year + 3, only_integer: true }
   # http://guides.rubyonrails.org/active_record_validations.html#validates-each
   validates_each :license_plate do |record, attr, value|
     record.errors.add(attr, 'must have length 2 to 7') unless (value.length >= 2) && (value.length <= 7)

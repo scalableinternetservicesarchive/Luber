@@ -24,7 +24,7 @@
     <div class="col">
       <div class="form-group">
         <%= f.label :state %>
-        <%= f.select :state, options_for_select(us_states, user.state), {}, class: 'form-control' %>
+        <%= f.select :state, options_for_select(us_states, user.state), {include_blank: 'Select State'}, class: 'form-control' %>
       </div>
     </div>
   </div>

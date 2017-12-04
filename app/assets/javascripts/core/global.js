@@ -1,15 +1,27 @@
 // Set a background color and timeout for alerts to make the fade look cleaner
 alerts = function() {
   if($('.alert')) {
+    var wrapper = $('.alert-wrapper');
     if($('.alert-success').length > 0) {
-      $('.alert-wrapper').css('background-color', '#d4edda');
+      wrapper.css('background-color', '#d4edda');
     }
     else if($('.alert-danger').length > 0) {
-      $('.alert-wrapper').css('background-color', '#f8d7da');
+      wrapper.css('background-color', '#f8d7da');
     }
     
     setTimeout(function() {
-      $('.alert-wrapper').addClass('closed');
+      wrapper.addClass('closed');
     }, 3000);
   }
+}
+
+// Allow the user to jump to a specific page
+pageJump = function() {
+  $('.input-group-btn').click(function() {
+    var link = $('.input-group-btn a');
+    var input = $('.page-jump');
+    if(input.val() != '') {
+      link.attr('href', link.attr('href') + '?page=' + input.val());
+    }
+  });
 }

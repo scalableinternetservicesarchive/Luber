@@ -18,8 +18,7 @@
     <div class="col">
       <%= f.label :year %>
       <div class="form-group">
-        <%= f.select :year, (1900..DateTime.now.year + 3).to_a.reverse, {include_blank: 'Select Year'}, class: 'form-control time-select' %>
-        <%# f.number_field :year, class: 'form-control', placeholder: '2015' %>
+        <%= f.select :year, (1900..DateTime.now.year + 2).to_a.reverse, {include_blank: 'Select Year'}, class: 'form-control time-select' %>
       </div>
     </div>
     <div class="col">
@@ -39,8 +38,8 @@
     <div class="col">
       <div class="form-group">
         <%= f.label :tags %>
-        <span class="font-italic">(seperate by commas)</span>
         <%= f.text_field :all_tags, class: 'form-control', placeholder: 'sporty, trendy, off-road' %>
+        <small class="form-text text-muted">Seperate each tag by a comma</small>
       </div>
     </div>
   </div>

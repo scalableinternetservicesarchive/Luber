@@ -51,7 +51,7 @@
             <div class="col-auto">
               <p class="list-group-item">
                 <%= icon('sign-in', class: 'fa-fw') %><%#
-                %>Last Signed In on <%= user.signed_in_at.strftime("%A, %b. %-d %Y") %> at <%= user.signed_in_at.strftime("%l:%M %p") %><%#
+                %>Last Signed In <%= smart_time(user.signed_in_at) %><%#
               %></p>
       <% end %>
         </div>

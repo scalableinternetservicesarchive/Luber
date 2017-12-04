@@ -4,22 +4,9 @@
 <section class="container-fluid banner">
   <div class="container text-center">
     <h1>Rental Post #<%= params[:id] %></h1>
-    <p class="mb-1">Created at <%#
-      %><%= @rental.created_at.strftime("%l:%M %p") %> on <%= @rental.created_at.strftime("%A, %b. %-d") %><%#
-      %><% if DateTime.now.year > @rental.created_at.year %><%#
-        %> <%= @rental.created_at.strftime("%Y") %><%#
-      %><% end %><%#
-    %></p>
+    <p class="mb-1">Created <%= smart_time(@rental.created_at) %></p>
     <% if @rental.updated_at > @rental.created_at %>
-      <p class="font-italic mb-0">Last updated at <%#
-        %><%= @rental.updated_at.strftime("%l:%M %p") %><%#
-        %><% if @rental.updated_at.to_date > @rental.created_at.to_date %><%#
-          %> on <%= @rental.updated_at.strftime("%A, %b. %-d") %><%#
-          %><% if @rental.updated_at.year > @rental.created_at.year %><%#
-            %> <%= @rental.updated_at.strftime("%Y") %><%#
-          %><% end %><%#
-        %><% end %><%#
-      %></p>
+      <p class="font-italic mb-0">Last updated <%= smart_time(@rental.updated_at) %></p>
     <% end %>
   </div>
 </section>

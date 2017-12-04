@@ -15,12 +15,23 @@
         <%= render log %>
       <% end %>
     <% end %>
-    <%= will_paginate @page_logs, 
+    <%= paginate @page_logs, {
       class: 'mb-5',
       page_links: false, 
+      first_page: "/users/#{@user.username}/history", 
       previous_label: icon('arrow-left'), 
       next_label: icon('arrow-right'),
-      link_separator: "<p>#{page} / #{@page_logs.total_pages}</p>" %>
+      link_separator: "<p>#{page} / #{@page_logs.total_pages}</p>" } %>
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <div class="input-group">
+          <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
+          <span class="input-group-btn">
+            <%= link_to 'Go to Page', history_user_path, class: 'btn btn-base', role: 'button' %>
+          </span>
+        </div>
+      </div>
+    </div>
   <% else %>
     <div class="text-center">
       <p class="font-italic">Looks like you don't have any logs yet.</p>

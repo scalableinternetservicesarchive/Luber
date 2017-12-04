@@ -27,15 +27,26 @@
   <% end %>
   <% if @rentals.length > 0 %>
     <%= render @rentals, owners: @owners, renters: @renters, cars: @cars %>
-    <%= will_paginate @rentals, 
+    <%= paginate @rentals, {
       class: 'mb-5',
       page_links: false, 
+      first_page: "/users/#{@user.username}/rentals", 
       previous_label: icon('arrow-left'), 
       next_label: icon('arrow-right'),
-      link_separator: "<p>#{page} / #{@rentals.total_pages}</p>" %>
-    <div class="text-right">
-      <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
-      <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base ml-1', role: 'button' %>
+      link_separator: "<p>#{page} / #{@rentals.total_pages}</p>" } %>
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <div class="input-group">
+          <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
+          <span class="input-group-btn">
+            <%= link_to 'Go to Page', rentals_user_path, class: 'btn btn-base', role: 'button' %>
+          </span>
+        </div>
+      </div>
+      <div class="col-auto">
+        <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
+        <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base ml-1', role: 'button' %>
+      </div>
     </div>
   <% end %>
 </section>

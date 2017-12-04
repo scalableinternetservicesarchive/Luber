@@ -29,9 +29,9 @@
             <p><%= @user.about %></p>
           <% else %>
             <% if current_user?(@user) %>
-              <p><span class="font-italic">(Add a description of yourself)</span></p>
+              <p class="font-italic">(Add a description of yourself)</p>
             <% else %>
-              <p><span class="font-italic">(This user has not provided a description of themselves)</span></p>
+              <p  class="font-italic">(This user has not provided a description of themselves)</p>
             <% end %>
           <% end %>
           <% if current_user?(@user) %>
@@ -55,9 +55,9 @@
             <p><%= @user.meetup %></p>
           <% else %>
             <% if current_user?(@user) %>
-               <p><span class="font-italic">(Add your preferences for meeting up with other users)</span></p>
+               <p class="font-italic">(Add your preferences for meeting up with other users)</p>
             <% else %>
-              <p><span class="font-italic">(This user has not provided any preferences for meeting up with other users)</span></p>
+              <p class="font-italic">(This user has not provided any preferences for meeting up with other users)</p>
             <% end %>
           <% end %>
           <% if current_user?(@user) %>

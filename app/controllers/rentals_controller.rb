@@ -8,8 +8,9 @@ class RentalsController < ApplicationController
   # GET /rentals.json
   def index
     @total_available_rentals = Rental.where(status: 0).count
-    @per_page_count = 8
-    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: @per_page_count )
+    per_page_count = 8
+    params[:page] = validate_page(params[:page], @total_available_rentals, per_page_count)
+    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: per_page_count )
     @owners, @cars = [], []
     @available_rentals.each do |rental|
       @owners << User.find(rental.user_id)
@@ -75,6 +76,7 @@ class RentalsController < ApplicationController
     
     original_rental = @rental.dup
     car = Car.find(@rental.car_id)
+    @cars = Car.where(user_id: session[:user_id])
 
     respond_to do |format|
       if @rental.update(mutable_params)

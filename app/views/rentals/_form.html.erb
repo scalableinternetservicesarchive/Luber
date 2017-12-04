@@ -36,7 +36,7 @@
     <div class="col">
       <div class="form-group">
         <%= f.label :car_id %>
-        <%= f.select :car_id, @cars.collect { |car| [car.color << ', ' << car.year.to_s << ' ' << car.make << ' ' << car.model, car.id] }, {include_blank: 'Select Car'}, class: 'form-control' %>
+        <%= f.select :car_id, cars.collect { |car| [car.color << ', ' << car.year.to_s << ' ' << car.make << ' ' << car.model, car.id] }, {include_blank: 'Select Car'}, class: 'form-control' %>
       </div>
     </div>
     <div class="col">

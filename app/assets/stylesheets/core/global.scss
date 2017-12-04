@@ -208,32 +208,32 @@ pre {
 
 .btn-outline-base {
   color: $primary;
-  background-color: transparent;
+  background-color: white;
   border-color: $primary;
 }
 
 .btn-base,
-.btn-outline-base.hover, 
+.btn-outline-base.hover,
 .btn-outline-base:hover {
   color: white;
   background-color: $primary;
   border-color: $primary;
 }
  
-.btn-base.hover, 
+.btn-base.hover,
 .btn-base:hover {
   color: white;
   background-color: $dark-accent;
   border-color: $darker-accent;
 }
 
-.btn-base.active, 
+.btn-base.active,
 .btn-base:active,
-.btn-base.focus, 
+.btn-base.focus,
 .btn-base:focus,
-.btn-outline-base.active, 
+.btn-outline-base.active,
 .btn-outline-base:active,
-.btn-outline-base.focus, 
+.btn-outline-base.focus,
 .btn-outline-base:focus {
   color: white;
   background-color: $darker-accent;
@@ -254,36 +254,14 @@ a.disabled {
   margin-bottom: 0;
   justify-content: space-between;
 
-  li {
-    @extend .page-item;
-
-    a {
-      @extend .page-link;
-      color: $primary;
-      background-color: transparent;
-      border-color: $primary;
-    }
-
-    a.hover, 
-    a:hover {
-      color: white;
-      background-color: $primary;
-      border-color: $primary;
-    }
-
-    a.active, 
-    a:active,
-    a.focus, 
-    a:focus {
-      color: white;
-      background-color: $darker-accent;
-      border-color: $light-accent;
-      box-shadow: 0 0 0 3px $primary-shadow;
-    }
-  }
-
-  li.disabled a {
-    background-color: transparent;
+  a.active, 
+  a:active,
+  a.focus, 
+  a:focus {
+    color: white;
+    background-color: $darker-accent;
+    border-color: $light-accent;
+    box-shadow: 0 0 0 3px $primary-shadow;
   }
 
   p {
@@ -385,12 +363,4 @@ a.disabled {
 .year-select {
   display: inline-block;
   width: 100%;
-}
-
-.currency-field {
-  border: 1px #ccc;
-
-  input {
-    border: 0;
-  }
 }

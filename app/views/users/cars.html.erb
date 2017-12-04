@@ -9,14 +9,25 @@
 <section class="container mt-5">
   <% if @cars.length > 0 %>
     <%= render @cars, owners: @owners %>
-    <%= will_paginate @cars, 
+    <%= paginate @cars, {
       class: 'mb-5',
       page_links: false, 
+      first_page: "/users/#{@user.username}/cars", 
       previous_label: icon('arrow-left'), 
       next_label: icon('arrow-right'),
-      link_separator: "<p>#{page} / #{@cars.total_pages}</p>" %>
-    <div class="text-right">
-      <%= link_to 'Add a new Car', new_car_path, class: 'btn btn-base', role: 'button' %>
+      link_separator: "<p>#{page} / #{@cars.total_pages}</p>" } %>
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <div class="input-group">
+          <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
+          <span class="input-group-btn">
+            <%= link_to 'Go to Page', cars_user_path, class: 'btn btn-base', role: 'button' %>
+          </span>
+        </div>
+      </div>
+      <div class="col-auto">
+        <%= link_to 'Add a new Car', new_car_path, class: 'btn btn-base', role: 'button' %>
+      </div>
     </div>
   <% else %>
     <div class="text-center">

@@ -88,17 +88,17 @@
         <p class="list-group-item">
           <%= icon('birthday-cake', class: 'fa-fw') %><%#
           %>Created On:<%#
-          %><span><%= @user.created_at.strftime("%A, %b. %-d %Y") %> at <%= @user.created_at.strftime("%l:%M %p") %></span>
+          %><span><%= smart_time(@user.created_at)[3..-1] %></span>
         </p>
         <p class="list-group-item">
           <%= icon('refresh', class: 'fa-fw') %><%#
           %>Last Updated On:<%#
-          %><span><%= @user.updated_at.strftime("%A, %b. %-d %Y") %> at <%= @user.updated_at.strftime("%l:%M %p") %></span>
+          %><span><%= smart_time(@user.updated_at)[3..-1] %></span>
         </p>
         <p class="list-group-item">
           <%= icon('sign-in', class: 'fa-fw') %><%#
           %>Last Signed In On:<%#
-          %><span><%= @user.signed_in_at.strftime("%A, %b. %-d %Y") %> at <%= @user.signed_in_at.strftime("%l:%M %p") %></span>
+          %><span><%= smart_time(@user.signed_in_at)[3..-1] %></span>
         </p>
       </div>
       <div class="float-right mt-4">

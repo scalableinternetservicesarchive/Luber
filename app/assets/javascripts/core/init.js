@@ -1,6 +1,7 @@
 init = function() {
   // Persistant functions
   alerts();
+  pageJump();
 
   // Scoped functions
   makeCaretsDynamic();

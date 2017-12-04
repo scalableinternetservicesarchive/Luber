@@ -6,6 +6,8 @@
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
 - [How to run load-tests with Tsung](#how-to-run-load-tests-with-tsung)
+- [Tips](#tips)
+- [References](#references)
 - [Team Members](#team-members)
 
 ## About

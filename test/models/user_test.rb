@@ -83,10 +83,10 @@ class UserTest < ActiveSupport::TestCase
 
   test "db seed file: in test env, each user should have same positive num of rentals" do
     Rails.application.load_seed
-    r = Rental.where(owner_id: User.last.id).count
+    r = Rental.where(user_id: User.last.id).count
     assert_operator r, :>, 0
     User.all.each do |u|
-      assert_equal Rental.where(owner_id: u.id).count, r
+      assert_equal Rental.where(user_id: u.id).count, r
     end
   end
 end

@@ -286,7 +286,7 @@ user_ids.each do |uid|
 
       d = {
         id:               (i+=1),
-        user_id:         uid, # u.id,
+        user_id:          uid, # u.id,
         renter_id:        renter,
         renter_visible:   true,
         car_id:           cid, # c.id,

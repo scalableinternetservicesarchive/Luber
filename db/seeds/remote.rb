@@ -243,7 +243,7 @@ end
 puts "Created #{Car.count} cars"
 puts DateTime.now
 
-# ["id", "owner_id", "renter_id", "renter_visible", "car_id", "status", "start_location", "start_longitude", 
+# ["id", "user_id", "renter_id", "renter_visible", "car_id", "status", "start_location", "start_longitude", 
 #  "start_latitude", "end_location", "end_longitude", "end_latitude", "start_time", "end_time", "price", "terms", "created_at", "updated_at"]
 
 # https://github.com/scalableinternetservices/Luber/issues/107
@@ -252,7 +252,7 @@ TSTARTS = deltatimes.map {|dt| Time.at(Time.now + dt)}
 TENDS   = TSTARTS.map {|tstart| Time.at(tstart + 1.hours)}
 
 # > Rental.column_names
-# => ["id", "owner_id", "renter_id", "renter_visible", "car_id", 
+# => ["id", "user_id", "renter_id", "renter_visible", "car_id", 
 #     "status", "start_location", "start_longitude", "start_latitude", 
 #     "end_location", "end_longitude", "end_latitude", 
 #     "start_time", "end_time", "price", "terms", 
@@ -298,7 +298,7 @@ user_ids.each do |uid|
 
       d = {
         id:               (i+=1),
-        owner_id:         uid, # u.id,
+        user_id:          uid, # u.id,
         renter_id:        renter,
         renter_visible:   true,
         car_id:           cid, # c.id,

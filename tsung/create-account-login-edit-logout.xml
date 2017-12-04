@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="notice">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+  </clients>
+
+  <!-- Server side setup -->
+  <servers>
+    <server host="luber-justin.dckugbigqr.us-west-2.elasticbeanstalk.com" port="3000" type="tcp"></server>
+  </servers>
+
+
+  <load>
+    <arrivalphase phase="1" duration="1" unit="second">
+      <users arrivalrate="1" unit="second"></users>
+    </arrivalphase>
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 2 seconds -->
+    <option name="global_ack_timeout" value="2000"></option>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+    </option>
+  </options>
+
+  <sessions>
+    <session name="http-example" probability="100" type="ts_http">
+
+      <for from="1" to="10" incr="1" var="counter">
+
+        <!-- Sign up -->
+
+        <request subst="true">
+          <http url="/" method="GET" version="1.1" />
+        </request>
+
+        <request subst="true">
+          <http url="/signup" method="GET" version="1.1" />
+        </request>
+
+        <request subst="true">
+          <http url="/signup" method="POST" version="1.1" contents="user[username]=justin%%_counter%%&amp;user[email]=j%%_counter%%@j.com&amp;user[password]=foobar&amp;user[password_confirmation]=foobar&amp;commit=Create Account" content_type="application/x-www-form-urlencoded" />
+        </request>
+
+        <!-- Edit account -->
+
+        <request subst="true">
+          <http url="/users/justin%%_counter%%/edit" method="GET" version="1.1" />
+        </request>
+
+        <request subst="true">
+          <http url="/users/justin%%_counter%%/edit" method="POST" version="1.1" contents="user[firstname]=Justin&amp;user[lastname]=Pearson&amp;user[city]=los gatos, ca&amp;user[state]=nebraska&amp;user[username]=justy%%_counter%%&amp;user[password]=foobar&amp;user[password_confirmation]=foobar&amp;commit=Update My Profile" content_type="application/x-www-form-urlencoded" />
+        </request>
+
+        <!-- Log out -->
+
+        <request subst="true">
+          <http url="/signout" method="POST" version="1.1" contents="_method=delete" content_type="application/x-www-form-urlencoded"/>
+        </request>
+
+        <!-- Log in with new email -->
+
+        <request subst="true">
+          <http url="/signin" method="POST" version="1.1" contents="session[email]=j%%_counter%%@j.com&amp;session[password]=foobar&amp;commit=Login" content_type="application/x-www-form-urlencoded" />
+        </request>
+
+        <!-- Log out -->
+
+        <request subst="true">
+          <http url="/signout" method="POST" version="1.1" contents="_method=delete" content_type="application/x-www-form-urlencoded"/>
+        </request>
+
+      </for>
+
+    </session>
+  </sessions>
+</tsung>

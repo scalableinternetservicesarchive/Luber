@@ -36,11 +36,15 @@ cd Luber
 bundle install --without production
 
 # If you're on linux you may need to do the following to increase your number of watchers
-# echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
+# Migrate and reset the databse
 rails db:migrate
+rails db:reset
 rails s
 
 # By default the server should start on http://localhost:3000/
+# If you run into issues with the db, try deleting /db/development.sqlite3, test.sqlite3, schema.rb, and running the commands again
 ```
 
 ## Contributing
@@ -84,24 +88,19 @@ git push origin my-feature-branch
 
 ## How to run load-tests with Tsung
 
-[Quickstart](#quickstart)
-
-1. [Launch your app on Elastic Beanstalk](#launch-your-app-on-elastic-beanstalk)
+1. [Quickstart](#quickstart)
+2. [Launch your app on Elastic Beanstalk](#launch-your-app-on-elastic-beanstalk)
     1. [SSH into AWS EC2](#ssh-into-aws-ec2)
     2. [From EC2, start Elastic Beanstalk](#from-ec2-start-elastic-beanstalk)
     3. [Monitor EB from the AWS console in web browser](#monitor-eb-from-the-aws-console-in-web-browser)
     4. [Seed the DB](#seed-the-db)
     5. [Verify app works](#verify-app-works)
-2. [Run Tsung against your app](#run-tsung-against-your-app)
+3. [Run Tsung against your app](#run-tsung-against-your-app)
     1. [Use CloudFormation to create a Tsung machine and SSH into it](#use-cloudformation-to-create-a-tsung-machine-and-ssh-into-it)
     2. [Copy XML files to Tsung](#copy-xml-files-to-tsung)
     3. [Run Tsung](#run-tsung)
     4. [Download Tsung data](#download-tsung-data)
-3. [Rapid reset for another Tsung test](#rapid-reset-for-another-tsung-test)
-
-[Tips](#tips)
-
-[Resources](#resources)
+4. [Rapid reset for another Tsung test](#rapid-reset-for-another-tsung-test)
 
 ### Quickstart 
 
@@ -438,7 +437,7 @@ Justin Pearson ([@justinpearson](https://github.com/justinpearson))
   <img height="300px" src="https://github.com/scalableinternetservices/Luber/blob/master/misc/snapshots/justin.png" alt="Justin Pearson Photo">
 </p>
 
-Michael Zhang & Michael's little helper([@Heronalps](https://github.com/Heronalps))  
+Michael Zhang & Michael's little helper ([@Heronalps](https://github.com/Heronalps))  
 <p align="center">
   <img height="300px" src="https://github.com/scalableinternetservices/Luber/blob/master/misc/snapshots/michael.png" alt="Michael Zhang Photo">
 </p>

@@ -38,4 +38,10 @@ class Car < ApplicationRecord
     name = name.downcase
     Tag.find_by_name!(name).cars
   end
+
+  before_destroy :remove_taggings
+
+  def remove_taggings
+    Tagging.where(car_id: id).destroy_all
+  end
 end

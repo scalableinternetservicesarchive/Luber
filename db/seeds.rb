@@ -35,14 +35,14 @@ case Rails.env
 
   when 'test', 'development'
     puts 'in test or dev!'
-    how_many = {user: 10, cars_per_user: 2, rentals_per_car: 5}
+    how_many = {user: 10, cars_per_user: 2, rentals_per_car: 5, empty_user: 10}
     col_name_delim = "`" # sqlite3
     val_delim = '"'  # sqlite3
     direct_sql_inject = false
 
   when 'production'
     puts 'in production!'
-    how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5}
+    how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5, empty_user: 10000}
     col_name_delim = "" # postgres
     val_delim = "'"  # postgres
     direct_sql_inject = true
@@ -171,49 +171,55 @@ sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
 PASSWORD = 'foobar'
 PASSWORD_HASH = User.digest(PASSWORD)
 
+debugger
+
 user_ids = (1..how_many[:user]).to_a
+empty_user_ids = ((how_many[:user]+1)..(how_many[:user]+how_many[:empty_user])).to_a
 
-user_ids.each do |i|  # don't use .times, then id will be 0, bad.
+[user_ids,empty_user_ids].each do |id_list|
+  id_list.each do |i|  # don't use .times, then id will be 0, bad.
 
-  d = { 
-      id:           i,
-      first_name:   "Bob",
-      last_name:    "Jones",
-      city:         "Goleta",
-      state:        "CA",
-      username:     "skater4#{i}",
-      email:        "user#{i}@boo.com",
-      password:     PASSWORD,
-      admin:        false,
-      signed_in_at: NOW_DT,
-      created_at:   NOW_DT,
-      updated_at:   NOW_DT
-      }
+    d = { 
+        id:           i,
+        first_name:   "Bob",
+        last_name:    "Jones",
+        city:         "Goleta",
+        state:        "CA",
+        username:     "skater4#{i}",
+        email:        "user#{i}@boo.com",
+        password:     PASSWORD,
+        admin:        false,
+        signed_in_at: NOW_DT,
+        created_at:   NOW_DT,
+        updated_at:   NOW_DT
+        }
 
-  if i==1  # Make admin
-    d.merge!  first_name:   "Mister",
-              last_name:    "Admn",
-              username:     "admin01",
-              email:        "a@a.com",
-              admin:        true
+    if i==1  # Make admin
+      d.merge!  first_name:   "Mister",
+                last_name:    "Admn",
+                username:     "admin01",
+                email:        "a@a.com",
+                admin:        true
+    end
+
+    if direct_sql_inject
+      d[:signed_in_at]    = NOW_STR
+      d[:created_at]      = NOW_STR
+      d[:updated_at]      = NOW_STR
+      d[:admin]           = d[:admin] ? "TRUE" : "FALSE"
+      d[:password_digest] = PASSWORD_HASH
+      vals = dict_to_db_str(d,cols,val_delim)
+      sql += i==1 ? vals : ',' + vals
+    else      
+      d.delete(:id)
+      d.delete(:created_at)
+      d.delete(:updated_at)
+      User.create!(d)
+    end
   end
-
-  if direct_sql_inject
-    d[:signed_in_at]    = NOW_STR
-    d[:created_at]      = NOW_STR
-    d[:updated_at]      = NOW_STR
-    d[:admin]           = d[:admin] ? "TRUE" : "FALSE"
-    d[:password_digest] = PASSWORD_HASH
-    vals = dict_to_db_str(d,cols,val_delim)
-    sql += i==1 ? vals : ',' + vals
-  else      
-    d.delete(:id)
-    d.delete(:created_at)
-    d.delete(:updated_at)
-    User.create!(d)
-  end
-  
 end
+
+
 
 if direct_sql_inject
   ActiveRecord::Base.connection.execute sql

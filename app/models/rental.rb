@@ -17,6 +17,7 @@ class Rental < ApplicationRecord
   has_one :car
 
   attr_accessor :skip_in_seed
+
   
   VALID_LOCATION = /\A[a-z0-9.,' -]+\z/i
   VALID_PRICE = /\A\d+(\.\d\d)?\z/
@@ -68,6 +69,8 @@ class Rental < ApplicationRecord
   def get_status_label
     Rental.status_int_to_label self.status
   end
+
+  MAX_STATUS = 4  # access via Rental::MAX_STATUS
 
   def self.status_int_to_label(i)
     case i

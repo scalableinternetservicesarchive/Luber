@@ -6,7 +6,13 @@ class UserTest < ActiveSupport::TestCase
       username: "ExampleUser", 
       email:"user@example.com",
       password: "password", 
-      password_confirmation: "password")
+      password_confirmation: "password",
+      first_name: "Bob", 
+      last_name: "Jones", 
+      city: "Goleta", 
+      state: "CA", 
+      admin: false, 
+      signed_in_at: "2017-11-30 10:55:36" )
   end
 
   test "should be valid" do
@@ -75,10 +81,12 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test "db seed file: each user should have 5 rentals" do
+  test "db seed file: in test env, each user should have same positive num of rentals" do
     Rails.application.load_seed
+    r = Rental.where(user_id: User.last.id).count
+    assert_operator r, :>, 0
     User.all.each do |u|
-      assert_equal Rental.where(user_id: u.id).count, 5
+      assert_equal Rental.where(user_id: u.id).count, r
     end
   end
 end

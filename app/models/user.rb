@@ -20,10 +20,10 @@ class User < ApplicationRecord
   validates :last_name, allow_blank: true, length: { minimum: 2, maximum: 32 }, format: { with: VALID_LAST_NAME }
   validates :city, allow_blank: true, length: { minimum: 2, maximum: 32 }, format: { with: VALID_CITY }
   validates :state, allow_blank: true, length: { minimum: 2, maximum: 32 }, format: { with: VALID_STATE }
-  validates :username, presence: true, length: { minimum: 3, maximum: 32 }, format: { with: VALID_USERNAME }
-  validates :email, presence: true, length: { minimum: 5, maximum: 256 }, format: { with: VALID_EMAIL }, uniqueness: { case_sensitive: false }
+  validates :username, presence: true, length: { minimum: 3, maximum: 32 }, format: { with: VALID_USERNAME }, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, length: { minimum: 6, maximum: 256 }, format: { with: VALID_EMAIL }, uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6, maximum: 64 }
+  validates :password, presence: true, length: { minimum: 8, maximum: 64 }
   
   # If user is deleted, kill his cars too
   # https://stackoverflow.com/questions/29544693/cant-delete-object-due-to-foreign-key-constraint

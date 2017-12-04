@@ -16,7 +16,7 @@
 <section class="container m-top">
   <div class="row">
     <div class="col" id="user-col">
-      <% if session[:user_id] == @rental.owner_id %>
+      <% if session[:user_id] == @rental.user_id %>
         <h2>Renter</h2>
         <hr>
         <% if @renter %>

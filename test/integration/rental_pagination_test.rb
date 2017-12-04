@@ -7,14 +7,14 @@ class RentalPaginationTest < ActionDispatch::IntegrationTest
     @user = User.create!(
       username: "ExampleUser", 
       email:"user@example.com", 
-      password: "foobar", 
-      password_confirmation: "foobar")
+      password: "password", 
+      password_confirmation: "password")
 
     @user2 = User.create!(
       username: "ExampleUser2", 
       email:"user2@example.com", 
-      password: "foobar", 
-      password_confirmation: "foobar")
+      password: "password", 
+      password_confirmation: "password")
     
     @car = Car.create!(
       user_id: @user.id, 
@@ -31,7 +31,7 @@ class RentalPaginationTest < ActionDispatch::IntegrationTest
     50.times do |i|
       @tmp_rentals.push(
         Rental.create!(
-          owner_id: @user2.id,
+          user_id: @user2.id,
           renter_id: nil,
           car_id: @car.id,
           start_location: "sb, ca",
@@ -51,9 +51,9 @@ class RentalPaginationTest < ActionDispatch::IntegrationTest
 
   test "Rental pagination appears" do
     puts "# users: #{User.count}, # cars: #{Car.count}, # rentals: #{Rental.count}"
-    sign_in_as(@user, password: "foobar")
+    sign_in_as(@user, password: "password")
     # get signin_path
-    # post signin_path, params: { session: { email: @user.email, password: 'foobar'}}
+    # post signin_path, params: { session: { email: @user.email, password: 'password'}}
     # assert is_signed_in?
     # assert_redirected_to overview_user_path(@user)
     # follow_redirect!

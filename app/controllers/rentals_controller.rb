@@ -7,10 +7,12 @@ class RentalsController < ApplicationController
   # GET /rentals
   # GET /rentals.json
   def index
-    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: 8 )
+    
+    @per_page_count = 8
+    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @cars = [], []
     @available_rentals.each do |rental|
-      @owners << User.find(rental.owner_id)
+      @owners << User.find(rental.user_id)
       @cars << Car.find(rental.car_id)
     end
   end
@@ -18,7 +20,7 @@ class RentalsController < ApplicationController
   # GET /rentals/1
   # GET /rentals/1.json
   def show
-    @owner = User.find(@rental.owner_id)
+    @owner = User.find(@rental.user_id)
     if @rental.renter_id
       @renter = User.find(@rental.renter_id)
     end
@@ -37,25 +39,23 @@ class RentalsController < ApplicationController
 
   # GET /rentals/1/edit
   def edit
-    @cars = Car.where(user_id: @rental.owner_id)
+    @cars = Car.where(user_id: @rental.user_id)
   end
 
   # POST /rentals
   # POST /rentals.json
   def create
-    @cars = Car.where(user_id: session[:user_id])
     @rental = Rental.new(rental_params)
-
-    @rental.owner_id = session[:user_id]
-
-    car = Car.find(@rental.car_id)
-    Log.create!(
-      user_id: session[:user_id], 
-      action: 0, 
-      content: 'Added a post for my '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' to My Rentals')
+    @rental.user_id = session[:user_id]
 
     respond_to do |format|
       if @rental.save
+        car = Car.find(@rental.car_id)
+        Log.create!(
+          user_id: session[:user_id], 
+          action: 0, 
+          content: 'Added a post for my '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' to My Rentals')
+
         flash[:success] = 'Rental post successfully created'
         format.html {redirect_to @rental}
         format.json {render :show, status: :created, location: @rental}
@@ -118,9 +118,9 @@ class RentalsController < ApplicationController
     Log.create!(
       user_id: session[:user_id], 
       action: 0, 
-      content: 'Rented a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from '+User.find(@rental.owner_id).username)
+      content: 'Rented a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from '+User.find(@rental.user_id).username)
     Log.create!(
-      user_id: @rental.owner_id, 
+      user_id: @rental.user_id, 
       action: 0, 
       content: 'My post for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was rented by '+session[:user_username])
 
@@ -133,7 +133,7 @@ class RentalsController < ApplicationController
     @rental.update_attribute(:status, 4)
 
     car = Car.find(@rental.car_id)
-    if session[:user_id] == @rental.owner_id
+    if session[:user_id] == @rental.user_id
       if @rental.renter_id.nil?
         Log.create!(
           user_id: session[:user_id], 
@@ -153,9 +153,9 @@ class RentalsController < ApplicationController
       Log.create!(
         user_id: session[:user_id], 
         action: 4, 
-        content: 'Canceled renting a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(@rental.owner_id).username+')')
+        content: 'Canceled renting a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(@rental.user_id).username+')')
       Log.create!(
-        user_id: @rental.owner_id, 
+        user_id: @rental.user_id, 
         action: 4, 
         content: 'My post for a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' was canceled by the renter ('+session[:user_username]+')')
     end
@@ -172,7 +172,7 @@ class RentalsController < ApplicationController
     Log.create!(
       user_id: session[:user_id], 
       action: 2, 
-      content: 'Removed the post for my rental of a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from '+User.find(@rental.owner_id).username+' from My Rentals')
+      content: 'Removed the post for my rental of a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from '+User.find(@rental.user_id).username+' from My Rentals')
 
     flash[:success] = 'You have successfully removed this rental'
     action_name == 'rentals' ? (redirect_to rentals_user_path(session[:user_username])) : (redirect_to overview_user_path(session[:user_username]))
@@ -221,7 +221,7 @@ class RentalsController < ApplicationController
   # Confirms the correct user
   def correct_user
     @rental = Rental.find(params[:id])
-    @user = User.find(@rental.owner_id)
+    @user = User.find(@rental.user_id)
     unless current_user?(@user)
       flash[:danger] = 'You are not the owner of this rental post'
       redirect_to @rental
@@ -237,7 +237,7 @@ class RentalsController < ApplicationController
 
         car = Car.find(@rental.car_id)
         owner_log = Log.create!(
-          user_id: @rental.owner_id, 
+          user_id: @rental.user_id, 
           action: 3, 
           content: 'Completed renting my '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' to the renter ('+User.find(@rental.renter_id).username+')')
         owner_log.touch(time: @rental.end_time)
@@ -245,7 +245,7 @@ class RentalsController < ApplicationController
         renter_log = Log.create!(
           user_id: @rental.renter_id, 
           action: 3, 
-          content: 'Completed renting a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(@rental.owner_id).username+')')
+          content: 'Completed renting a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(@rental.user_id).username+')')
         renter_log.touch(time: @rental.end_time)
       elsif @rental.status == 1 && @rental.start_time < DateTime.now
         @rental.update_attribute(:status, 2)

@@ -4,7 +4,7 @@ class Car < ApplicationRecord
   before_save { self.color = color.titleize }
   before_save { self.license_plate = license_plate.upcase }
 
-  belongs_to :user
+  belongs_to :user, counter_cache: true
   has_many :taggings
   has_many :tags, through: :taggings
 

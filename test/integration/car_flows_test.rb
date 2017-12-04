@@ -5,8 +5,8 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
     User.create!(
       username: 'RickSanchez', 
       email: 'rick@sanchez.com', 
-      password: 'foobar', 
-      password_confirmation: 'foobar')
+      password: 'password', 
+      password_confirmation: 'password')
     @user = User.where(username: 'RickSanchez').take
 
     @car = Car.create!(
@@ -23,7 +23,7 @@ class CarFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test 'create, modify, and delete a car successfully' do
-    sign_in_as(@user, password: 'foobar')
+    sign_in_as(@user, password: 'password')
     get new_car_url
     assert_template 'cars/new'
 

@@ -9,6 +9,7 @@ init = function() {
   initMaps();
   preventFontInjection();
   addNoRenterCSS();
+  rentalHeaderColor();
 };
 
 $(document).on("turbolinks:load", function() {

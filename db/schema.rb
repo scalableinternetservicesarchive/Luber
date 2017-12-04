@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20171119063345) do
   end
 
   create_table "rentals", force: :cascade do |t|
-    t.integer "owner_id"
+    t.integer "user_id"
     t.integer "renter_id"
     t.boolean "renter_visible", default: true
     t.integer "car_id"
@@ -76,6 +76,9 @@ ActiveRecord::Schema.define(version: 20171119063345) do
     t.string "email"
     t.string "password_digest"
     t.boolean "admin", default: false
+    t.integer "cars_count", default: 0
+    t.integer "rentals_count", default: 0
+    t.integer "renter_rentals_count", default: 0
     t.datetime "signed_in_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

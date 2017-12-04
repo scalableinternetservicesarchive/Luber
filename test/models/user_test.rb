@@ -5,15 +5,14 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new(
       username: "ExampleUser", 
       email:"user@example.com",
-      password: "foobar", 
-      password_confirmation: "foobar",
+      password: "password", 
+      password_confirmation: "password",
       first_name: "Bob", 
       last_name: "Jones", 
       city: "Goleta", 
       state: "CA", 
       admin: false, 
-      signed_in_at: "2017-11-30 10:55:36"
-       )
+      signed_in_at: "2017-11-30 10:55:36" )
   end
 
   test "should be valid" do
@@ -84,10 +83,10 @@ class UserTest < ActiveSupport::TestCase
 
   test "db seed file: in test env, each user should have same positive num of rentals" do
     Rails.application.load_seed
-    r = Rental.where(owner_id: User.last.id).count
+    r = Rental.where(user_id: User.last.id).count
     assert_operator r, :>, 0
     User.all.each do |u|
-      assert_equal Rental.where(owner_id: u.id).count, r
+      assert_equal Rental.where(user_id: u.id).count, r
     end
   end
 end

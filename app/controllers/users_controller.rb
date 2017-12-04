@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :cars, :history, :settings, :promote]
-  before_action :signed_in_user, only: [:edit, :update]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :set_user, only: [:show, :destroy, :cars, :history, :settings, :promote]
+  before_action :signed_in_user, only: [:edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_progress, only: [:overview, :rentals]
 
   def show
     if @user.id == session[:user_id]
-      redirect_to overview_user_path(session[:user_username]), status: 301
+      redirect_to overview_user_path(session[:user_username])
     end
   end
 
@@ -87,12 +87,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user.destroy
+
+    respond_to do |format|
+      flash[:success] = 'Account successfully deleted'
+      format.html { redirect_to root_url }
+    end
+  end
+
   def overview
-    @recent_owner_rentals = Rental.where(owner_id: @user.id).limit(3)
+    @recent_owner_rentals = Rental.where(user_id: @user.id).limit(3)
     if @recent_owner_rentals.length > 0
       @or_owners, @or_renters, @or_cars = [], [], []
       @recent_owner_rentals.each do |rental|
-        @or_owners << User.find(rental.owner_id)
+        @or_owners << User.find(rental.user_id)
         rental.renter_id.nil? ? @or_renters << nil : @or_renters << User.find(rental.renter_id)
         @or_cars << Car.find(rental.car_id)
       end
@@ -101,7 +110,7 @@ class UsersController < ApplicationController
     if @recent_renter_rentals.length > 0
       @rr_owners, @rr_renters, @rr_cars = [], [], []
       @recent_renter_rentals.each do |rental|
-        @rr_owners << User.find(rental.owner_id)
+        @rr_owners << User.find(rental.user_id)
         @rr_renters << User.find(rental.renter_id)
         @rr_cars << Car.find(rental.car_id)
       end
@@ -109,29 +118,28 @@ class UsersController < ApplicationController
   end
 
   def rentals
-    @rentals = Rental.where(['owner_id = ? OR renter_id = ?', @user.id, @user.id])
-    @owner_rentals_count, @renter_rentals_count = 0, 0
+    @per_page_count = 4
+    @rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @renters, @cars = [], [], []
     @rentals.each do |rental|
-      rental.owner_id == @user.id ? @owner_rentals_count += 1 : @renter_rentals_count += 1
-      @owners << User.find(rental.owner_id)
+      @owners << User.find(rental.user_id)
       rental.renter_id.nil? ? @renters << nil : @renters << User.find(rental.renter_id)
       @cars << Car.find(rental.car_id)
     end
   end
 
   def cars
-    @cars = Car.where(user_id: @user.id)
+    @per_page_count = 4
+    @cars = Car.where(user_id: @user.id).paginate( page: params[:page], per_page: @per_page_count )
   end
 
   def history
-    @logs = Log.where(user_id: @user.id).order(updated_at: :desc).group_by_day(reverse: true){ |l| l.updated_at }
+    @per_page_count = 6
+    @page_logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+    @day_logs = @page_logs.group_by_day(reverse: true){ |l| l.updated_at }
   end
 
   def settings
-    @cars_count = Car.where(user_id: @user.id).length
-    @rides_sold_count = Rental.where(owner_id: @user.id).length
-    @rides_bought_count = Rental.where(renter_id: @user.id).length
   end
 
   # PATCH /users/1/promote
@@ -180,7 +188,7 @@ class UsersController < ApplicationController
   def set_progress
     @user = User.find_by(username: params[:username])
     @rentals = Rental.where([
-      '(renter_id = ? OR owner_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
+      '(renter_id = ? OR user_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
       @user.id, @user.id, 1, DateTime.now, 2, DateTime.now])
     @rentals.each do |rental|
       if rental.end_time < DateTime.now
@@ -188,7 +196,7 @@ class UsersController < ApplicationController
 
         car = Car.find(rental.car_id)
         owner_log = Log.create!(
-          user_id: rental.owner_id, 
+          user_id: rental.user_id, 
           action: 3, 
           content: 'Completed renting my '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' to the renter ('+User.find(rental.renter_id).username+')')
         owner_log.touch(time: rental.end_time)
@@ -196,7 +204,7 @@ class UsersController < ApplicationController
         renter_log = Log.create!(
           user_id: rental.renter_id, 
           action: 3, 
-          content: 'Completed renting a '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(rental.owner_id).username+')')
+          content: 'Completed renting a '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(rental.user_id).username+')')
         renter_log.touch(time: rental.end_time)
       else
         rental.update_attribute(:status, 2)

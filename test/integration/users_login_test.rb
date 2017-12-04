@@ -6,8 +6,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     User.create!(
       username: "RickSanchez", 
       email: "rick@sanchez.com", 
-      password: "foobar", 
-      password_confirmation: "foobar")
+      password: "password", 
+      password_confirmation: "password")
     @user = User.where(username: "RickSanchez").take
   end
 
@@ -17,15 +17,14 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "signin with valid information followed by signout" do
     get signin_path
-    post signin_path, params: { session: { email: @user.email, password: 'foobar'}}
+    post signin_path, params: { session: { email: @user.email, password: 'password'}}
     assert is_signed_in?
     assert_redirected_to overview_user_path(@user)
     follow_redirect!
-    # follow_redirect! # jpp: causes an error. how to debug?
     assert_template 'users/overview'
     assert_select "a[href=?]", signin_path, count: 0
     assert_select "a[href=?]", signout_path
-    assert_select "a[href=?]", user_path(@user)
+    assert_select "a[href=?]", overview_user_path(@user)
     delete signout_path
     assert_not is_signed_in?
     assert_redirected_to root_url

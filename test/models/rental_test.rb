@@ -1,18 +1,40 @@
 require 'test_helper'
 
 class RentalTest < ActiveSupport::TestCase
-  def setup
-    @rental = Rental.new(
-      owner_id: 1,
-      renter_id: 2,
-      car_id: 1,
-      start_location: "la, ca",
-      end_location: "sb, ca",
-      start_time: "Jan 1, 2019",
-      end_time: "Jan 5, 2019",
-      price: "100.12",
-      status: 1,
-      terms: "no-smoking")
+  setup do
+    @user1 = User.create!(
+      username: "Michael", 
+      email:"michael@example.com", 
+      password: "password", 
+      password_confirmation: "password", 
+      signed_in_at: DateTime.now )
+    
+    @user2 = User.create!(
+      username: "Justin", 
+      email:"justin@example.com", 
+      password: "password", 
+      password_confirmation: "password",
+      signed_in_at: DateTime.now )
+
+    @car = Car.create!(
+      user_id: @user1.id, 
+      make: "Ford", 
+      model: "Mustang", 
+      year: 2000, 
+      color: "red", 
+      license_plate: "3asd123" )
+
+    @rental = Rental.create!(
+      user_id: @user1.id, 
+      renter_id: @user2.id, 
+      car_id: @car.id, 
+      start_location: "Santa Barbara", 
+      end_location: "Mountain View",
+      start_time: "2018-10-17 20:20:37", 
+      end_time: "2018-10-18 20:20:37", 
+      price: 1.53, 
+      status: 1, 
+      terms: "My terms" )
   end
 
   test "integer price ok" do

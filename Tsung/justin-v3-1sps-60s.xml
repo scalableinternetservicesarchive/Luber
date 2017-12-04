@@ -71,8 +71,10 @@
       <!-- </setdynvars> -->
 
 
+<!-- NOTE: Each of the next 6 steps is a transaction, and has a 1-second static thinktime to simulate a real user. -->
 
 <!-- SIGN IN -->
+<transaction name="SIGN_IN">
 
       <!-- Pick random user  -->
       <!-- WARNING: assumes you've seeded the db with at least 1000 users named User2, User3, ... -->
@@ -80,8 +82,8 @@
       <!--   <var name="random_user_number" /> -->
       <!-- </setdynvars> -->
 
-<!-- http://tsung.erlang-projects.org/user_manual/conf-advanced-features.html#reading-external-file -->
-      <setdynvars sourcetype="file" fileid="userlist" delimiter="," order="random">
+      <!-- http://tsung.erlang-projects.org/user_manual/conf-advanced-features.html#reading-external-file -->
+      <setdynvars sourcetype="file" fileid="userlist" delimiter="," order="iter">
 	<var name="random_user_number" />
 	<var name="throwaway_field" />
       </setdynvars>
@@ -90,7 +92,7 @@
       <request><http url="/" method="GET" version="1.1" /></request>
 
       <!-- wait while guest looks at home page -->
-      <thinktime value="1" random="true"></thinktime>
+      <thinktime value="1" random="false"></thinktime>
 
       <!-- Sign in -->
       <request subst="true">
@@ -103,8 +105,10 @@
 	    />
       </request>
 
+</transaction>
 
 <!-- ADD CAR -->
+<transaction name="ADD_CAR"> 
 
       <!-- Go to 'my cars' -->
       <request subst="true"><http url="/users/skater4%%_random_user_number%%/cars" method="GET" version="1.1" /></request>
@@ -113,7 +117,7 @@
       <request><http url="/cars/new" method="GET" version="1.1" /></request>
 
       <!-- Wait while user fills out 'new car' form -->
-      <thinktime value="1" random="true"></thinktime>
+      <thinktime value="1" random="false"></thinktime>
 
       <!-- submit 'new car' form -->
       <request subst="true">
@@ -140,19 +144,20 @@
       <!--   <var name="dump" /> -->
       <!-- </setdynvars> -->
 
+</transaction>
 
 
 
 <!-- ADD RENTAL -->
+<transaction name="ADD_RENTAL"> 
 
       <!-- Click on 'post a new rental' -->
       <request><http url="/rentals/new" method="GET" version="1.1" /></request>
 
       <!-- Wait while user fills out 'new rental' form -->
-      <thinktime value="1" random="true"></thinktime>
+      <thinktime value="1" random="false"></thinktime>
 
       <!-- submit new rental form -->
-      <transaction name="new_rental_post">
       <request subst="true">
         <dyn_variable name="created_rental_url" re="[Ll]ocation: (.*)\r"/>
         <dyn_variable name="created_rental_id" re="[Ll]ocation: http://.*/rentals/(.*)\r"/>
@@ -164,13 +169,17 @@
 	    content_type="application/x-www-form-urlencoded" 
 	    />
       </request>     
-      </transaction>
+
 
       <!-- follow redirect -->
       <request subst="true"><http url="%%_created_rental_url%%" method="GET" version="1.1" /></request>
 
+</transaction>
+
+
 
 <!-- EDIT RENTAL (HACK: same db load as renting someone else's rental -->
+<transaction name="EDIT_RENTAL"> 
 
       <!-- my overview -->
       <request subst="true"><http url="/users/skater4%%_random_user_number%%/overview" method="GET" version="1.1" /></request>
@@ -182,7 +191,7 @@
       <request subst="true"><http url="/rentals/%%_created_rental_id%%/edit" method="GET" version="1.1" /></request>
 
       <!-- wait while I fill in the form -->
-      <thinktime value="2" random="true"></thinktime>
+      <thinktime value="1" random="false"></thinktime>
 
       <!-- submit edit form --> 
       <request subst="true">
@@ -195,12 +204,13 @@
 	    />
       </request>     
 
+</transaction>
 
 <!-- DELETE RENTAL -->
+<transaction name="DELETE_RENTAL"> 
 
-
-      <!-- wait for up to 2 seconds, user decides to delete rental -->
-      <thinktime value="2" random="true"></thinktime>
+      <!-- wait while user decides to delete rental -->
+      <thinktime value="1" random="false"></thinktime>
 
       <!-- delete the rental we just created -->
       <request subst="true">
@@ -208,14 +218,16 @@
         </http>
       </request>
 
+</transaction>
 
 
 <!-- DELETE CAR -->
+<transaction name="DELETE_CAR"> 
 
       <!-- Go to 'my cars' -->
       <request subst="true"><http url="/users/skater4%%_random_user_number%%/cars" method="GET" version="1.1" /></request>
 
-      <thinktime value="2" random="true"></thinktime>
+      <thinktime value="1" random="false"></thinktime>
 
       <!-- delete the car we just created -->
       <request subst="true"><http url="/cars/%%_car_id%%" method="DELETE" /></request>
@@ -231,14 +243,12 @@
 
       <!-- Log out -->
       <request subst="true">
-<!--        <http url="/signout" method="POST" version="1.1" contents="_method=delete" content_type="application/x-www-form-urlencoded"/> -->
+	<!-- <http url="/signout" method="POST" version="1.1" contents="_method=delete" content_type="application/x-www-form-urlencoded"/> -->
         <http url="/signout" method="DELETE" />
       </request>
-    </session>
 
+</transaction>
 
-
-
-
+</session>
   </sessions>
 </tsung>

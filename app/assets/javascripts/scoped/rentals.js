@@ -69,3 +69,19 @@ addNoRenterCSS = function() {
     userCol.addClass('no-section-content');
   }
 }
+
+// Randomize rental card header gradient angle
+rentalHeaderColor = function() {
+  if($('#users-overview').length == 0 && 
+    $('#rentals-index').length == 0 &&
+    $('#rentals-show').length == 0 &&
+    $('#users-rentals').length == 0) {
+    return;
+  }
+
+  var angles = [1, 5, 45, 90, 135, 175, 179, 181, 185, 225, 270, 315, 355, 359];
+  var headers = $('.card-header');
+  for(var i = 0; i < headers.length; i++) {
+    headers[i].style.setProperty('--angle', String(angles[Math.floor(Math.random()*angles.length)]+"deg"));
+  }
+}

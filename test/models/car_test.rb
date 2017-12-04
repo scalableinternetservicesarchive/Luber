@@ -5,8 +5,8 @@ class CarTest < ActiveSupport::TestCase
     u = User.create!(
       username: 'ExampleUser', 
       email: 'user@example.com', 
-      password: 'foobar', 
-      password_confirmation: 'foobar')
+      password: 'password', 
+      password_confirmation: 'password')
 
     @car = Car.create!(
       user_id: u.id, 

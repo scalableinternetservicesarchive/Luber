@@ -16,10 +16,7 @@ class CarsController < ApplicationController
   # POST /cars.json
   def create
     @car = Car.new(car_params)
-
-    if session[:user_id]
-      @car.user_id = session[:user_id]
-    end
+    @car.user_id = session[:user_id]
 
     respond_to do |format|
       if @car.save

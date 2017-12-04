@@ -23,11 +23,11 @@
   </div>
   <div class="form-group">
     <%= f.label 'Start Time', class: 'd-block' %>
-    <%= f.datetime_select :start_time, class: 'form-control', order: [:month, :day, :year], :ampm => true, :minute_step => 15 %>
+    <%= f.datetime_select :start_time, class: 'form-control', order: [:month, :day, :year], ampm: true, minute_step: 15 %>
   </div>
   <div class="form-group">
     <%= f.label 'End Time', class: 'd-block' %>
-    <%= f.datetime_select :end_time, class: 'form-control', order: [:month, :day, :year], :ampm => true, :minute_step => 15 %>
+    <%= f.datetime_select :end_time, class: 'form-control', order: [:month, :day, :year], ampm: true, minute_step: 15 %>
   </div>
   <div class="form-group">
     <%= f.label :price %>

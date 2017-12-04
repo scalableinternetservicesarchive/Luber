@@ -1,15 +1,20 @@
 <% provide(:title, "My Cars") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
+<% params[:page] ? page = params[:page] : page = 1 %>
 
 <%= render 'users/banner' %>
 <% if session[:user_id] == @user.id %>
   <%= render 'users/nav' %>
 <% end %>
 <section class="container m-top card-wrapper">
-  <h2>Cars</h2>
-  <hr>
   <% if @cars.length > 0 %>
     <%= render @cars %>
+    <%= will_paginate @cars, 
+      class: 'mb-5',
+      page_links: false, 
+      previous_label: icon('arrow-left'), 
+      next_label: icon('arrow-right'),
+      link_separator: "<p>#{page} / #{@cars.total_pages}</p>" %>
     <div class="text-right">
       <%= link_to 'Add a new Car', new_car_path, class: 'btn btn-base', role: 'button' %>
     </div>

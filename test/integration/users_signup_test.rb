@@ -8,8 +8,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       user: { 
         username: 'ExampleUser',
         email: 'user@example.com',
-        password: 'foobar',
-        password_confirmation: 'foobar' } }
+        password: 'password',
+        password_confirmation: 'password' } }
     end
     follow_redirect!
     assert_template 'users/overview'

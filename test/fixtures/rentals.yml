@@ -2,7 +2,7 @@
 
 # one:
 #   car_id: 1
-#   owner_id: 1
+#   user_id: 1
 #   renter_id: 1
 #   start_location: MyString
 #   end_location: MyString
@@ -12,7 +12,7 @@
 #
 # two:
 #   car_id: 1
-#   owner_id: 1
+#   user_id: 1
 #   renter_id: 1
 #   start_location: MyString
 #   end_location: MyString

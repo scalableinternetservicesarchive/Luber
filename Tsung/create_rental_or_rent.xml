@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="notice">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+  </clients>
+
+  <!-- Server side setup -->
+  <servers>
+    <server host="luber-sujaya.dbmsvqcgy9.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+  </servers>
+
+
+  <load>
+    <arrivalphase phase="1" duration="1" unit="minute">
+      <users arrivalrate="128" unit="second"></users>
+    </arrivalphase>
+   <arrivalphase phase="2" duration="1" unit="minute">
+      <users arrivalrate="256" unit="second"></users>
+    </arrivalphase>
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 2 seconds -->
+    <option name="global_ack_timeout" value="2000"></option>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+    </option>
+  </options>
+
+<!--Scenario: Browse through a few static pages-->
+
+  <sessions>
+    <session name="rent-car" probability="70" type="ts_http">
+
+      <transaction name="rent_car">
+          <request>
+            <http url="/signin" method="POST" version="1.1" contents="session[email]=user4@boo.com&amp;session[password]=foobar&amp;commit=Login" content_type="application/x-www-form-urlencoded" />
+          </request>
+
+          <thinktime value="1" random="true"></thinktime>
+
+          <request>
+            <http url="/rentals/1/rent" method="PATCH" version="1.1"/>
+          </request>
+      </transaction>
+
+      <transaction name="remove_rent">
+          <thinktime value="1" random="true"></thinktime>
+
+          <request>
+            <http url="/rentals/1/cancel" method="PATCH" version="1.1"/>
+          </request>
+
+          <thinktime value="1" random="true"></thinktime>
+
+          <request>
+            <http url="/signout" method="DELETE" version="1.1" />
+          </request>
+
+        </transaction>
+    </session>
+
+    <session name="post_rental" probability="30" type="ts_http">
+
+
+
+          <!-- Uncomment the following to debug print your dynamic variables  -->
+          <!-- <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) -> -->
+          <!--   io:format([126, $p, 126, $n, 126, $n], [DynVars]), -->
+          <!--   ok end."> -->
+          <!--   <var name="dump" /> -->
+          <!-- </setdynvars> -->
+
+
+    <!-- NOTE: Each of the next 6 steps is a transaction, and has a 1-second static thinktime to simulate a real user. -->
+
+    <!-- SIGN IN -->
+    <transaction name="SIGN_IN">
+
+      <!-- Pick random user  -->
+      <!-- WARNING: assumes you've seeded the db with at least 1000 users named User2, User3, ... -->
+      <!-- <setdynvars sourcetype="random_number" start="2" end="1000"> -->
+      <!--   <var name="random_user_number" /> -->
+      <!-- </setdynvars> -->
+
+      <!-- http://tsung.erlang-projects.org/user_manual/conf-advanced-features.html#reading-external-file -->
+      <setdynvars sourcetype="file" fileid="userlist" delimiter="," order="iter">
+        <var name="random_user_number" />
+        <var name="throwaway_field" />
+      </setdynvars>
+
+      <!-- Get home -->
+      <request><http url="/" method="GET" version="1.1" /></request>
+
+      <!-- wait while guest looks at home page -->
+      <thinktime value="1" random="false"></thinktime>
+
+      <!-- Sign in -->
+      <request subst="true">
+        <http 
+          url="/signin" 
+          method="POST" 
+          version="1.1" 
+          contents="session[email]=User%%_random_user_number%%@boo.com&amp;session[password]=foobar&amp;commit=Login" 
+          content_type="application/x-www-form-urlencoded" 
+        />
+      </request>
+
+    </transaction>
+
+    <!-- ADD CAR -->
+    <transaction name="ADD_CAR"> 
+
+          <!-- Go to 'my cars' -->
+          <request subst="true"><http url="/users/skater4%%_random_user_number%%/cars" method="GET" version="1.1" /></request>
+
+          <!-- Go to 'make a car' page -->
+          <request><http url="/cars/new" method="GET" version="1.1" /></request>
+
+          <!-- Wait while user fills out 'new car' form -->
+          <thinktime value="1" random="false"></thinktime>
+
+          <!-- submit 'new car' form -->
+          <request subst="true">
+            <dyn_variable name="car_redirect" re="[Ll]ocation: (.*)\r"/>
+              <http 
+                url="/cars" 
+                method="POST" 
+                version="1.1" 
+                contents="car[make]=Ford%%_random_user_number%%&amp;car[model]=Mustang&amp;car[year]=2017&amp;car[color]=Red&amp;car[license_plate]=1234567&amp;car[all_tags]=by-User%%_random_user_number%%&amp;commit=Add+Car"
+                content_type="application/x-www-form-urlencoded" 
+              />
+          </request>
+
+          <!-- follow redirect -->
+          <request subst="true">
+            <dyn_variable name="car_id" re='href="/cars/(.*)/edit"'/>
+            <http url="%%_car_redirect%%" method="GET" version="1.1" />
+          </request>
+
+          <!-- Uncomment the following to debug print your dynamic variables  -->
+          <!-- <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) -> -->
+          <!--   io:format([126, $p, 126, $n, 126, $n], [DynVars]), -->
+          <!--   ok end."> -->
+          <!--   <var name="dump" /> -->
+          <!-- </setdynvars> -->
+
+    </transaction>
+
+    <!-- ADD RENTAL -->
+    <transaction name="ADD_RENTAL"> 
+
+          <!-- Click on 'post a new rental' -->
+          <request><http url="/rentals/new" method="GET" version="1.1" /></request>
+
+          <!-- Wait while user fills out 'new rental' form -->
+          <thinktime value="1" random="false"></thinktime>
+
+          <!-- submit new rental form -->
+          <request subst="true">
+            <dyn_variable name="created_rental_url" re="[Ll]ocation: (.*)\r"/>
+            <dyn_variable name="created_rental_id" re="[Ll]ocation: http://.*/rentals/(.*)\r"/>
+            <http 
+              url="/rentals" 
+              method="POST" 
+              version="1.1" 
+              contents="rental[car_id]=%%_car_id%%&amp;rental[start_location]=Santa+Barbara&amp;rental[end_location]=Sunnyvale&amp;rental[start_time(2i)]=11&amp;rental[start_time(3i)]=30&amp;rental[start_time(1i)]=2017&amp;rental[start_time(4i)]=05&amp;rental[start_time(5i)]=00&amp;rental[end_time(2i)]=11&amp;rental[end_time(3i)]=30&amp;rental[end_time(1i)]=2017&amp;rental[end_time(4i)]=05&amp;rental[end_time(5i)]=00&amp;rental[price]=%%_random_user_number%%&amp;commit=Create+Rental+Post"
+              content_type="application/x-www-form-urlencoded" 
+            />
+          </request>     
+
+          <!-- follow redirect -->
+          <request subst="true"><http url="%%_created_rental_url%%" method="GET" version="1.1" /></request>
+
+    </transaction>
+
+    <!-- DELETE RENTAL -->
+    <transaction name="DELETE_RENTAL"> 
+
+          <!-- wait while user decides to delete rental -->
+          <thinktime value="1" random="false"></thinktime>
+
+          <!-- delete the rental we just created -->
+          <request subst="true">
+            <http url="%%_created_rental_url%%" method="DELETE">
+            </http>
+          </request>
+
+    </transaction>
+
+
+    <!-- DELETE CAR -->
+    <transaction name="DELETE_CAR"> 
+
+          <!-- Go to 'my cars' -->
+          <request subst="true"><http url="/users/skater4%%_random_user_number%%/cars" method="GET" version="1.1" /></request>
+
+          <thinktime value="1" random="false"></thinktime>
+
+          <!-- delete the car we just created -->
+          <request subst="true"><http url="/cars/%%_car_id%%" method="DELETE" /></request>
+
+
+          <!-- Uncomment the following to debug print your dynamic variables  -->
+          <!-- <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) -> -->
+          <!--   io:format([126, $p, 126, $n, 126, $n], [DynVars]), -->
+          <!--   ok end."> -->
+          <!--   <var name="dump" /> -->
+          <!-- </setdynvars> -->
+
+
+          <!-- Log out -->
+          <request subst="true">
+      <!-- <http url="/signout" method="POST" version="1.1" contents="_method=delete" content_type="application/x-www-form-urlencoded"/> -->
+            <http url="/signout" method="DELETE" />
+          </request>
+
+    </transaction>
+
+    </session>
+
+  </sessions>
+</tsung>

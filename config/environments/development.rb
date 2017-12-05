@@ -73,4 +73,6 @@ Rails.application.configure do
 
   # Include helper files
   config.action_controller.include_all_helpers = true
+
+  config.action_controller.perform_caching = true
 end

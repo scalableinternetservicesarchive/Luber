@@ -3,6 +3,8 @@ class Car < ApplicationRecord
   before_save { self.model = model[0,1].upcase + model[1,model.length] }
   before_save { self.color = color.titleize }
   before_save { self.license_plate = license_plate.upcase }
+  before_destroy :remove_taggings
+  before_destroy :remove_rentals
 
   belongs_to :user, counter_cache: true
   has_many :taggings
@@ -39,9 +41,17 @@ class Car < ApplicationRecord
     Tag.find_by_name!(name).cars
   end
 
-  before_destroy :remove_taggings
-
   def remove_taggings
     Tagging.where(car_id: id).destroy_all
+  end
+
+  def remove_rentals
+    rentals = Rental.where(car_id: id)
+    if rentals.length == 0
+      return true
+    else
+      errors.add :base, "This car is referenced by #{'rental'.pluralize(rentals.length)}. You must delete these before you can delete this car"
+      throw(:abort)
+    end
   end
 end

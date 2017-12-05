@@ -37,14 +37,14 @@
       %></p>
       <p class="list-group-item">
         <%= icon('key', class: 'fa-fw') %><%#
-        %>Owner: <%= link_to owner.username, user_path(owner.username) %><%#
-        %><%= rental.user_id == session[:user_id] ? '<span class="font-italic"> (You are the owner)</span>'.html_safe : '' %><%#
+        %>Owner: <%= link_to owner.username, user_path(owner.username) %> <%#
+        %><%= rental.user_id == session[:user_id] ? '<span class="font-italic">(You are the owner)</span>'.html_safe : '' %><%#
       %></p>
       <% unless rental.renter_id.nil? %>
         <p class="list-group-item">
           <%= icon('mobile', class: 'fa-fw') %><%#
-          %>Renter: <%= link_to renter.username, user_path(renter.username) %><%#
-          %><%= rental.renter_id == session[:user_id] ? '<span class="font-italic"> (You are the renter)</span>'.html_safe : '' %><%#
+          %>Renter: <%= link_to renter.username, user_path(renter.username) %> <%#
+          %><%= rental.renter_id == session[:user_id] ? '<span class="font-italic">(You are the renter)</span>'.html_safe : '' %><%#
         %></p>
       <% end %>
       <p class="list-group-item">

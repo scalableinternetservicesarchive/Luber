@@ -13,7 +13,7 @@
       <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
       <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
     </div>
-    <hr>
+    <hr class="mt-4">
   <% end %>
   <% if @user.renter_rentals_count == 0 %>
     <div class="text-center">
@@ -23,7 +23,7 @@
     </div>
   <% end %>
   <% if @user.rentals_count != 0 && @user.renter_rentals_count == 0 %>
-    <hr>
+    <hr class="mt-4">
   <% end %>
   <% if @rentals.length > 0 %>
     <%= render @rentals, owners: @owners, renters: @renters, cars: @cars %>

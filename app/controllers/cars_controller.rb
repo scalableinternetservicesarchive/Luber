@@ -80,17 +80,23 @@ class CarsController < ApplicationController
   def destroy
     original_car = @car.dup
 
-    @car.destroy
+    if @car.destroy
+      Log.create!(
+        user_id: session[:user_id], 
+        action: 2, 
+        content: 'Deleted the '+original_car.color+', '+original_car.year.to_s+' '+original_car.make+' '+original_car.model+' from My Cars')
 
-    Log.create!(
-      user_id: session[:user_id], 
-      action: 2, 
-      content: 'Deleted the '+original_car.color+', '+original_car.year.to_s+' '+original_car.make+' '+original_car.model+' from My Cars')
-
-    respond_to do |format|
-      flash[:success] = 'Car successfully deleted'
-      format.html { redirect_to cars_user_path(session[:user_username]) }
+      respond_to do |format|
+        flash[:success] = 'Car successfully deleted'
+      end
+    else
+      error_messages = ''
+      @car.errors.full_messages.each do |msg|
+        error_messages += msg
+      end
+      flash[:danger] = error_messages
     end
+    redirect_to cars_user_path(session[:user_username])
   end
 
   def tag_search

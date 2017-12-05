@@ -29,6 +29,8 @@
     <option type="ts_http" name="user_agent">
       <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
     </option>
+
+    <option name="file_server" id='userlist' value="/home/ec2-user/userlist.csv"></option>
   </options>
 
 <!--Scenario: Browse through a few static pages-->
@@ -36,26 +38,26 @@
   <sessions>
     <session name="rent-car" probability="70" type="ts_http">
 
-      <transaction name="rent_car">
+      <transaction name="RENT_CAR">
           <request>
             <http url="/signin" method="POST" version="1.1" contents="session[email]=user4@boo.com&amp;session[password]=foobar&amp;commit=Login" content_type="application/x-www-form-urlencoded" />
           </request>
 
-          <thinktime value="1" random="true"></thinktime>
+          <thinktime value="1" random="false"></thinktime>
 
           <request>
             <http url="/rentals/1/rent" method="PATCH" version="1.1"/>
           </request>
       </transaction>
 
-      <transaction name="remove_rent">
-          <thinktime value="1" random="true"></thinktime>
+      <transaction name="RETURN_CAR">
+          <thinktime value="1" random="false"></thinktime>
 
           <request>
             <http url="/rentals/1/cancel" method="PATCH" version="1.1"/>
           </request>
 
-          <thinktime value="1" random="true"></thinktime>
+          <thinktime value="1" random="false"></thinktime>
 
           <request>
             <http url="/signout" method="DELETE" version="1.1" />

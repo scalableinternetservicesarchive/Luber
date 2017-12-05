@@ -20,12 +20,3 @@ function makeCaretsDynamic() {
     }
   });
 }
-
-// Get rid of the top and bottom margin on the homepage only
-function setHomeMargin() {
-  if($('#statics-home').length == 0) {
-    return;
-  }
-  
-  $('main').css('margin-bottom', $('footer').height());
-}

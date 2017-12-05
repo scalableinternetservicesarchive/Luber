@@ -2,29 +2,35 @@
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
 <section class="container-fluid banner">
-  <div class="container">
+  <div class="container text-center">
     <h1>Rental Post #<%= params[:id] %></h1>
+    <p class="mb-1">Created <%= smart_time(@rental.created_at) %></p>
+    <% if @rental.updated_at > @rental.created_at %>
+      <p class="font-italic mb-0">Last updated <%= smart_time(@rental.updated_at) %></p>
+    <% end %>
   </div>
 </section>
-<section class="container m-top card-wrapper">
+<section class="container mt-5">
   <h2>Listing</h2>
   <hr>
   <p id="start-location" hidden><%= @rental.start_location %></p>
   <p id="end-location" hidden><%= @rental.end_location %></p>
   <%= render @rental, owner: @owner, renter: @renter, car: @car %>
 </section>
-<section class="container m-top">
-  <div class="row">
-    <div class="col" id="user-col">
+<section class="container mt-5">
+  <div class="row grow-cols">
+    <div class="col-6">
       <% if session[:user_id] == @rental.user_id %>
         <h2>Renter</h2>
         <hr>
         <% if @renter %>
           <%= render @renter %>
         <% else %>
-          <div class="text-center font-italic d-flex align-items-center">
-            <div>
-              <p>Looks like no one is renting your car yet...</p>
+          <div class="card">
+            <div class="card-body">
+              <div class="text-center my-auto">
+                <p class="font-italic">Looks like no one is renting your car yet...</p>
+              </div>
             </div>
           </div>
         <% end %>
@@ -34,28 +40,28 @@
         <%= render @owner %>
       <% end %>
     </div>
-    <div class="col" id="car-col">
+    <div class="col-6">
       <h2>Car</h2>
       <hr>
-      <%= render @car %>
+      <%= render @car, owner: @owner %>
     </div>
   </div>
 </section>
-<section class="container m-top">
+<section class="container mt-5">
   <div class="row">
     <div class="col" id="start-col">
       <h2>Start Location</h2>
       <hr>
       <p id="start-latitude" hidden><%= @rental.start_latitude %></p>
       <p id="start-longitude" hidden><%= @rental.start_longitude %></p>
-      <div class="mx-auto d-block" id="map-start"></div>
+      <div id="map-start"></div>
     </div>
     <div class="col" id="end-col">
       <h2>End Location</h2>
       <hr>
       <p id="end-latitude" hidden><%= @rental.end_latitude %></p>
       <p id="end-longitude" hidden><%= @rental.end_longitude %></p>
-      <div class="mx-auto d-block" id="map-end"></div>
+      <div id="map-end"></div>
     </div>
   </div>
 </section>

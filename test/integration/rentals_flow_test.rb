@@ -30,8 +30,8 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
       car_id: @car.id,
       start_location: 'Santa Barbara',
       end_location: 'Mountain View',
-      start_time: '7376-10-17 20:20:37',
-      end_time: '210294-10-18 20:20:37',
+      start_time: '2020-10-17 20:20:37',
+      end_time: '2020-10-18 20:20:37',
       price: 1.53,
       status: 0,
       terms: 'My terms')
@@ -61,7 +61,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select 'span.rental_start_location_label', 'Los Angeles'
     assert_select 'span.rental_end_location_label', 'San Francisco'
     assert_select 'h3', '$184.77'
-    assert_select 'p.list-group-item', 'From 12:45 AM on Wednesday, Nov. 28 until 1:52 AM on Wednesday, Nov. 28'
+    assert_select 'p.list-group-item', 'From Nov 28th, 2018 at 12:45 AM until Nov 28th, 2018 at 1:52 AM'
     assert_select 'p.list-group-item', 'Terms: nonsmoking, happiness'
     assert_select 'p > a', 'RickSanchez'
     assert_select 'p.list-group-item', 'Ford Mustang'
@@ -75,7 +75,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select '#rental_end_location[value=?]', 'San Francisco'
     # TODO: how to test the values of the start/end times?
     assert_select '#rental_price[value=?]', '184.77'
-    assert_select '#rental_terms[value=?]', 'nonsmoking, happiness'
+    # TODO: how to test the values of terms (textarea object)?
 
     # submit a new dank
     patch rental_url(myrental), params: { 
@@ -95,7 +95,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select 'span.rental_start_location_label', 'Minneapolis'
     assert_select 'span.rental_end_location_label', 'St. Paul'
     assert_select 'h3', '$0.01'
-    assert_select 'p.list-group-item', 'From 11:59 AM on Tuesday, May. 11 until 11:59 PM on Thursday, Dec. 30'
+    assert_select 'p.list-group-item', 'From May 11th, 3024 at 11:59 AM until Dec 30th, 3024 at 11:59 PM'
     assert_select 'p.list-group-item', 'Terms: chronic, depression'
     assert_select 'p > a', 'RickSanchez'
     assert_select 'p.list-group-item', 'Ford Mustang'

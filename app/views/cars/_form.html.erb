@@ -1,39 +1,50 @@
 <%= form_for(car) do |f| %>
-  <% if car.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(car.errors.count, "error") %> prohibited this car from being saved:</h2>
-      <ul>
-        <% car.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= render 'shared/error_messages', target: car %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :make %>
+        <%= f.text_field :make, class: 'form-control', placeholder: 'Ford' %>
+      </div>
     </div>
-  <% end %>
-  <div class="form-group">
-    <%= f.label :make %>
-    <%= f.text_field :make, class: 'form-control', placeholder: 'Ford' %>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :model %>
+        <%= f.text_field :model, class: 'form-control', placeholder: 'Mustang' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :model %>
-    <%= f.text_field :model, class: 'form-control', placeholder: 'Mustang' %>
+  <div class="row">
+    <div class="col">
+      <%= f.label :year %>
+      <div class="form-group">
+        <%= f.select :year, (1900..DateTime.now.year + 2).to_a.reverse, {include_blank: 'Select Year'}, class: 'form-control time-select' %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :color %>
+        <%= f.text_field :color, class: 'form-control', placeholder: 'Blue' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :year %>
-    <%= f.number_field :year, class: 'form-control', placeholder: '2015' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label 'License Plate' %>
+        <%= f.text_field :license_plate, class: 'form-control', placeholder: '1234567' %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :tags %>
+        <%= f.text_field :all_tags, class: 'form-control', placeholder: 'sporty, trendy, off-road' %>
+        <small class="form-text text-muted">Seperate each tag by a comma</small>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :color %>
-    <%= f.text_field :color, class: 'form-control', placeholder: 'Blue' %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'License Plate' %>
-    <%= f.text_field :license_plate, class: 'form-control', placeholder: '1234567' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :tags %>
-    <%= f.text_field :all_tags, class: 'form-control', placeholder: 'sporty, trendy, off-road' %>
-  </div>
-  <div class="text-center">
-    <%= f.submit yield(:submit_label), class: 'btn btn-lg btn-base mt-3' %>
+  <div class="text-center mt-5">
+    <%= f.submit 'Submit', class: 'btn btn-lg btn-base m-2' %>
+    <%= link_to 'Cancel', cars_user_path(current_user), class: 'btn btn-lg btn-danger m-2', role: 'button' %>
   </div>
 <% end %>

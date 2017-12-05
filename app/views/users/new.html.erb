@@ -1,20 +1,19 @@
 <% provide(:title, "Sign Up") %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
-<section class="container align-slef-center m-top">
+<section class="container mt-5">
   <h1 class="text-center">Sign Up Today!</h1>
-  <div class="row">
-    <div class="col"></div>
-    <div class="col">
+  <div class="row justify-content-center mt-4">
+    <div class="col-4">
       <%= form_for(@user, url: signup_path) do |f| %>
-        <%= render 'shared/error_messages' %>
+        <%= render 'shared/error_messages', target: @user %>
         <div class="form-group">
           <%= f.label :username %>
-          <%= f.text_field :username, class: 'form-control', placeholder: 'jsmith63' %>
+          <%= f.text_field :username, class: 'form-control', placeholder: 'example123' %>
         </div>
         <div class="form-group">
           <%= f.label :email %>
-          <%= f.email_field :email, class: 'form-control', placeholder: 'john_smith@gmail.com' %>
+          <%= f.email_field :email, class: 'form-control', placeholder: 'example@gmail.com' %>
         </div>
         <div class="form-group">
           <%= f.label :password %>
@@ -24,12 +23,11 @@
           <%= f.label :password_confirmation, "Confirm Password" %>
           <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Type the same Password' %>
         </div>
-        <div class="text-center">
-          <%= f.submit 'Create Account', class: 'btn btn-lg btn-base mt-3' %>
-          <%= link_to 'Already have an Account? Sign In here!', signin_path, class: 'account-access-link mt-4' %>
+        <div class="text-center mt-5">
+          <%= f.submit 'Create Account', class: 'btn btn-lg btn-base' %>
+          <%= link_to 'Already have an Account? Sign In here!', signin_path, class: 'account-access-link mt-3' %>
         </div>
       <% end %>
     </div>
-    <div class="col"></div>
   </div>
 </section>

@@ -1,14 +1,12 @@
 init = function() {
   // Persistant functions
-  margins();
   alerts();
+  pageJump();
 
   // Scoped functions
-  setHomeMargin();
   makeCaretsDynamic();
   initMaps();
   preventFontInjection();
-  addNoRenterCSS();
   rentalHeaderColor();
 };
 

@@ -2,41 +2,105 @@
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
 
 <%= render 'users/banner' %>
-<%= render 'users/nav' %>
-<section class="container m-top card-wrapper">
-  <h2>My Info</h2>
+<% if current_user?(@user) %>
+  <%= render 'users/nav' %>
+<% end %>
+<section class="container mt-5">
+  <% if current_user?(@user) %>
+    <h2>My Info</h2>
+  <% else %>
+    <h2>Info</h2>
+  <% end %>
   <hr>
   <%= render @user %>
 </section>
-<section class="container m-top card-wrapper">
-  <h2>Recent Rentals as an Owner</h2>
-  <hr>
-  <% if @recent_owner_rentals.length > 0 %>
-    <%= render @recent_owner_rentals, owners: @or_owners, renters: @or_renters, cars: @or_cars %>
-    <div class="text-right">
-      <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
+<section class="container mt-5">
+  <div class="row grow-cols">
+    <div class="col-6">
+      <% if current_user?(@user) %>
+        <h2>About Me</h2>
+      <% else %>
+        <h2>About</h2>
+      <% end  %>
+      <hr>
+      <div class="card">
+        <div class="card-body">
+          <% if @user.about.present? %>
+            <p><%= @user.about %></p>
+          <% else %>
+            <% if current_user?(@user) %>
+              <p class="font-italic">(Add a description of yourself)</p>
+            <% else %>
+              <p  class="font-italic">(This user has not provided a description of themselves)</p>
+            <% end %>
+          <% end %>
+          <% if current_user?(@user) %>
+            <div class="card-buttons">
+              <%= link_to icon('pencil')+" Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% else %>
-    <div class="text-center">
-      <p class="font-italic">Looks like you haven't rented out your car to anyone recently.</p>
-      <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
-      <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
+    <div class="col-6">
+      <% if current_user?(@user) %>
+        <h2>My Meetup Preferences</h2>
+      <% else %>
+        <h2>Meetup Preferences</h2>
+      <% end  %>
+      <hr>
+      <div class="card">
+        <div class="card-body">
+          <% if @user.meetup.present? %>
+            <p><%= @user.meetup %></p>
+          <% else %>
+            <% if current_user?(@user) %>
+               <p class="font-italic">(Add your preferences for meeting up with other users)</p>
+            <% else %>
+              <p class="font-italic">(This user has not provided any preferences for meeting up with other users)</p>
+            <% end %>
+          <% end %>
+          <% if current_user?(@user) %>
+            <div class="card-buttons">
+              <%= link_to icon('pencil')+" Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
+  </div>
 </section>
-<section class="container m-top card-wrapper">
-  <h2>Recent Rentals as a Renter</h2>
-  <hr>
-  <% if @recent_renter_rentals.length > 0 %>
-    <%= render @recent_renter_rentals, owners: @rr_owners, renters: @rr_renters, cars: @rr_cars %>
-    <div class="text-right">
-      <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base', role: 'button' %>
-    </div>
-  <% else %>
-    <div class="text-center">
-      <p class="font-italic">Looks like you haven't rented anyone else's car recently.</p>
-      <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>
-      <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
-    </div>
-  <% end %>
-</section>
+<% if current_user?(@user) %>
+  <section class="container mt-5">
+    <h2>Recent Rentals as an Owner</h2>
+    <hr>
+    <% if @recent_owner_rentals.length > 0 %>
+      <%= render @recent_owner_rentals, owners: @or_owners, renters: @or_renters, cars: @or_cars %>
+      <div class="text-right">
+        <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% else %>
+      <div class="text-center">
+        <p class="font-italic">Looks like you haven't rented out your car to anyone recently.</p>
+        <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
+        <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% end %>
+  </section>
+  <section class="container mt-5">
+    <h2>Recent Rentals as a Renter</h2>
+    <hr>
+    <% if @recent_renter_rentals.length > 0 %>
+      <%= render @recent_renter_rentals, owners: @rr_owners, renters: @rr_renters, cars: @rr_cars %>
+      <div class="text-right">
+        <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% else %>
+      <div class="text-center">
+        <p class="font-italic">Looks like you haven't rented anyone else's car recently.</p>
+        <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>
+        <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

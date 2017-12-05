@@ -24,20 +24,35 @@ class Rental < ApplicationRecord
   VALID_TERMS = /\A[\w~!@#$%&*()+=\[\]\\|:'"\/?., -]*\z/i
 
   validates :user_id, presence: true
-  validates :car_id, presence: true
+  validates :car_id, numericality: { only_integer: true }
   validates :status, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 4, only_integer: true }
-  validates :start_location, presence: true, length: { minimum: 3, maximum: 256 }, format: { with: VALID_LOCATION }
-  validates :end_location, presence: true, length: { minimum: 3, maximum: 256 }, format: { with: VALID_LOCATION }
+  validates :start_location, presence: true, length: { minimum: 3, maximum: 64 }, format: { with: VALID_LOCATION }
+  validates :end_location, presence: true, length: { minimum: 3, maximum: 64 }, format: { with: VALID_LOCATION }
+  validate :times_cannot_be_in_the_past, unless: :skip_in_seed
+  validate :times_cannot_be_the_same, unless: :skip_in_seed
   validate :start_time_cannot_be_after_end_time, unless: :skip_in_seed
   validate :end_time_cannot_be_before_start_time, unless: :skip_in_seed
-  validate :times_cannot_be_in_the_past, unless: :skip_in_seed
   validates :price, presence: true, length: { minimum: 1, maximum: 8 }, format: { with: VALID_PRICE }
-  validates :terms, allow_blank: true, length: { maximum: 64 }, format: { with: VALID_TERMS }
+  validates :terms, allow_blank: true, length: { maximum: 256 }, format: { with: VALID_TERMS }
 
   geocoded_by :start_location, latitude: :start_latitude, longitude: :start_longitude
   after_validation :geocode, if: ->(obj){ obj.start_location.present? }
   geocoded_by :end_location, latitude: :end_latitude, longitude: :end_longitude
   after_validation :geocode, if: ->(obj){ obj.end_location.present? }
+
+  def times_cannot_be_in_the_past
+    if self.start_time < DateTime.now && self.status > 1
+      errors.add(:start_time, 'cannot be in the past')
+    elsif self.end_time < DateTime.now && self.status > 2
+      errors.add(:end_time, 'cannot be in the past')
+    end
+  end
+
+  def times_cannot_be_the_same
+    if self.start_time == self.end_time
+      errors.add('Start Time and End Time', 'cannot be the same')
+    end
+  end
 
   def start_time_cannot_be_after_end_time
     if self.end_time < self.start_time
@@ -48,14 +63,6 @@ class Rental < ApplicationRecord
   def end_time_cannot_be_before_start_time
     if self.end_time < self.start_time
       errors.add(:end_time, 'cannot be before the start time')
-    end
-  end
-
-  def times_cannot_be_in_the_past
-    if self.start_time < DateTime.now && self.status > 1
-      errors.add(:start_time, 'cannot be in the past')
-    elsif self.end_time < DateTime.now && self.status > 2
-      errors.add(:end_time, 'cannot be in the past')
     end
   end
 

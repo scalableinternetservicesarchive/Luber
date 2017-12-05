@@ -5,121 +5,109 @@
 <% if session[:user_id] == @user.id %>
   <%= render 'users/nav' %>
 <% end %>
-<section class="container m-top card-wrapper">
+<section class="container mt-5">
   <h2>Account Information</h2>
   <hr>
   <div class="card">
     <div class="card-body">
       <div class="list-group">
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('id-card-o', class: 'fa-fw') %><%#
           %>First Name:<%#
-          %><span class="ml-auto<%= @user.first_name ? '' : ' font-italic' %>"><%#
-            %><%= @user.first_name ? @user.first_name : '(Add a first name)' %><%#
-          %></span>
+          %><% if @user.first_name.present? %><%#
+            %><span><%= @user.first_name %></span>
+          <% else %>
+            <span class="font-italic">(Add a first name)</span>
+          <% end %>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('id-card-o', class: 'fa-fw') %><%#
           %>Last Name:<%#
-          %><span class="ml-auto<%= @user.last_name ? '' : ' font-italic' %>"><%#
-            %><%= @user.last_name ? @user.last_name : '(Add a last name)' %><%#
-          %></span>
+          %><% if @user.last_name.present? %><%#
+            %><span><%= @user.last_name %></span>
+          <% else %>
+            <span class="font-italic">(Add a last name)</span>
+          <% end %>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('map-signs', class: 'fa-fw') %><%#
           %>City:<%#
-          %><span class="ml-auto<%= @user.city ? '' : ' font-italic' %>"><%#
-            %><%= @user.city ? @user.city : '(Add a city)' %><%#
-          %></span>
+          %><% if @user.city.present? %><%#
+            %><span><%= @user.city %></span>
+          <% else %>
+            <span class="font-italic">(Add a city)</span>
+          <% end %>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('map-o', class: 'fa-fw') %><%#
           %>State:<%#
-          %><span class="ml-auto<%= @user.state ? '' : ' font-italic' %>"><%#
-            %><%= @user.state ? @user.state : '(Add a state)' %><%#
-          %></span>
+          %><% if @user.state.present? %><%#
+            %><span><%= @user.state %></span>
+          <% else %>
+            <span class="font-italic">(Add a state)</span>
+          <% end %>
         </p>
         <hr>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('user', class: 'fa-fw') %><%#
           %>Username:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.username %><%#
-          %></span>
+          %><span><%= @user.username %></span>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('envelope-o', class: 'fa-fw') %><%#
           %>Email:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.email %><%#
-          %></span>
+          %><span><%= @user.email %></span>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('lock', class: 'fa-fw') %><%#
           %>Password:<%#
-          %><span class="ml-auto"><%#
-            %>******<%#
-          %></span>
+          %><span>********</span>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('clone', class: 'fa-fw') %><%#
           %>Account Type:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.admin ? 'Admin User' : 'Standard User' %><%#
-          %></span>
+          %><span><%= @user.admin ? 'Admin User' : 'Standard User' %></span>
         </p>
         <hr>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('car', class: 'fa-fw') %><%#
           %>Cars:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.cars_count %><%#
-          %></span>
+          %><span><%= @user.cars_count %></span>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('key', class: 'fa-fw') %><%#
           %>Rentals As Owner:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.rentals_count %><%#
-          %></span>
+          %><span><%= @user.rentals_count %></span>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('mobile', class: 'fa-fw') %><%#
           %>Rentals As Renter:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.renter_rentals_count %><%#
-          %></span>
+          %><span><%= @user.renter_rentals_count %></span>
         </p>
         <hr>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('birthday-cake', class: 'fa-fw') %><%#
           %>Created On:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.created_at.strftime("%A, %B %-d %Y") %> at <%= @user.created_at.strftime("%l:%M %p") %><%#
-          %></span>
+          %><span><%= smart_time(@user.created_at)[3..-1] %></span>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('refresh', class: 'fa-fw') %><%#
           %>Last Updated On:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.updated_at.strftime("%A, %B %-d %Y") %> at <%= @user.updated_at.strftime("%l:%M %p") %><%#
-          %></span>
+          %><span><%= smart_time(@user.updated_at)[3..-1] %></span>
         </p>
-        <p class="list-group-item d-flex align-items-center">
+        <p class="list-group-item">
           <%= icon('sign-in', class: 'fa-fw') %><%#
           %>Last Signed In On:<%#
-          %><span class="ml-auto"><%#
-            %><%= @user.signed_in_at.strftime("%A, %B %-d %Y") %> at <%= @user.signed_in_at.strftime("%l:%M %p") %><%#
-          %></span>
+          %><span><%= smart_time(@user.signed_in_at)[3..-1] %></span>
         </p>
       </div>
-      <div class="btn-group mt-4 float-right" role="group" aria-label="Edit Account Information">
+      <div class="float-right mt-4">
         <%= link_to icon('pencil')+" Edit", edit_user_path, class: 'btn btn-outline-success', role: 'button' %>
       </div>
     </div>
   </div>
 </section>
-<section class="container m-top card-wrapper">
+<section class="container mt-5">
   <h2>Danger Zone</h2>
   <hr>
   <div class="card">

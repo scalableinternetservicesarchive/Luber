@@ -1,47 +1,79 @@
 <%= form_for(user) do |f| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
-      <ul>
-        <% user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= render 'shared/error_messages', target: user %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :first_name, 'First Name' %>
+        <%= f.text_field :first_name, class: 'form-control', placeholder: 'John' %>
+      </div>
     </div>
-  <% end %>
-  <div class="form-group">
-    <%= f.label :first_name %>
-    <%= f.text_field :first_name, class: 'form-control', placeholder: 'Bob' %>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :last_name, 'Last Name' %>
+        <%= f.text_field :last_name, class: 'form-control', placeholder: 'Smith' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :last_name %>
-    <%= f.text_field :last_name, class: 'form-control', placeholder: 'Smith' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :city %>
+        <%= f.text_field :city, class: 'form-control', placeholder: 'Los Angeles' %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :state %>
+        <%= f.select :state, options_for_select(us_states, user.state), {include_blank: 'Select State'}, class: 'form-control' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :city %>
-    <%= f.text_field :city, class: 'form-control', placeholder: 'Los Angeles' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :about %>
+        <%= f.text_area :about, class: 'form-control', rows: 5, placeholder: 'Add a description of yourself' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :state %>
-    <%= f.select :state, options_for_select(us_states, user.state), {}, class: 'form-control' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :meetup, 'Meetup Preferences' %>
+        <%= f.text_area :meetup, class: 'form-control', rows: 5, placeholder: 'Add a your preferences for meeting up with other users' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :username %>
-    <%= f.text_field :username, class: 'form-control', placeholder: 'bsmith1989' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :username %>
+        <%= f.text_field :username, class: 'form-control', placeholder: 'example123' %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control', placeholder: 'example@gmail.com' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :email %>
-    <%= f.email_field :email, class: 'form-control', placeholder: 'bsmith@gmail.com' %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :password %>
+        <%= f.password_field :password, class: 'form-control', placeholder: 'Blank if unchanged' %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <%= f.label :password_confirmation, 'Confirmation' %>
+        <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Blank if unchanged' %>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :password %>
-    <%= f.password_field :password, class: 'form-control', placeholder: '******' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation, class: 'form-control', placeholder: '******' %>
-  </div>
-  <div class="text-center">
-    <%= f.submit yield(:submit_label), class: 'btn btn-lg btn-base mt-3' %>
+  <div class="text-center mt-5">
+    <%= f.submit 'Submit', class: 'btn btn-lg btn-base m-2' %>
+    <%= link_to 'Cancel', overview_user_path(user), class: 'btn btn-lg btn-danger m-2', role: 'button' %>
   </div>
 <% end %>

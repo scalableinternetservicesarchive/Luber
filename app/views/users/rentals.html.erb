@@ -6,15 +6,13 @@
 <% if session[:user_id] == @user.id %>
   <%= render 'users/nav' %>
 <% end %>
-<section class="container m-top card-wrapper">
+<section class="container mt-5">
   <% if @user.rentals_count == 0 %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented out your car to anyone yet.</p>
       <p>Wanna see your ride in a high-speed chase on the nightly news?</p>
       <%= link_to 'Post a new Rental today!', new_rental_path, class: 'btn btn-base', role: 'button' %>
     </div>
-  <% end %>
-  <% if @user.rentals_count == 0 || @user.renter_rentals_count == 0 %>
     <hr>
   <% end %>
   <% if @user.renter_rentals_count == 0 %>
@@ -24,17 +22,35 @@
       <%= link_to 'Rent a Car today!', rentals_path, class: 'btn btn-base', role: 'button' %>
     </div>
   <% end %>
+  <% if @user.rentals_count != 0 && @user.renter_rentals_count == 0 %>
+    <hr>
+  <% end %>
   <% if @rentals.length > 0 %>
     <%= render @rentals, owners: @owners, renters: @renters, cars: @cars %>
-    <%= will_paginate @rentals, 
+    <%= paginate @rentals, {
       class: 'mb-5',
       page_links: false, 
+      first_page: "/users/#{@user.username}/rentals", 
       previous_label: icon('arrow-left'), 
       next_label: icon('arrow-right'),
-      link_separator: "<p>#{page} / #{@rentals.total_pages}</p>" %>
-    <div class="text-right">
-      <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
-      <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base ml-1', role: 'button' %>
+      link_separator: "<p>#{page} / #{@rentals.total_pages}</p>" } %>
+    <% if @total_rentals > @per_page_count %>
+      <div class="row justify-content-between">
+        <div class="col-auto">
+          <div class="input-group">
+            <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
+            <span class="input-group-btn">
+              <%= link_to 'Go to Page', rentals_user_path, class: 'btn btn-base', role: 'button' %>
+            </span>
+          </div>
+        </div>
+    <% else %>
+      <div class="row justify-content-end">
+    <% end %>
+      <div class="col-auto">
+        <%= link_to 'Post a new Rental', new_rental_path, class: 'btn btn-base', role: 'button' %>
+        <%= link_to 'Rent a Car', rentals_path, class: 'btn btn-base ml-1', role: 'button' %>
+      </div>
     </div>
   <% end %>
 </section>

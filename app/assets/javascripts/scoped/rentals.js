@@ -25,7 +25,6 @@ initMaps = function() {
       $('#start-location').text()+'</p></div></div>');
   }
   if(!isNaN(end_location.lat()) && !isNaN(end_location.lng())) {
-    console.log(4);
     new google.maps.Marker({
       position: end_location,
       title: "End"
@@ -56,18 +55,6 @@ preventFontInjection = function() {
       }
       insertBefore.call(head, newElement, referenceElement);
   };
-}
-
-// Add css class if there is no renter for a rental post on show action
-addNoRenterCSS = function() {
-  if($('#rentals-show').length == 0) {
-    return;
-  }
-
-  var userCol = $('#user-col');
-  if(userCol.find('.d-flex').length > 0) {
-    userCol.addClass('no-section-content');
-  }
 }
 
 // Randomize rental card header gradient angle

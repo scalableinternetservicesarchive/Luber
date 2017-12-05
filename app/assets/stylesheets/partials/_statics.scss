@@ -3,38 +3,68 @@
   background-repeat: no-repeat;
 }
 
-#hero-background {
-  min-height: 100vh;
-  color: white;
-  background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), asset-data-url("hero.png");
+#statics-home {
+  margin-bottom: 23vh;
 
-  p {
-    font-size: 1.7rem;
+  section {
+    margin-top: 0;
+    display: flex;
+  }
+
+  .hero-panel {
+    box-shadow: 0 0 6px $material-shadow;
+    
+    p {
+      font-size: 1.4rem;
+    }
+  }
+
+  #hero-background {
+    min-height: 100vh;
+    color: white;
+    background-image: linear-gradient(to bottom right, $light-gradient, $secondary-gradient), asset-data-url("hero.png");
+
+    p {
+      font-size: 1.7rem;
+    }
+  }
+
+  #using-luber-background {
+    min-height: 60vh;
+    color: $off-black;
+    background-color: $off-white;
+    
+    img {
+      max-height: 25vh;
+    }
+  }
+
+  #luber-stats-background {
+    min-height: 40vh;
+    color: white;
+    background-color: $dark-accent;
+
+    .list-group-item {
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+
+      i {
+        margin-left: 0;
+        margin-right: 1rem;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  #promo-video-background {
+    min-height: 50vh;
+    background-color: $off-white;
   }
 }
 
-#using-luber-background {
-  position: relative;
-  min-height: 60vh;
-  color: white;
-  background-color: $primary;
-  box-shadow: 0 0 6px $material-shadow;
-  
-  img {
-    width: 225px;
-    height: auto;
-  }
-
-  p {
-    font-size: 1.4rem;
-  }
-}
-
-#promo-video-background {
-  min-height: 50vh;
-  background-color: $light-base;
-
-  p {
-    font-size: 1.4rem;
+#statics-faq {
+  .card-header {
+    color: $off-black;
+    background: none;
   }
 }

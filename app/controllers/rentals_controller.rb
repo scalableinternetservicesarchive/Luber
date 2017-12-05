@@ -7,8 +7,9 @@ class RentalsController < ApplicationController
   # GET /rentals
   # GET /rentals.json
   def index
-    
+    @total_available_rentals = Rental.where(status: 0).count
     @per_page_count = 8
+    params[:page] = validate_page(params[:page], @total_available_rentals, @per_page_count)
     @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @cars = [], []
     @available_rentals.each do |rental|
@@ -45,6 +46,7 @@ class RentalsController < ApplicationController
   # POST /rentals
   # POST /rentals.json
   def create
+    @cars = Car.where(user_id: session[:user_id])
     @rental = Rental.new(rental_params)
     @rental.user_id = session[:user_id]
 
@@ -69,19 +71,23 @@ class RentalsController < ApplicationController
   # PATCH/PUT /rentals/1
   # PATCH/PUT /rentals/1.json
   def update
+    mutable_params = rental_params
+    mutable_params.delete(:terms) if mutable_params[:terms].blank?
+    
     original_rental = @rental.dup
     car = Car.find(@rental.car_id)
+    @cars = Car.where(user_id: session[:user_id])
 
     respond_to do |format|
-      if @rental.update(rental_params)
+      if @rental.update(mutable_params)
         updates = []
-        original_rental.car_id == @rental.car_id ? nil : updates.push('Car')
-        original_rental.start_location == @rental.start_location ? nil : updates.push('Start Location')
-        original_rental.end_location == @rental.end_location ? nil : updates.push('End Location')
-        original_rental.start_time == @rental.start_time ? nil : updates.push('Start Time')
-        original_rental.end_time == @rental.end_time ? nil : updates.push('End Time')
-        original_rental.price == @rental.price ? nil : updates.push('Price')
-        original_rental.terms == @rental.terms ? nil : updates.push('Terms')
+        updates.push('Start Location') if original_rental.start_location != @rental.start_location
+        updates.push('End Location') if original_rental.end_location != @rental.end_location
+        updates.push('Start Time') if original_rental.start_time != @rental.start_time
+        updates.push('End Time') if original_rental.end_time != @rental.end_time
+        updates.push('Car') if original_rental.car_id != @rental.car_id
+        updates.push('Price') if original_rental.price != @rental.price
+        updates.push('Terms') if original_rental.terms != @rental.terms
 
         if updates.length() > 0
           update_str = ''

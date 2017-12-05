@@ -6,5 +6,5 @@ class Tag < ApplicationRecord
 
     VALID_TAG = /\A^[a-z0-9-]+$\z/i
 
-    validates :name, presence: true, length: { minimum: 3, maximum: 30 }, format: { with: VALID_TAG }
+    validates :name, presence: true, length: { minimum: 3, maximum: 32 }, format: { with: VALID_TAG }
 end

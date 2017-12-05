@@ -6,7 +6,7 @@
       </div>
       <div class="col">        
         <h1><%= @user.username %></h1>
-        <p class="lead">A member since <%= @user.created_at.strftime("%B %e, %Y") %></p>
+        <p class="lead">A member since <%= @user.created_at.strftime("%B #{@user.created_at.day.ordinalize}, %Y") %></p>
       </div>
     </div>
   </div>

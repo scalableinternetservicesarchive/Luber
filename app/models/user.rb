@@ -13,10 +13,11 @@ class User < ApplicationRecord
   VALID_LAST_NAME = /\A[a-z ]+\z/i
   VALID_CITY = /\A[a-z -]+\z/i
   VALID_STATE = /\A[a-z]+\z/i
-  VALID_ABOUT = /\A[\w~!@#$%&*()+=\[\]\\|:'"\/?., -]+\z/i
-  VALID_MEETUP = /\A[\w~!@#$%&*()+=\[\]\\|:'"\/?., -]+\z/i
+  VALID_ABOUT = /\A[\w`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|:'",<\.>\/\? ]+\z/
+  VALID_MEETUP = /\A[\w`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|:'",<\.>\/\? ]+\z/
   VALID_USERNAME = /\A[\w -]+\z/i
   VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+  VALID_PASSWORD = /\A[\w`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|;:'",<\.>\/\?]+\z/
 
   validates :first_name, allow_blank: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_FIRST_NAME }
   validates :last_name, allow_blank: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_LAST_NAME }
@@ -27,11 +28,19 @@ class User < ApplicationRecord
   validates :username, presence: true, length: { minimum: 3, maximum: 24 }, format: { with: VALID_USERNAME }, uniqueness: { case_sensitive: false }
   validates :email, presence: true, length: { minimum: 5, maximum: 128 }, format: { with: VALID_EMAIL }, uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 8, maximum: 64 },on: create
-  validates :password, allow_blank: true, length: { minimum: 8, maximum: 64 }
-  
+  validates :password, presence: true, length: { minimum: 8, maximum: 32 }, format: { with: VALID_PASSWORD }, if: :create_should_validate?
+  validates :password, length: { minimum: 8, maximum: 32 }, format: { with: VALID_PASSWORD }, if: :update_should_validate?
+
   # If user is deleted, kill his cars too
   # https://stackoverflow.com/questions/29544693/cant-delete-object-due-to-foreign-key-constraint
+
+  def create_should_validate?
+    new_record?
+  end
+
+  def update_should_validate?
+    !self.password.nil?
+  end
 
   # returns the hash digest of the given string
   def User.digest(string)

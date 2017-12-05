@@ -35,9 +35,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
           password: 'foo',
           password_confirmation: 'bar' } }
     end
-    
-
-
+  
     puts "after-bad-signup flash:"
     if defined?(flash)
       puts "Flash: #{flash.to_hash()}" 

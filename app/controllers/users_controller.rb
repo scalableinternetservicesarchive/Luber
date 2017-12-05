@@ -41,8 +41,6 @@ class UsersController < ApplicationController
     mutable_params.delete(:state) if mutable_params[:state].blank?
     mutable_params.delete(:about) if mutable_params[:about].blank?
     mutable_params.delete(:meetup) if mutable_params[:meetup].blank?
-    mutable_params.delete(:password) if mutable_params[:password].blank?
-    mutable_params.delete(:password_confirmation) if mutable_params[:password_confirmation].blank?
 
     original_user = @user.dup
 

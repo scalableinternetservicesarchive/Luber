@@ -1,6 +1,9 @@
 module ApplicationHelper
   def smart_time(date_time)
-    time_str = ''
+    if date_time.is_a?(String)
+      date_time = DateTime.parse(date_time)
+    end
+
     if date_time.day == DateTime.now.day
       time_str = 'Today'
     elsif date_time.day == DateTime.now.day - 1
@@ -8,12 +11,14 @@ module ApplicationHelper
     else
       time_str = 'on '
       if date_time.year == DateTime.now.year
-        time_str += date_time.strftime("%A, %b. #{date_time.day.ordinalize}")
+        time_str += date_time.strftime("%A, %b #{date_time.day.ordinalize}")
       else
-        time_str = date_time.strftime("%b. #{date_time.day.ordinalize}, %Y")
+        time_str += date_time.strftime("%b #{date_time.day.ordinalize}, %Y")
       end
     end
-    time_str += ' at ' + date_time.strftime("%l:%M %p")
+
+    time_str += ' at ' + date_time.strftime("%-l:%M %p")
+
     return time_str
   end
 

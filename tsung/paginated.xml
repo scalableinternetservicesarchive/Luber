@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="notice">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+  </clients>
+
+  <!-- Server side setup -->
+  <servers>
+    <server host="luber-sammy2.tmmxtzwm2p.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+  </servers>
+
+
+  <load>
+    <arrivalphase phase="1" duration="60" unit="second">
+      <!--<users interarrival="20" unit="second"></users>-->
+      <users arrivalrate="2" unit="second"></users>
+    </arrivalphase>
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 2 seconds -->
+    <!--<option name="global_ack_timeout" value="2000"></option>-->
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+    </option>
+  </options>
+
+  <sessions>
+    <session name="http-example" probability="100" type="ts_http">
+      <for from="1" to="313" incr="1" var="pagenum">
+      <request subst="true">
+        <http url='/rentals?page=%%_pagenum%%' version='1.1' method='GET'></http>
+      </request>
+      </for>
+    </session>
+  </sessions>
+</tsung>

@@ -11,7 +11,13 @@
 <% if @available_rentals.length != 0 %>
   <%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
   <section class="container m-top card-wrapper">
-    <%= render @available_rentals, owners: @owners, cars: @cars %>
+    <%# render @available_rentals, owners: @owners, cars: @cars %>
+    <% rentals = @available_rentals.zip(@owners, @cars) %>
+    <% rentals.each do |rental, owner, car| %>
+      <% cache(cache_key_for_rental(rental, owner, car)) do %>
+        <%= render rental, owner: owner, car: car %>
+      <% end %>
+    <% end %>
   </section>
   <%= will_paginate @available_rentals, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'justify-content-center' %>
   <section class="container text-right">

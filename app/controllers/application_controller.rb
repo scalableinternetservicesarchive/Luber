@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   def validate_page(page, total, per)
     page = page.to_s
     last = (total / per.to_f).ceil
-    if page.match?(/\A\d+\z/)
+    if page.match /\A\d+\z/
       page = page.to_i
       if page < 1
         page = 1

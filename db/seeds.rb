@@ -288,16 +288,22 @@ user_ids = (1..how_many[:user]).to_a
 
 user_ids.each do |i|  # don't use .times, then id will be 0, bad.
 
+
   d = { 
       id:           i,
       first_name:   "Bob",
       last_name:    "Jones",
       city:         "Goleta",
       state:        "CA",
+      about:        "I'm awesome!",
+      meetup:       "Let's meet downtown!",
       username:     "skater4#{i}",
       email:        "user#{i}@boo.com",
       password:     PASSWORD,
       admin:        false,
+      cars_count:   0,
+      rentals_count: 0,
+      renter_rentals_count: 0,
       signed_in_at: NOW_DT,
       created_at:   NOW_DT,
       updated_at:   NOW_DT

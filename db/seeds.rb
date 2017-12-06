@@ -154,7 +154,7 @@ case Rails.env
     direct_sql_inject = false
   when 'production'
     puts 'IN REMOTE MODE (production)'
-    how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5}
+    how_many = {user: 100, cars_per_user: 2, rentals_per_car: 5}
     col_name_delim = "" # postgres
     val_delim = "'"  # postgres
     direct_sql_inject = true

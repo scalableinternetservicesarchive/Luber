@@ -112,11 +112,11 @@
   <hr>
   <div class="card">
     <div class="card-body">
-      <%= link_to 'Delete All Cars', about_path, class: 'btn btn-danger', role: 'button' %>
+      <%= link_to 'Delete All Cars', cars_user_path, method: :delete, data: { confirm: "Are you sure you want to permanently delete all of cars you have added?" }, class: 'btn btn-danger', role: 'button' %>
       <p class="mt-2 mb-4">This will permanently delete all of your cars. Watch them go 100 to 0 real quick.</p>
-      <%= link_to 'Delete All Rental Posts', about_path, class: 'btn btn-danger', role: 'button' %>
-      <p class="mt-2 mb-4">This will permanently delete all of the rental posts you've made as the owner. If a post was <span class="badge badge-primary">Available</span>, it will be taken off the market. Otherwise, it will be considered <span class="badge badge-danger">Canceled</span>, and niether you nor the renter will have access to it.</p>
-      <%= link_to 'Delete Account', @user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', role: 'button' %>
+      <%= link_to 'Delete All Rental Posts', rentals_user_path, method: :delete, data: { confirm: "Are you sure you want to permanently delete all of the rental posts you have made as the owner?" }, class: 'btn btn-danger', role: 'button' %>
+      <p class="mt-2 mb-4">This will permanently delete all of the rental posts <span class="font-italic">you've made as the owner</span>. If a post was <span class="badge badge-primary">Available</span>, it will be taken off the market. Otherwise, it will be considered <span class="badge badge-danger">Canceled</span>, and niether you nor the renter will have access to it.</p>
+      <%= link_to 'Delete Account', @user, method: :delete, data: { confirm: 'Are you sure you want to permanently delete your account?' }, class: 'btn btn-danger', role: 'button' %>
       <p class="mt-2">This will permanently delete your account. There's no going back from this...</p>
     </div>
   </div>

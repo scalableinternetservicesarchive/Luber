@@ -19,7 +19,8 @@ Rails.application.routes.draw do
   end
   get 'signup', to: 'users#new'
   post 'signup', to: 'users#create'
-
+  delete 'users/:username/cars', to: 'users#destroy_all_cars'
+  delete 'users/:username/rentals', to: 'users#destroy_all_rentals'
 
   get 'signin', to: 'sessions#new'
   post 'signin', to: 'sessions#create'

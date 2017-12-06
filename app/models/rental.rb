@@ -1,15 +1,10 @@
 class Rental < ApplicationRecord
   before_save :geocode_endpoints
-  after_save { 
-    if self.renter_id_before_last_save == nil && self.renter_id.present?
-      renter = User.find(self.renter_id)
-      renter.update_attribute(:renter_rentals_count, renter.renter_rentals_count + 1)
-    end
-  }
+  before_destroy :handle_owner_rental
   after_destroy { 
     if self.renter_id.present?
       renter = User.find(self.renter_id)
-      renter.update_attribute(:renter_rentals_count, renter.renter_rentals_count - 1)
+      renter.update_column(:renter_rentals_count, renter.renter_rentals_count - 1)
     end
   }
 
@@ -17,7 +12,6 @@ class Rental < ApplicationRecord
   has_one :car
 
   attr_accessor :skip_in_seed
-
   
   VALID_LOCATION = /\A[a-z0-9.,' -]+\z/i
   VALID_PRICE = /\A\d+(\.\d\d)?\z/
@@ -141,6 +135,30 @@ class Rental < ApplicationRecord
         self.end_latitude = geocoded.latitude
         self.end_longitude = geocoded.longitude
       end
+    end
+  end
+
+  def handle_associated_rentals
+    rentals = Rental.where(car_id: self.id)
+    if rentals.length == 0
+      return true
+    else
+      err_str = "This car is used in #{rentals.length} other "
+      rentals.length == 1 ? err_str += 'rental' : err_str += 'rentals'
+      err_str += ' . You must first delete '
+      rentals.length == 1 ? err_str += 'it' : err_str += 'them'
+      err_str += ' before you can delete this car'
+      errors.add :base, err_str
+      throw(:abort)
+    end
+  end
+
+  def handle_owner_rental
+    if self.status != 2
+      return true
+    else
+      errors.add :base, 'This rental is currently in progress and cannot be deleted until it is complete'
+      throw(:abort)
     end
   end
 end

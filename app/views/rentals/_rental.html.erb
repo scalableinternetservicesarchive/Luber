@@ -40,7 +40,14 @@
         %>Owner: <%= link_to owner.username, user_path(owner.username) %> <%#
         %><%= rental.user_id == session[:user_id] ? '<span class="font-italic">(You are the owner)</span>'.html_safe : '' %><%#
       %></p>
-      <% unless rental.renter_id.nil? %>
+      <% if rental.renter_id.nil? %>
+        <% if rental.renter_deleted == true %>
+          <p class="list-group-item">
+            <%= icon('mobile', class: 'fa-fw') %><%#
+            %>Renter: <span class="font-italic">(user deleted)</span><%#
+          %></p>
+        <% end %>
+      <% else %>
         <p class="list-group-item">
           <%= icon('mobile', class: 'fa-fw') %><%#
           %>Renter: <%= link_to renter.username, user_path(renter.username) %> <%#

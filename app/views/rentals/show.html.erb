@@ -29,7 +29,11 @@
           <div class="card">
             <div class="card-body">
               <div class="text-center my-auto">
-                <p class="font-italic">Looks like no one is renting your car yet...</p>
+                <% if @rental.renter_deleted == false %>
+                  <p class="font-italic">Looks like no one is renting your car yet...</p>
+                <% else %>
+                  <p class="font-italic">Looks like the user who was renting your car has deleted their account...</p>
+                <% end %>
               </div>
             </div>
           </div>

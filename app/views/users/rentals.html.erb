@@ -15,7 +15,7 @@
     </div>
     <hr class="mt-4">
   <% end %>
-  <% if @user.renter_rentals_count == 0 %>
+  <% if @user.renter_rentals_count == 0 || @visible_renter_rentals_count == 0 %>
     <div class="text-center">
       <p class="font-italic">Looks like you haven't rented anyone else's car yet.</p>
       <p>Wanna go on an adventure with little to no regard for the safety of your ride's paint?</p>

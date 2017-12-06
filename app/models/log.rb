@@ -8,11 +8,11 @@ class Log < ApplicationRecord
     when 1
       return 'pencil'
     when 2
-      return 'minus'
+      return 'times'
     when 3
       return 'check'
     when 4
-      return 'times'
+      return 'ban'
     else
       return ''
     end

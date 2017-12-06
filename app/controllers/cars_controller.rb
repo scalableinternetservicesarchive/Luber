@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
+  before_action :signed_in_user
   before_action :set_car, only: [:edit, :update, :destroy]
-  before_action :signed_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /cars/new
@@ -86,9 +86,7 @@ class CarsController < ApplicationController
         action: 2, 
         content: 'Deleted the '+original_car.color+', '+original_car.year.to_s+' '+original_car.make+' '+original_car.model+' from My Cars')
 
-      respond_to do |format|
-        flash[:success] = 'Car successfully deleted'
-      end
+      flash[:success] = 'Car successfully deleted'
     else
       error_messages = ''
       @car.errors.full_messages.each do |msg|
@@ -96,7 +94,9 @@ class CarsController < ApplicationController
       end
       flash[:danger] = error_messages
     end
-    redirect_to cars_user_path(session[:user_username])
+    respond_to do |format|
+      format.html {redirect_to cars_user_path(session[:user_username])}
+    end
   end
 
   def tag_search
@@ -119,10 +119,10 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
   end
 
-  # before filters for authorization
+  # Before filters for authorization
   def signed_in_user
     unless signed_in?
-      flash[:danger] = "Please sign in or register before messing with them cars."
+      flash[:danger] = 'Please sign in before accessing this page'
       redirect_to signin_url
     end
   end

@@ -1,11 +1,9 @@
-<section class="debug-wrapper">
-  <div class="container">
-    <h4>Rails Debug</h4>
-    <div class="debug-entry">
-      <pre>Find me at: <%= yield(:path).sub!(Rails.root.to_s, "") %></pre>
-    </div>
-    <div class="debug-entry">
-      <%= debug(params) %>
-    </div>
+<section class="container mt-5 debug-wrapper">
+  <h4>Rails Debug</h4>
+  <div class="debug-entry">
+    <pre>Find me at: <%= yield(:path).sub!(Rails.root.to_s, "") %></pre>
+  </div>
+  <div class="debug-entry">
+    <%= debug(params) %>
   </div>
 </section>

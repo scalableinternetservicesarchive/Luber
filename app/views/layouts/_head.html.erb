@@ -1,23 +1,6 @@
- <title><%= yield(:title) %> | Luber</title>
+<title><%= yield(:title) %> | Luber</title>
 <%= csrf_meta_tags %>
 <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 <%= render 'application/favicon' %>
 <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzTwUYnqKcx9uh6hMKUv335E1DenBgcgQ"></script>
-
-
-<%# Bootstrap %>
-<%# Problem: site works locally but css no appear when deploy to Heroku. %>
-<%# Solution: insert bootstrapcdn stylesheet & JS? %>
-<%# Source: https://stackoverflow.com/questions/33351423/bootstrap-styles-missing-after-deploy-to-heroku %>
-
-<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"> -->
-<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"> </script> -->
-
-<%# Better: Bootstrap's own instructions: https://getbootstrap.com/docs/4.0/getting-started/introduction/ %>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-
-<%# See also 3 JS scripts inserted into application.html.erb %>
-
-<%# END Bootstrap %>

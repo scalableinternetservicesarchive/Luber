@@ -64,7 +64,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert (defined? flash == nil)  # should be no flash, just redirect.
     # assert flash.empty?
-    assert_redirected_to root_url
+    assert_redirected_to overview_user_path(@other_user)
   end
 
   test "signed-in user cannot update-patch other users" do

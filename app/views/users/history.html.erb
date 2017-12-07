@@ -9,7 +9,7 @@
 <section class="container mt-5">
   <% if @page_logs.length > 0 %>
     <% @day_logs.each do |day, logs| %>
-      <h2><%= day.strftime("%A, %b. %-d %Y").to_s %></h2>
+      <h2><%= smart_date(day.to_datetime) %></h2>
       <hr>
       <% logs.each do |log| %>
         <%= render log %>

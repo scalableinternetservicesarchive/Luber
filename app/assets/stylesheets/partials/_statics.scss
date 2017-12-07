@@ -19,6 +19,11 @@
     }
   }
 
+  .debug-wrapper {
+    margin-top: 0;
+    flex-direction: column;
+  }
+
   #hero-background {
     min-height: 100vh;
     color: white;

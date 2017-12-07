@@ -82,4 +82,7 @@ Rails.application.configure do
     :simple_boolean_attributes => false,
     :compress_js_templates => false
   }
+
+  # Make sure timezone is UTC in test
+  config.tz = TZInfo::Timezone.get('UTC')
 end

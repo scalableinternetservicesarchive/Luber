@@ -1,25 +1,45 @@
 module ApplicationHelper
-  def smart_time(date_time)
-    if date_time.is_a?(String)
-      date_time = DateTime.parse(date_time)
-    end
+  def smart_time(dt)
+    dt = Rails.application.config.tz.utc_to_local(dt)
+    return dt.strftime("%-l:%M %p")
+  end
 
-    if date_time.day == DateTime.now.day
-      time_str = 'Today'
-    elsif date_time.day == DateTime.now.day - 1
-      time_str = 'Yesterday'
+  def smart_date(dt, prefix=false)
+    dt = Rails.application.config.tz.utc_to_local(dt)
+    case dt.day
+    when DateTime.yesterday.day
+      str = 'Yesterday'
+    when DateTime.current.day
+      str = 'Today'
+    when DateTime.tomorrow.day
+      str = 'Tomorrow'
     else
-      time_str = 'on '
-      if date_time.year == DateTime.now.year
-        time_str += date_time.strftime("%A, %b #{date_time.day.ordinalize}")
+      if prefix then str = 'on ' else str = '' end
+      if dt.month != 5 then dot = '.' else dot = '' end
+
+      if dt.year != DateTime.current.year
+        str += dt.strftime("%b#{dot} #{dt.day.ordinalize}, %Y")
       else
-        time_str += date_time.strftime("%b #{date_time.day.ordinalize}, %Y")
+        str += dt.strftime("%A, %b#{dot} #{dt.day.ordinalize}")
       end
     end
 
-    time_str += ' at ' + date_time.strftime("%-l:%M %p")
+    return str
+  end
 
-    return time_str
+  def smart_datetime(dt, prefix=false)
+    return "#{smart_date(dt, prefix)} at #{smart_time(dt)}"
+  end
+
+  def smart_datetime_range(dt_start, dt_end, prefix_start=false, prefix_end=false)
+    dt = Rails.application.config.tz.utc_to_local(dt)
+    if dt_start.day == dt_end.day
+      str = "#{smart_date(dt_start)} from #{smart_time(dt_start)} until #{smart_time(dt_end)}"
+    else
+      str = "From #{smart_datetime(dt_start, prefix_start)} until #{smart_datetime(dt_end, prefix_end)}"
+    end
+
+    return str
   end
 
   def paginate(collection, params= {})

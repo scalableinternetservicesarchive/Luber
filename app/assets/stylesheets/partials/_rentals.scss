@@ -15,14 +15,17 @@
 .no-section-content {
   display: flex;
   flex-direction: column;
-  height: 40vh;
 
   hr {
     margin-top: 0.25rem;
-    margin-bottom: 0;
   }
 
-  div {
+  .no-map {
+    margin-top: ($spacer * 4);
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-style: italic;
     flex-grow: 1;
 
     div {

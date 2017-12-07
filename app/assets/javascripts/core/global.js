@@ -20,11 +20,24 @@ alerts = function() {
 
 // Allow the user to jump to a specific page
 pageJump = function() {
-  $('.input-group-btn').click(function() {
-    var link = $('.input-group-btn a');
+  $('.page-jump-btn').click(function() {
+    var link = $('.page-jump-btn a');
     var input = $('.page-jump');
     if(input.val() != '') {
       link.attr('href', link.attr('href') + '?page=' + input.val());
     }
   });
+}
+
+// Enable buttons that rely on javascript to function/remove warning text
+enableButtons = function() {
+  if($('.page-jump-btn')) {
+    $('.page-jump-btn a').removeClass('disabled');
+  }
+  if($('.tag-search-btn')) {
+    $('.tag-search-btn a').removeClass('disabled');
+  }
+  if($('.js-text')) {
+    $('.js-text').remove();
+  }
 }

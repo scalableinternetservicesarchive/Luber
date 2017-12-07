@@ -37,7 +37,7 @@ class Car < ApplicationRecord
 
   def self.tagged_with(name)
     name = name.downcase
-    Tag.find_by_name!(name).cars
+    Tag.find_by!(name: name).cars
   end
 
   def handle_associated_rentals

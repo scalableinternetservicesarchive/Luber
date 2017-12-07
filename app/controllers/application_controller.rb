@@ -2,24 +2,41 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
   include SessionsHelper
 
+  private
+
   def validate_page(page, total, per)
+    valid = false
     page = page.to_s
     last = (total / per.to_f).ceil
+    
     if page.match?(/\A\d+\z/)
       page = page.to_i
       if page < 1
         page = 1
       elsif page > last
         page = last
+      else
+        valid = true
       end
     else
       page = 1
     end
 
-    return page
+    return page, valid
   end
 
-  private
+  def validate_tag(tag)
+    valid = false
+    tag = tag.to_s
+    
+    if tag.match?(/\A^[a-z0-9-]+$\z/i) && tag.length > 2 && tag.length < 32
+      valid = true
+    else
+      tag = 'invalid'
+    end
+
+    return tag, valid
+  end
 
   # Confirms the user is a guest
   def guest_user

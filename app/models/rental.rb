@@ -1,5 +1,6 @@
 class Rental < ApplicationRecord
   before_save :geocode_endpoints
+  before_save { self.price << '0' if APPEND_PRICE.match?(self.price) }
   before_destroy :handle_owner_rental
   after_destroy { 
     if self.renter_id.present?
@@ -14,8 +15,9 @@ class Rental < ApplicationRecord
   attr_accessor :skip_in_seed
   
   VALID_LOCATION = /\A[a-z0-9.,' -]+\z/i
-  VALID_PRICE = /\A\d+(\.\d\d)?\z/
+  VALID_PRICE = /\A\d+(\.\d(\d)?)?\z/
   VALID_TERMS = /\A[\w~!@#$%&*()+=\[\]\\|:'"\/?., -]*\z/i
+  APPEND_PRICE = /\A\d+\.\d\z/
 
   validates :user_id, presence: true
   validates :car_id, numericality: { only_integer: true }

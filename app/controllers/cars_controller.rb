@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
   before_action :signed_in_user
-  before_action :correct_user, except: [:new, :create]
+  before_action :correct_user, except: [:new, :create, :tag_search]
   before_action :set_car, only: [:edit, :update, :destroy]
 
   # GET /cars/new

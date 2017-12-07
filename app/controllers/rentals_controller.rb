@@ -7,10 +7,37 @@ class RentalsController < ApplicationController
   # GET /rentals
   # GET /rentals.json
   def index
+    # Get the total number of rentals and set the number of rentals per page
     @total_available_rentals = Rental.where(status: 0).count
     @per_page_count = 8
-    params[:page] = validate_page(params[:page], @total_available_rentals, @per_page_count)
-    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: @per_page_count )
+
+    # Parse and validate any parameters that may have been passed
+    if params[:page].present?
+      params[:page], page_valid = validate_page(params[:page], @total_available_rentals, @per_page_count)
+      if !page_valid
+        flash.now[:danger] = 'The page you tried to jump to does not exist'
+      end
+    end
+    if params[:tag].present?
+      params[:tag], tag_valid = validate_tag(params[:tag])
+      if !tag_valid
+        flash.now[:danger] = 'The tag you tried to search for contained invalid characters'
+      end
+    end
+
+    # Search for tagged cars if a tag was provided
+    @available_rentals = Rental.none
+    if params[:tag].present? && tag_valid
+      tagged_cars = Car.tagged_with(params[:tag])
+      tagged_cars.each do |car|
+        @available_rentals = @available_rentals.or(Rental.where(['status = ? AND car_id = ?', 0, car.id]))
+      end
+
+    else
+      @available_rentals = Rental.where(status: 0).order(created_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+    end
+
+    # Query for the associated rental post data
     @owners, @cars = [], []
     @available_rentals.each do |rental|
       @owners << User.find(rental.user_id)
@@ -19,7 +46,7 @@ class RentalsController < ApplicationController
   end
 
   # GET /rentals/1
-  # GET /rentals/1.json
+  # GET /rentals/1.jsonrender :new
   def show
     @owner = User.find(@rental.user_id)
     if @rental.renter_id

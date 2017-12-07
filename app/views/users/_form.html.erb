@@ -62,13 +62,15 @@
     <div class="col">
       <div class="form-group">
         <%= f.label :password %>
-        <%= f.password_field :password, class: 'form-control', placeholder: 'Blank if unchanged' %>
+        <%= f.password_field :password, class: 'form-control', placeholder: 'Pick a secure Password' %>
+        <small class="form-text text-muted">Leave blank if unchanged</small>
       </div>
     </div>
     <div class="col">
       <div class="form-group">
         <%= f.label :password_confirmation, 'Confirmation' %>
-        <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Blank if unchanged' %>
+        <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Type the same Password' %>
+        <small class="form-text text-muted">Leave blank if unchanged</small>
       </div>
     </div>
   </div>

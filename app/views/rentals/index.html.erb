@@ -10,13 +10,18 @@
 </section>
 <section class="container mt-5">
   <% if @available_rentals.length > 0 %>
-    <%# render @available_rentals, owners: @owners, cars: @cars %>
-    <% rentals = @available_rentals.zip(@owners, @cars) %>
-    <% rentals.each do |rental, owner, car| %>
-      <% cache(cache_key_for_rental(rental, owner, car)) do %>
-        <%= render rental, owner: owner, car: car %>
-      <% end %>
-    <% end %>
+    <div class="row mb-5">
+      <div class="col">
+        <div class="input-group">
+          <input class="form-control tag-search", placeholder="sporty, trendy, etc." aria-label="tag search">
+          <span class="input-group-btn tag-search-btn">
+            <%= link_to 'Search Tag', rentals_path, class: 'btn btn-base disabled', role: 'button' %>
+          </span>
+        </div>
+        <small class="form-text text-muted js-text">This requires JavaScript</small>
+      </div>
+    </div>
+    <%= render @available_rentals, owners: @owners, cars: @cars %>
     <%= paginate @available_rentals, {
       class: 'mb-5',
       page_links: false, 
@@ -28,11 +33,12 @@
       <div class="row justify-content-between">
         <div class="col-auto">
           <div class="input-group">
-            <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
-            <span class="input-group-btn">
-              <%= link_to 'Go to Page', rentals_path, class: 'btn btn-base', role: 'button' %>
+            <input class="form-control page-jump", type="number" min="1", max="<%= @available_rentals.total_pages %>", placeholder="Page #" aria-label="Page #">
+            <span class="input-group-btn page-jump-btn">
+              <%= link_to 'Go to Page', rentals_path, class: 'btn btn-base disabled', role: 'button' %>
             </span>
           </div>
+          <small class="form-text text-muted js-text">This requires JavaScript</small>
         </div>
     <% else %>
       <div class="row justify-content-end">

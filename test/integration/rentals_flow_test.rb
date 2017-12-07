@@ -58,8 +58,8 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_template 'rentals/show'
     assert_not flash.blank?
     assert_select 'span', 'Available'
-    assert_select 'span.rental_start_location_label', 'Los Angeles'
-    assert_select 'span.rental_end_location_label', 'San Francisco'
+    assert_select 'span.rental-start', 'Los Angeles'
+    assert_select 'span.rental-end', 'San Francisco'
     assert_select 'h3', '$184.77'
     assert_select 'p.list-group-item', 'Nov. 28th, 2018 from 12:45 AM until 1:52 AM'
     assert_select 'p.list-group-item', 'Terms: nonsmoking, happiness'

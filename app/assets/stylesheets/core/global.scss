@@ -351,6 +351,10 @@ a.disabled {
   border: 2px solid black;
 }
 
+.page-jump {
+  min-width: 60%;
+}
+
 .account-access-link {
   display: block;
   margin-top: $spacer * 0.5;

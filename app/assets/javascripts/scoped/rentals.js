@@ -21,8 +21,7 @@ initMaps = function() {
   else {
     $('#map-start').remove();
     $('#start-col').addClass('no-section-content');
-    $('#start-col').append('<div class="text-center font-italic d-flex align-items-center"><div><p>The Start Location could not be found:</p><p>'+
-      $('#start-location').text()+'</p></div></div>');
+    $('#start-col').append('<div class="no-map"><div><p>Looks like the Start Location could not be found...</p></div></div>');
   }
   if(!isNaN(end_location.lat()) && !isNaN(end_location.lng())) {
     new google.maps.Marker({
@@ -36,8 +35,7 @@ initMaps = function() {
   else {
     $('#map-end').remove();
     $('#end-col').addClass('no-section-content');
-    $('#end-col').append('<div class="text-center font-italic d-flex align-items-center"><div><p>The End Location could not be found:</p><p>'+
-      $('#end-location').text()+'</p></div></div>');
+    $('#end-col').append('<div class="no-map"><div><p>Looks like the End Location could not be found...</p></div></div>');
   }
 }
 
@@ -55,6 +53,17 @@ preventFontInjection = function() {
       }
       insertBefore.call(head, newElement, referenceElement);
   };
+}
+
+// Allow the user to search available rentals for a specific tag
+tagSearch = function() {
+  $('.tag-search-btn').click(function() {
+    var link = $('.tag-search-btn a');
+    var input = $('.tag-search');
+    if($.trim(input.val()) != '') {
+      link.attr('href', link.attr('href') + '?tag=' + input.val());
+    }
+  });
 }
 
 // Randomize rental card header gradient angle

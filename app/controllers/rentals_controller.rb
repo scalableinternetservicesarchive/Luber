@@ -13,15 +13,17 @@ class RentalsController < ApplicationController
 
     # Parse and validate any parameters that may have been passed
     if params[:page].present?
-      params[:page], page_valid = validate_page(params[:page], @total_available_rentals, @per_page_count)
+      params[:page], page_valid, message = valid_page?(params[:page], @total_available_rentals, @per_page_count)
       if !page_valid
-        flash.now[:danger] = 'The page you tried to jump to does not exist'
+        flash[:danger] = message
+        redirect_to rentals_path
       end
     end
     if params[:tag].present?
-      params[:tag], tag_valid = validate_tag(params[:tag])
+      params[:tag], tag_valid, message = valid_tag?(params[:tag])
       if !tag_valid
-        flash.now[:danger] = 'The tag you tried to search for contained invalid characters'
+        flash[:danger] = message
+        redirect_to rentals_path
       end
     end
 
@@ -29,12 +31,29 @@ class RentalsController < ApplicationController
     @available_rentals = Rental.none
     if params[:tag].present? && tag_valid
       tagged_cars = Car.tagged_with(params[:tag])
-      tagged_cars.each do |car|
-        @available_rentals = @available_rentals.or(Rental.where(['status = ? AND car_id = ?', 0, car.id]))
+      if tagged_cars.nil?
+        @total_available_rentals = 0
+      else
+        query_str = 'status = ? AND ('
+        query_arr = []
+        if tagged_cars.length == 1
+          query_str << 'car_id = ?)'
+        else
+          tagged_cars.each do |car|
+            query_str << 'car_id = ? OR '
+          end
+          query_str = query_str[0...query_str.length-4] << ')'
+        end
+        query_arr << query_str
+        query_arr << 0
+        tagged_cars.each do |car|
+          query_arr << car.id
+        end
+        @available_rentals = Rental.where(query_arr).order(created_at: :desc).paginate(page: params[:page], per_page: @per_page_count)
+        @total_available_rentals = Rental.where(query_arr).count
       end
-
     else
-      @available_rentals = Rental.where(status: 0).order(created_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+      @available_rentals = Rental.where(status: 0).order(created_at: :desc).paginate(page: params[:page], per_page: @per_page_count)
     end
 
     # Query for the associated rental post data
@@ -324,5 +343,27 @@ class RentalsController < ApplicationController
         @rental.update_column(:status, 2)
       end
     end
+  end
+
+  def valid_tag?(tag)
+    valid = false
+    tag = tag.strip.gsub(/[\s-]+/, '-')
+    
+    if tag.match(/\A^[a-z0-9-]+$\z/i)
+      if tag.length < 3
+        message = 'The tag you tried to search for was too short'
+      elsif tag.length > 32
+        message = 'The tag you tried to search for was too long'
+      else
+        valid = true
+      end
+    else
+      message = 'The tag you tried to search for contained invalid characters'
+    end
+    if !valid
+      tag = nil
+    end
+
+    return tag, valid, message
   end
 end

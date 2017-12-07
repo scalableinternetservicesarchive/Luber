@@ -99,14 +99,6 @@ class CarsController < ApplicationController
     end
   end
 
-  def tag_search
-    if params[:tag]
-      @cars = Car.tagged_with(params[:tag])
-    else
-      @cars = Car.all
-    end
-  end
-
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.

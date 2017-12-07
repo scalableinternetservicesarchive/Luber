@@ -23,8 +23,12 @@ pageJump = function() {
   $('.page-jump-btn').click(function() {
     var link = $('.page-jump-btn a');
     var input = $('.page-jump');
-    if(input.val() != '') {
+    var re = /^[0-9]+$/;
+    if(re.test(input.val())) {
       link.attr('href', link.attr('href') + '?page=' + input.val());
+    }
+    else {
+      link.attr('href', link.attr('href') + '?page=*');
     }
   });
 }

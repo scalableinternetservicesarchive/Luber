@@ -53,7 +53,7 @@
 </section>
 <section class="container mt-5">
   <div class="row grow-cols">
-    <div class="col-6" id="start-col">
+    <div class="col-6">
       <h2>Start Location</h2>
       <hr>
       <div class="card mb-4">
@@ -63,11 +63,8 @@
           <% end %>
         </div>
       </div>
-      <p id="start-latitude" hidden><%= @rental.start_latitude %></p>
-      <p id="start-longitude" hidden><%= @rental.start_longitude %></p>
-      <div id="map-start"></div>
     </div>
-    <div class="col-6" id="end-col">
+    <div class="col-6">
       <h2>End Location</h2>
       <hr>
       <div class="card mb-4">
@@ -77,6 +74,15 @@
           <% end %>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row grow-cols">
+    <div class="col-6" id="start-col">
+      <p id="start-latitude" hidden><%= @rental.start_latitude %></p>
+      <p id="start-longitude" hidden><%= @rental.start_longitude %></p>
+      <div id="map-start"></div>
+    </div>
+    <div class="col-6" id="end-col">
       <p id="end-latitude" hidden><%= @rental.end_latitude %></p>
       <p id="end-longitude" hidden><%= @rental.end_longitude %></p>
       <div id="map-end"></div>

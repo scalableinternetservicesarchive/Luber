@@ -1,15 +1,18 @@
 <% provide(:title, 'Available Rentals') %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
-<% params[:page] ? page = params[:page] : page = 1 %>
+<% params[:page].present? ? page = params[:page] : page = 1 %>
 
 <section class="container-fluid banner">
   <div class="container text-center">
     <h1>Available Rentals</h1>
-    <p><%= @total_available_rentals %> currently available</p>
+    <p><%= @total_available_rentals %> currently available<%#
+    %><% if params[:tag].present? %><%#
+      %><%= " with the tag \"#{params[:tag]}\"" %><%#
+    %><% end %></p>
   </div>
 </section>
 <section class="container mt-5">
-  <% if @available_rentals.length > 0 %>
+  <% if @available_rentals.present? %>
     <div class="row mb-5">
       <div class="col">
         <div class="input-group">

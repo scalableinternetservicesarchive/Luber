@@ -142,7 +142,7 @@ class UsersController < ApplicationController
     end
 
     @visible_renter_rentals_count = Rental.where(['renter_id = ? AND renter_visible = ?', @user.id, true]).count
-    @rentals = Rental.where(['user_id = ? OR (renter_id = ? AND renter_visible = ?)', @user.id, @user.id, true]).order(created_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+    @rentals = Rental.where(['user_id = ? OR (renter_id = ? AND renter_visible = ?)', @user.id, @user.id, true]).order(created_at: :desc).paginate(page: params[:page], per_page: @per_page_count)
     @owners, @renters, @cars = [], [], []
     @rentals.each do |rental|
       @owners << User.find(rental.user_id)
@@ -163,7 +163,7 @@ class UsersController < ApplicationController
       end
     end
 
-    @cars = Car.where(user_id: @user.id).order(created_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+    @cars = Car.where(user_id: @user.id).order(created_at: :desc).paginate(page: params[:page], per_page: @per_page_count)
     @owners = []
     @cars.each do |car|
       @owners << User.find(car.user_id)
@@ -182,7 +182,7 @@ class UsersController < ApplicationController
       end
     end
 
-    @page_logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate( page: params[:page], per_page: @per_page_count )
+    @page_logs = Log.where(user_id: @user.id).order(updated_at: :desc).paginate(page: params[:page], per_page: @per_page_count)
     @day_logs = @page_logs.group_by_day(reverse: true){ |l| l.updated_at }
   end
 

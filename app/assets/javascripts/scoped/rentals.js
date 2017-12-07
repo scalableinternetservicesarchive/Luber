@@ -60,8 +60,12 @@ tagSearch = function() {
   $('.tag-search-btn').click(function() {
     var link = $('.tag-search-btn a');
     var input = $('.tag-search');
-    if($.trim(input.val()) != '') {
+    var re = /^[a-zA-Z0-9\s\-]+$/;
+    if(re.test(input.val())) {
       link.attr('href', link.attr('href') + '?tag=' + input.val());
+    }
+    else {
+      link.attr('href', link.attr('href') + '?tag=*');
     }
   });
 }

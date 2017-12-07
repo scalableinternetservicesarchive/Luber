@@ -4,38 +4,25 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def validate_page(page, total, per)
+  def valid_page?(page, total, per)
     valid = false
-    page = page.to_s
     last = (total / per.to_f).ceil
     
-    if page.match?(/\A\d+\z/)
+    if page.match(/\A\d+\z/)
       page = page.to_i
-      if page < 1
-        page = 1
-      elsif page > last
-        page = last
+      if page < 1 || page > last
+        message = 'The page you tried to jump to does not exist'
       else
         valid = true
       end
     else
-      page = 1
+      message = 'The page you tried to jump to contained invalid characters'
+    end
+    if !valid
+      page = nil
     end
 
-    return page, valid
-  end
-
-  def validate_tag(tag)
-    valid = false
-    tag = tag.to_s
-    
-    if tag.match?(/\A^[a-z0-9-]+$\z/i) && tag.length > 2 && tag.length < 32
-      valid = true
-    else
-      tag = 'invalid'
-    end
-
-    return tag, valid
+    return page, valid, message
   end
 
   # Confirms the user is a guest

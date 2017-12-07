@@ -86,4 +86,11 @@ Rails.application.configure do
 
   # Include helper files
   config.action_controller.include_all_helpers = true
+
+  # Heroku Asset issues
+  # https://stackoverflow.com/questions/16271696/cant-get-css-working-on-heroku-using-rails-4-with-bootstrap-sass-gem
+  config.cache_classes = true
+  config.serve_static_files = true
+  config.assets.compile = true
+  config.assets.digest = true
 end

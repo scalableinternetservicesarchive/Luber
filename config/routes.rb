@@ -35,6 +35,4 @@ Rails.application.routes.draw do
   end
 
   resources :cars, except: [:index, :show]
-  get 'tags/:tag', to: 'cars#tag_search', as: 'tag'
-
 end

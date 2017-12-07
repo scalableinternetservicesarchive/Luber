@@ -1,6 +1,8 @@
 class Rental < ApplicationRecord
   before_save :geocode_endpoints
   before_save { self.price << '0' if APPEND_PRICE.match?(self.price) }
+  before_save { self.start_time = Rails.application.config.tz.local_to_utc(self.start_time) }
+  before_save { self.end_time = Rails.application.config.tz.local_to_utc(self.end_time) }
   before_destroy :handle_owner_rental
   after_destroy { 
     if self.renter_id.present?
@@ -14,9 +16,9 @@ class Rental < ApplicationRecord
 
   attr_accessor :skip_in_seed
   
-  VALID_LOCATION = /\A[a-z0-9.,' -]+\z/i
+  VALID_LOCATION = /\A[a-z0-9#\(\).,' -]+\z/i
   VALID_PRICE = /\A\d+(\.\d(\d)?)?\z/
-  VALID_TERMS = /\A[\w~!@#$%&*()+=\[\]\\|:'"\/?., -]*\z/i
+  VALID_TERMS = /\A[\w\r\n`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|:'",<\.>\/\? ]*\z/i
   APPEND_PRICE = /\A\d+\.\d\z/
 
   validates :user_id, presence: true

@@ -88,6 +88,8 @@ git push origin my-feature-branch
 
 ## How to run load-tests with Tsung
 
+*(Note: Please use the `justin-tsung` branch for load-testing)*
+
 1. [Quickstart](#quickstart)
 2. [Launch your app on Elastic Beanstalk](#launch-your-app-on-elastic-beanstalk)
     1. [SSH into AWS EC2](#ssh-into-aws-ec2)

@@ -92,8 +92,8 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_template 'rentals/show'
     assert_not flash.blank?
     assert_select 'span', 'Available'
-    assert_select 'span.rental_start_location_label', 'Minneapolis'
-    assert_select 'span.rental_end_location_label', 'St. Paul'
+    assert_select 'span.rental-start', 'Minneapolis'
+    assert_select 'span.rental-end', 'St. Paul'
     assert_select 'h3', '$0.01'
     assert_select 'p.list-group-item', 'From May 11th, 3024 at 11:59 AM until Dec. 30th, 3024 at 11:59 PM'
     assert_select 'p.list-group-item', 'Terms: chronic, depression'

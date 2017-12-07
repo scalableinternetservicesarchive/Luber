@@ -154,7 +154,7 @@ case Rails.env
     direct_sql_inject = false
   when 'production'
     puts 'IN REMOTE MODE (production)'
-    how_many = {user: 1000, cars_per_user: 2, rentals_per_car: 5}
+    how_many = {user: 500, cars_per_user: 2, rentals_per_car: 5}
     col_name_delim = "" # postgres
     val_delim = "'"  # postgres
     direct_sql_inject = true
@@ -289,18 +289,23 @@ user_ids = (1..how_many[:user]).to_a
 user_ids.each do |i|  # don't use .times, then id will be 0, bad.
 
   d = { 
-      id:           i,
-      first_name:   "Bob",
-      last_name:    "Jones",
-      city:         "Goleta",
-      state:        "CA",
-      username:     "skater4#{i}",
-      email:        "user#{i}@boo.com",
-      password:     PASSWORD,
-      admin:        false,
-      signed_in_at: NOW_DT,
-      created_at:   NOW_DT,
-      updated_at:   NOW_DT
+      id:                   i,
+      first_name:           "Bob",
+      last_name:            "Jones",
+      city:                 "Goleta",
+      state:                "CA",
+      about:                terms = all_terms.sample(1)[0],
+      meetup:               "Hi, my name is Bob and I'm an auto-generated user. Don't mind me!",
+      username:             "skater4#{i}",
+      email:                "user#{i}@boo.com",
+      password:             PASSWORD,
+      admin:                false,
+      cars_count:           0,
+      rentals_count:        0,
+      renter_rentals_count: 0,
+      signed_in_at:         NOW_DT,
+      created_at:           NOW_DT,
+      updated_at:           NOW_DT
       }
 
   if i==1  # Make admin

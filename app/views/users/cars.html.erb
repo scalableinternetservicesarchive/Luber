@@ -20,11 +20,12 @@
       <div class="row justify-content-between">
         <div class="col-auto">
           <div class="input-group">
-            <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
-            <span class="input-group-btn">
-              <%= link_to 'Go to Page', cars_user_path, class: 'btn btn-base', role: 'button' %>
+            <input class="form-control page-jump", type="number" min="1", max="<%= @cars.total_pages %>", placeholder="Page #" aria-label="Page #">
+            <span class="input-group-btn page-jump-btn">
+              <%= link_to 'Go to Page', cars_user_path, class: 'btn btn-base disabled', role: 'button' %>
             </span>
           </div>
+          <small class="form-text text-muted js-text">This requires JavaScript</small>
         </div>
     <% else %>
       <div class="row justify-content-end">

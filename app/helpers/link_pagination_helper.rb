@@ -1,20 +1,5 @@
 module LinkPaginationHelper
   class LinkRenderer < WillPaginate::ActionView::LinkRenderer
-    @first_page_link = nil
-
-    def prepare(collection, options, template)
-      @first_page_link = options[:first_page]
-      super
-    end
-
-    def link(text, target, attributes = {})
-      if target.is_a?(Integer)
-        attributes[:rel] = rel_value(target)
-        target == 1 ? target = @first_page_link : target = url(target)
-      end
-      attributes[:href] = target
-      tag(:a, text, attributes)
-    end
 
     protected
       def html_container(html)

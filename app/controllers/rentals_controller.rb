@@ -7,10 +7,56 @@ class RentalsController < ApplicationController
   # GET /rentals
   # GET /rentals.json
   def index
+    # Get the total number of rentals and set the number of rentals per page
     @total_available_rentals = Rental.where(status: 0).count
     @per_page_count = 8
-    params[:page] = validate_page(params[:page], @total_available_rentals, @per_page_count)
-    @available_rentals = Rental.where(status: 0).paginate( page: params[:page], per_page: @per_page_count )
+
+    # Parse and validate any parameters that may have been passed
+    if params[:page].present?
+      params[:page], page_valid, message = valid_page?(params[:page], @total_available_rentals, @per_page_count)
+      if !page_valid
+        flash[:danger] = message
+        redirect_to rentals_path
+      end
+    end
+    if params[:tag].present?
+      params[:tag], tag_valid, message = valid_tag?(params[:tag])
+      if !tag_valid
+        flash[:danger] = message
+        redirect_to rentals_path
+      end
+    end
+
+    # Search for tagged cars if a tag was provided
+    @available_rentals = Rental.none
+    if params[:tag].present? && tag_valid
+      tagged_cars = Car.tagged_with(params[:tag])
+      if tagged_cars.nil?
+        @total_available_rentals = 0
+      else
+        query_str = 'status = ? AND ('
+        query_arr = []
+        if tagged_cars.length == 1
+          query_str << 'car_id = ?)'
+        else
+          tagged_cars.each do |car|
+            query_str << 'car_id = ? OR '
+          end
+          query_str = query_str[0...query_str.length-4] << ')'
+        end
+        query_arr << query_str
+        query_arr << 0
+        tagged_cars.each do |car|
+          query_arr << car.id
+        end
+        @available_rentals = Rental.where(query_arr).order(created_at: :desc).paginate(page: params[:page], per_page: @per_page_count)
+        @total_available_rentals = Rental.where(query_arr).count
+      end
+    else
+      @available_rentals = Rental.where(status: 0).order(created_at: :desc).paginate(page: params[:page], per_page: @per_page_count)
+    end
+
+    # Query for the associated rental post data
     @owners, @cars = [], []
     @available_rentals.each do |rental|
       @owners << User.find(rental.user_id)
@@ -19,7 +65,7 @@ class RentalsController < ApplicationController
   end
 
   # GET /rentals/1
-  # GET /rentals/1.json
+  # GET /rentals/1.jsonrender :new
   def show
     @owner = User.find(@rental.user_id)
     if @rental.renter_id
@@ -297,5 +343,27 @@ class RentalsController < ApplicationController
         @rental.update_column(:status, 2)
       end
     end
+  end
+
+  def valid_tag?(tag)
+    valid = false
+    tag = tag.strip.gsub(/[\s-]+/, '-')
+    
+    if tag.match(/\A^[a-z0-9-]+$\z/i)
+      if tag.length < 3
+        message = 'The tag you tried to search for was too short'
+      elsif tag.length > 32
+        message = 'The tag you tried to search for was too long'
+      else
+        valid = true
+      end
+    else
+      message = 'The tag you tried to search for contained invalid characters'
+    end
+    if !valid
+      tag = nil
+    end
+
+    return tag, valid, message
   end
 end

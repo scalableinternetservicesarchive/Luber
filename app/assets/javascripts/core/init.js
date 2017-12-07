@@ -2,11 +2,13 @@ init = function() {
   // Persistant functions
   alerts();
   pageJump();
+  enableButtons();
 
   // Scoped functions
   makeCaretsDynamic();
   initMaps();
   preventFontInjection();
+  tagSearch();
   rentalHeaderColor();
 };
 

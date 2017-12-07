@@ -78,9 +78,9 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to rental_url(Rental.last)
   end
 
-  test "should show rental (as guest)" do
+  test "should not show rental (as guest)" do
     get rental_url(@rental)
-    assert_response :success
+    assert_redirected_to signin_path
   end
 
   test "should get edit" do
@@ -114,7 +114,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       delete rental_url(@rental)
     end
 
-    assert_redirected_to overview_user_path(@user1.username)
+    assert_redirected_to rentals_user_path(@user1.username)
   end
 
   # :show, :new, :create, :edit, :update, :destroy
@@ -165,8 +165,8 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect when not owner of rentalpost EDIT' do
     sign_in_as(@user2, password: "password")
     get edit_rental_url(@rental)
+    assert_redirected_to overview_user_path(@user2)
     assert_not flash.empty?
-    assert_redirected_to @rental
   end
 
   test 'should redirect when not owner of rentalpost UPDATE' do
@@ -183,15 +183,15 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
         price: @rental.price, 
         status: @rental.status, 
         terms: @rental.terms } }
+    assert_redirected_to overview_user_path(@user2)
     assert_not flash.empty?
-    assert_redirected_to @rental
   end
 
   test 'should redirect when not owner of rentalpost DELETE' do
     sign_in_as(@user2, password: "password")
     delete rental_url(@rental)
+    assert_redirected_to overview_user_path(@user2)
     assert_not flash.empty?
-    assert_redirected_to @rental
   end
 
 end

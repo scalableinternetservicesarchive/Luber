@@ -61,7 +61,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select 'span.rental_start_location_label', 'Los Angeles'
     assert_select 'span.rental_end_location_label', 'San Francisco'
     assert_select 'h3', '$184.77'
-    assert_select 'p.list-group-item', 'From Nov 28th, 2018 at 12:45 AM until Nov 28th, 2018 at 1:52 AM'
+    assert_select 'p.list-group-item', 'Nov. 28th, 2018 from 12:45 AM until 1:52 AM'
     assert_select 'p.list-group-item', 'Terms: nonsmoking, happiness'
     assert_select 'p > a', 'RickSanchez'
     assert_select 'p.list-group-item', 'Ford Mustang'
@@ -95,7 +95,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select 'span.rental_start_location_label', 'Minneapolis'
     assert_select 'span.rental_end_location_label', 'St. Paul'
     assert_select 'h3', '$0.01'
-    assert_select 'p.list-group-item', 'From May 11th, 3024 at 11:59 AM until Dec 30th, 3024 at 11:59 PM'
+    assert_select 'p.list-group-item', 'From May 11th, 3024 at 11:59 AM until Dec. 30th, 3024 at 11:59 PM'
     assert_select 'p.list-group-item', 'Terms: chronic, depression'
     assert_select 'p > a', 'RickSanchez'
     assert_select 'p.list-group-item', 'Ford Mustang'
@@ -112,7 +112,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
 
     # delete the rental
     delete rental_url(myrental)
-    assert_redirected_to overview_user_path(@user)
+    assert_redirected_to rentals_user_path(@user)
     assert_not flash.blank?
   end
 

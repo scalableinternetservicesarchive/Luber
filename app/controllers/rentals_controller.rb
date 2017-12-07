@@ -231,7 +231,7 @@ class RentalsController < ApplicationController
     message = 'This action is not permitted for this rental post since you are not the owner'
     case action_name
     when 'show'
-      unless current_user?(@user) || current_user?(renter)
+      unless (current_user?(@user) || current_user?(renter)) || @rental.status == 0
         permitted = false
         message = 'You cannot view this rental post since you are not the owner or renter'
       end

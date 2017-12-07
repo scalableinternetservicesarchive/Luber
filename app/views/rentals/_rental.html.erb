@@ -29,7 +29,7 @@
     <div class="list-group">
       <p class="list-group-item">
         <%= icon('clock-o', class: 'fa-fw') %><%#
-        %>From <%= smart_time(rental.start_time)[3..-1] %> until <%= smart_time(rental.end_time)[3..-1] %><%#
+        %>From <%= smart_time(rental.start_time) %> until <%= smart_time(rental.end_time) %><%#
       %></p>
       <p class="list-group-item">
         <%= icon('gavel', class: 'fa-fw') %><%#

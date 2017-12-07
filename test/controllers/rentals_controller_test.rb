@@ -7,14 +7,14 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       email:"michael@example.com", 
       password: "password", 
       password_confirmation: "password", 
-      signed_in_at: DateTime.now )
+      signed_in_at: DateTime.current )
     
     @user2 = User.create!(
       username: "Justin", 
       email:"justin@example.com", 
       password: "password", 
       password_confirmation: "password",
-      signed_in_at: DateTime.now )
+      signed_in_at: DateTime.current )
 
     @car = Car.create!(
       user_id: @user1.id, 

@@ -17,10 +17,10 @@ Rails.application.routes.draw do
       patch 'promote'
     end
   end
-  get 'signup', to: 'users#new'
-  post 'signup', to: 'users#create'
   delete 'users/:username/cars', to: 'users#destroy_all_cars'
   delete 'users/:username/rentals', to: 'users#destroy_all_rentals'
+  get 'signup', to: 'users#new'
+  post 'signup', to: 'users#create'
 
   get 'signin', to: 'sessions#new'
   post 'signin', to: 'sessions#create'

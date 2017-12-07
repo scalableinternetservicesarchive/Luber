@@ -66,14 +66,14 @@ class User < ApplicationRecord
     if self.rentals_count == 0
       return true
     else
-      in_progress_rentals = Rental.where(['user_id = ? AND status = ?', self.id, 2])
-      if in_progress_rentals.length == 0
+      in_progress_rentals = Rental.where(['user_id = ? AND status = ?', self.id, 2]).count
+      if in_progress_rentals == 0
         return true
       else
-        err_str = "You are the owner of #{in_progress_rentals.length} "
-        in_progress_rentals.length == 1 ? err_str += 'rental' : err_str += 'rentals'
+        err_str = "You are the owner of #{in_progress_rentals} "
+        in_progress_rentals == 1 ? err_str += 'rental' : err_str += 'rentals'
         err_str += ' currently in progress. You must wait for '
-        in_progress_rentals.length == 1 ? err_str += 'it' : err_str += 'them'
+        in_progress_rentals == 1 ? err_str += 'it' : err_str += 'them'
         err_str += ' to complete before you can delete your account'
         errors.add :base, err_str
         throw(:abort)

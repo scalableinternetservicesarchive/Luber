@@ -10,7 +10,7 @@ alerts = function() {
     else if($('.alert-danger').length > 0) {
       wrapper.css('background-color', '#f8d7da');
       if($('.alert-message').text().length > 50) {
-        var duration = 7000;
+        var duration = 8000;
       }
     }
     

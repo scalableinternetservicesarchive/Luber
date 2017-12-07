@@ -35,9 +35,9 @@ class Rental < ApplicationRecord
   after_validation :geocode, if: ->(obj){ obj.end_location.present? }
 
   def times_cannot_be_in_the_past
-    if self.start_time < DateTime.now && self.status > 1
+    if self.start_time < DateTime.current && self.status > 1
       errors.add(:start_time, 'cannot be in the past')
-    elsif self.end_time < DateTime.now && self.status > 2
+    elsif self.end_time < DateTime.current && self.status > 2
       errors.add(:end_time, 'cannot be in the past')
     end
   end
@@ -139,14 +139,14 @@ class Rental < ApplicationRecord
   end
 
   def handle_associated_rentals
-    rentals = Rental.where(car_id: self.id)
-    if rentals.length == 0
+    rentals = Rental.where(car_id: self.id).count
+    if rentals == 0
       return true
     else
-      err_str = "This car is used in #{rentals.length} other "
-      rentals.length == 1 ? err_str += 'rental' : err_str += 'rentals'
+      err_str = "This car is used in #{rentals} other "
+      rentals == 1 ? err_str += 'rental' : err_str += 'rentals'
       err_str += ' . You must first delete '
-      rentals.length == 1 ? err_str += 'it' : err_str += 'them'
+      rentals == 1 ? err_str += 'it' : err_str += 'them'
       err_str += ' before you can delete this car'
       errors.add :base, err_str
       throw(:abort)

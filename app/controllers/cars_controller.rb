@@ -1,7 +1,7 @@
 class CarsController < ApplicationController
   before_action :signed_in_user
+  before_action :correct_user, except: [:new, :create]
   before_action :set_car, only: [:edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /cars/new
   def new
@@ -119,21 +119,13 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
   end
 
-  # Before filters for authorization
-  def signed_in_user
-    unless signed_in?
-      flash[:danger] = 'Please sign in before accessing this page'
-      redirect_to signin_url
-    end
-  end
-
-  # confirms the correct user
+  # Confirms the correct user
   def correct_user
-    @car = Car.find(params[:id])
+    set_car
     @user = User.find(@car.user.id)
     unless current_user?(@user)
-      flash[:danger] = "You are not the owner of this car! GTFO"
-      redirect_to(@car)
+      flash[:danger] = 'This action is not permitted for this car since you are not the owner'
+      redirect_to overview_user_path(current_user)
     end
   end
 end

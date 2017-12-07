@@ -1,7 +1,7 @@
 class RentalsController < ApplicationController
   before_action :signed_in_user
+  before_action :correct_user, except: [:index, :new, :create]
   before_action :set_rental, only: [:rent, :cancel, :remove]
-  before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_progress, only: [:show]
 
   # GET /rentals
@@ -220,29 +220,65 @@ class RentalsController < ApplicationController
     @rental = Rental.find(params[:id])
   end
 
-  # Before filters for authorization
-  def signed_in_user
-    unless signed_in?
-      flash[:danger] = 'Please sign in before accessing this page'
-      redirect_to signin_url
-    end
-  end
-
   # Confirms the correct user
   def correct_user
-    @rental = Rental.find(params[:id])
+    set_rental
     @user = User.find(@rental.user_id)
-    unless current_user?(@user)
-      flash[:danger] = 'You are not the owner of this rental post'
-      redirect_to @rental
+    @rental.renter_id.present? ? renter = User.find(@rental.renter_id) : renter = nil
+
+    # Handle conditional access to routes
+    permitted = true
+    message = 'This action is not permitted for this rental post since you are not the owner'
+    case action_name
+    when 'show'
+      unless current_user?(@user) || current_user?(renter)
+        permitted = false
+        message = 'You cannot view this rental post since you are not the owner or renter'
+      end
+    when 'rent'
+      unless @rental.status == 0 && !current_user?(@user)
+        permitted = false
+        if current_user?(@user)
+          message = 'You cannot rent your own rental post'
+        else
+          message = 'You cannot rent this rental post since it has already been reserved by another user'
+        end
+      end
+    when 'cancel'
+      unless (@rental.status < 2 && current_user?(@user)) || (@rental.status == 1 && current_user?(renter))
+        permitted = false
+        if current_user?(@user) || current_user?(renter)
+          message = 'You cannot cancel this rental post at this stage in the process'
+        else
+          message = 'You cannot cancel this rental post since you are not the owner or renter'
+        end
+      end
+    when 'remove'
+      unless @rental.status > 2 && current_user?(renter)
+        permitted = false
+        if current_user?(renter)
+          message = 'You cannot remove this rental post at this stage in the process'
+        else
+          message = 'You cannot remove this rental post since you are not the renter'
+        end
+      end
+    else
+      unless current_user?(@user)
+        permitted = false
+      end
+    end
+
+    if !permitted
+      flash[:danger] = message
+      redirect_to overview_user_path(current_user)
     end
   end
 
   # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
   def set_progress
-    @rental = Rental.find(params[:id])
+    set_rental
     if @rental.status == 1 || @rental.status == 2
-      if @rental.end_time < DateTime.now
+      if @rental.end_time < DateTime.current
         @rental.update_column(:status, 3)
 
         car = Car.find(@rental.car_id)
@@ -257,7 +293,7 @@ class RentalsController < ApplicationController
           action: 3, 
           content: 'Completed renting a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(@rental.user_id).username+')')
         renter_log.touch(time: @rental.end_time)
-      elsif @rental.status == 1 && @rental.start_time < DateTime.now
+      elsif @rental.status == 1 && @rental.start_time < DateTime.current
         @rental.update_column(:status, 2)
       end
     end

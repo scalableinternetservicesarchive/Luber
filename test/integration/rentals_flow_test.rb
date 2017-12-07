@@ -7,14 +7,14 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
       email: 'rick@sanchez.com',
       password: 'password',
       password_confirmation: 'password',
-      signed_in_at: DateTime.now)
+      signed_in_at: DateTime.current)
 
     @user2 = User.create!(
       username: 'MortySanchez',
       email: 'morty@sanchez.com',
       password: 'password',
       password_confirmation: 'password',
-      signed_in_at: DateTime.now)
+      signed_in_at: DateTime.current)
 
     @car = Car.create!(
       user_id: @user.id,

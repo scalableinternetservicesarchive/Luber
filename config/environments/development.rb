@@ -19,7 +19,6 @@ Rails.application.configure do
   # *** ArgumentError Exception: wrong number of arguments (given 1, expected 0)
   # config.middleware.use ActionDispatch::Flash
 
-
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
@@ -47,7 +46,6 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
-
   config.action_mailer.perform_caching = false
 
   # Print deprecation notices to the Rails logger.
@@ -73,6 +71,4 @@ Rails.application.configure do
 
   # Include helper files
   config.action_controller.include_all_helpers = true
-
-  config.action_controller.perform_caching = true
 end

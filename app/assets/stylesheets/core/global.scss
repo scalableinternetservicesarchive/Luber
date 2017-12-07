@@ -159,11 +159,13 @@ footer {
 }
 
 .debug-wrapper {
-  padding: $spacer;
+  margin-top: ($spacer * 3);
+  padding: ($spacer * 0.5);
   color: black;
   background-color: $debug;
 
   h4 {
+    padding-top: $spacer;
     padding-bottom: $spacer;
     text-decoration: underline; 
   }

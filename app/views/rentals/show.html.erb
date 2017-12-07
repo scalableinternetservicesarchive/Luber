@@ -4,9 +4,9 @@
 <section class="container-fluid banner">
   <div class="container text-center">
     <h1>Rental Post #<%= params[:id] %></h1>
-    <p class="mb-1">Created <%= smart_time(@rental.created_at) %></p>
+    <p class="mb-1">Created <%= smart_datetime(@rental.created_at, true) %></p>
     <% if @rental.updated_at > @rental.created_at %>
-      <p class="font-italic mb-0">Last updated <%= smart_time(@rental.updated_at) %></p>
+      <p class="font-italic mb-0">Last updated <%= smart_datetime(@rental.updated_at, true) %></p>
     <% end %>
   </div>
 </section>

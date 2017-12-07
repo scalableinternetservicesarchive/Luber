@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
-  before_action :signed_in_user
+  before_action :guest_user, only: [:new, :create]
+  before_action :signed_in_user, except: [:new, :create]
+  before_action :correct_user, except: [:new, :create, :show, :overview]
   before_action :set_user, only: [:destroy, :cars, :history, :settings, :promote, :destroy_all_cars, :destroy_all_rentals]
-  before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_progress, only: [:overview, :rentals]
 
   def show
@@ -163,7 +164,7 @@ class UsersController < ApplicationController
 
   def settings
   end
-
+#%a, %d %b %YThu, 07 Dec 2017
   # PATCH /users/1/promote
   def promote
     @user.update_column(:admin, true)
@@ -229,9 +230,9 @@ class UsersController < ApplicationController
       flash[:success] = 'All rental posts as owner successfully deleted'
     else
       err_str = "You are the owner of #{in_progress_count} "
-      in_progress_count.length == 1 ? err_str += 'rental' : err_str += 'rentals'
+      in_progress_count == 1 ? err_str += 'rental' : err_str += 'rentals'
       err_str += ' currently in progress. You must wait for '
-      in_progress_count.length == 1 ? err_str += 'it' : err_str += 'them'
+      in_progress_count == 1 ? err_str += 'it' : err_str += 'them'
       err_str += ' to complete before you can delete them (the rest have been deleted)'
 
       flash[:danger] = err_str
@@ -254,28 +255,23 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username])
   end
 
-  # Before filters for authorization
-  def signed_in_user
-    unless signed_in?
-      flash[:danger] = 'Please sign in before accessing this page'
-      redirect_to signin_url
-    end
-  end
-
   # Confirms the correct user
   def correct_user
-    @user = User.find_by(username: params[:username])
-    redirect_to(root_path) unless current_user?(@user)
+    set_user
+    unless current_user?(@user)
+      flash[:danger] = 'This action is not permitted for this account since you are not the owner'
+      redirect_to overview_user_path(current_user)
+    end
   end
 
   # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
   def set_progress
-    @user = User.find_by(username: params[:username])
+    set_user
     @rentals = Rental.where([
       '(renter_id = ? OR user_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
-      @user.id, @user.id, 1, DateTime.now, 2, DateTime.now])
+      @user.id, @user.id, 1, DateTime.current, 2, DateTime.current])
     @rentals.each do |rental|
-      if rental.end_time < DateTime.now
+      if rental.end_time < DateTime.current
         rental.update_column(:status, 3)
 
         car = Car.find(rental.car_id)

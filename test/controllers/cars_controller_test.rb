@@ -119,7 +119,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   test "should redirect if non-owner tries to edit car" do
     sign_in_as(@badboi, password: "password")
     get edit_car_url(@car)
-    assert_redirected_to car_url(@car)
+    assert_redirected_to overview_user_path(@badboi)
     assert_not flash.empty?
   end
 
@@ -133,14 +133,14 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
         year: @car.year, 
         color: @car.color, 
         license_plate: @car.license_plate } }
-    assert_redirected_to car_url(@car)
+    assert_redirected_to overview_user_path(@badboi)
     assert_not flash.empty?
   end
 
   test "should redirect if non-owner tries to delete car" do
     sign_in_as(@badboi, password: "password")
     delete car_url(@car)
-    assert_redirected_to car_url(@car)
+    assert_redirected_to overview_user_path(@badboi)
     assert_not flash.empty?
   end
 

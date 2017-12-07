@@ -9,7 +9,7 @@
 <section class="container mt-5">
   <% if @page_logs.length > 0 %>
     <% @day_logs.each do |day, logs| %>
-      <h2><%= day.strftime("%A, %b. %-d %Y").to_s %></h2>
+      <h2><%= smart_date(day.to_datetime) %></h2>
       <hr>
       <% logs.each do |log| %>
         <%= render log %>
@@ -26,11 +26,12 @@
       <div class="row justify-content-start">
         <div class="col-auto">
           <div class="input-group">
-            <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
-            <span class="input-group-btn">
-              <%= link_to 'Go to Page', history_user_path, class: 'btn btn-base', role: 'button' %>
+            <input class="form-control page-jump", type="number" min="1", max="<%= @page_logs.total_pages %>", placeholder="Page #" aria-label="Page #">
+            <span class="input-group-btn page-jump-btn">
+              <%= link_to 'Go to Page', history_user_path, class: 'btn btn-base disabled', role: 'button' %>
             </span>
           </div>
+          <small class="form-text text-muted js-text">This requires JavaScript</small>
         </div>
       </div>
     <% end %>

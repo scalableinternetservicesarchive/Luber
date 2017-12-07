@@ -154,7 +154,7 @@ case Rails.env
     direct_sql_inject = false
   when 'production'
     puts 'IN REMOTE MODE (production)'
-    how_many = {user: 100, cars_per_user: 2, rentals_per_car: 5}
+    how_many = {user: 500, cars_per_user: 2, rentals_per_car: 5}
     col_name_delim = "" # postgres
     val_delim = "'"  # postgres
     direct_sql_inject = true
@@ -207,7 +207,7 @@ def dict_to_db_str(d,cols,delim)
   return s
 end
 
-NOW_DT = DateTime.now
+NOW_DT = DateTime.current
 NOW_STR = NOW_DT.strftime("%FT%T")
 
 
@@ -290,23 +290,23 @@ user_ids.each do |i|  # don't use .times, then id will be 0, bad.
 
 
   d = { 
-      id:           i,
-      first_name:   "Bob",
-      last_name:    "Jones",
-      city:         "Goleta",
-      state:        "CA",
-      about:        "I am awesome!",
-      meetup:       "Let us meet downtown!",
-      username:     "skater4#{i}",
-      email:        "user#{i}@boo.com",
-      password:     PASSWORD,
-      admin:        false,
-      cars_count:   0,
-      rentals_count: 0,
+      id:                   i,
+      first_name:           "Bob",
+      last_name:            "Jones",
+      city:                 "Goleta",
+      state:                "CA",
+      about:                all_terms.sample,
+      meetup:               "Hi, my name is Bob and I am an auto-generated user here on Luber!",
+      username:             "skater4#{i}",
+      email:                "user#{i}@boo.com",
+      password:             PASSWORD,
+      admin:                false,
+      cars_count:           0,
+      rentals_count:        0,
       renter_rentals_count: 0,
-      signed_in_at: NOW_DT,
-      created_at:   NOW_DT,
-      updated_at:   NOW_DT
+      signed_in_at:         NOW_DT,
+      created_at:           NOW_DT,
+      updated_at:           NOW_DT
       }
 
   if i==1  # Make admin
@@ -338,7 +338,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{User.count} users" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{User.count} users" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 ###############################################
@@ -394,7 +394,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{Car.count} cars" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Car.count} cars" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 # ["id", "user_id", "renter_id", "renter_visible", "car_id", "status", "start_location", "start_longitude", 
 #  "start_latitude", "end_location", "end_longitude", "end_latitude", "start_time", "end_time", "price", "terms", "created_at", "updated_at"]
@@ -501,7 +501,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{Rental.count} rental posts" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Rental.count} rental posts" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 ###############################################
@@ -518,7 +518,7 @@ end
 
 TAG_IDS = Tag.ids
 
-puts "Created #{Tag.count} tags" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Tag.count} tags" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 ###############################################
@@ -566,7 +566,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{Tagging.count} taggings" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Tagging.count} taggings" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 # re-enable logger

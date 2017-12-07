@@ -1,15 +1,29 @@
 <% provide(:title, 'Available Rentals') %>
 <% provide(:path, @view_renderer.lookup_context.find_template(@virtual_path).identifier.to_s) %>
-<% params[:page] ? page = params[:page] : page = 1 %>
+<% params[:page].present? ? page = params[:page] : page = 1 %>
 
 <section class="container-fluid banner">
   <div class="container text-center">
     <h1>Available Rentals</h1>
-    <p><%= @total_available_rentals %> currently available</p>
+    <p><%= @total_available_rentals %> currently available<%#
+    %><% if params[:tag].present? %><%#
+      %><%= " with the tag \"#{params[:tag]}\"" %><%#
+    %><% end %></p>
   </div>
 </section>
 <section class="container mt-5">
-  <% if @available_rentals.length > 0 %>
+  <% if @available_rentals.present? %>
+    <div class="row mb-5">
+      <div class="col">
+        <div class="input-group">
+          <input class="form-control tag-search", placeholder="sporty, trendy, etc." aria-label="tag search">
+          <span class="input-group-btn tag-search-btn">
+            <%= link_to 'Search Tag', rentals_path, class: 'btn btn-base disabled', role: 'button' %>
+          </span>
+        </div>
+        <small class="form-text text-muted js-text">This requires JavaScript</small>
+      </div>
+    </div>
     <%= render @available_rentals, owners: @owners, cars: @cars %>
     <%= paginate @available_rentals, {
       class: 'mb-5',
@@ -22,11 +36,12 @@
       <div class="row justify-content-between">
         <div class="col-auto">
           <div class="input-group">
-            <input type="number" class="form-control page-jump" placeholder="Page #" aria-label="Page #">
-            <span class="input-group-btn">
-              <%= link_to 'Go to Page', rentals_path, class: 'btn btn-base', role: 'button' %>
+            <input class="form-control page-jump", type="number" min="1", max="<%= @available_rentals.total_pages %>", placeholder="Page #" aria-label="Page #">
+            <span class="input-group-btn page-jump-btn">
+              <%= link_to 'Go to Page', rentals_path, class: 'btn btn-base disabled', role: 'button' %>
             </span>
           </div>
+          <small class="form-text text-muted js-text">This requires JavaScript</small>
         </div>
     <% else %>
       <div class="row justify-content-end">

@@ -10,11 +10,11 @@
     </header>
     <main class="container-fluid" id="<%= controller_name %>-<%= action_name %>">
       <%= yield %>
-    </main>
-    <footer>
       <% if current_admin? %>
         <%= render 'layouts/debug' %>
       <% end %>
+    </main>
+    <footer>
       <%= render 'layouts/footer' %>
     </footer>
 

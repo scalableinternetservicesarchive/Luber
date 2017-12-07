@@ -7,14 +7,14 @@ class RentalTest < ActiveSupport::TestCase
       email:"michael@example.com", 
       password: "password", 
       password_confirmation: "password", 
-      signed_in_at: DateTime.now )
+      signed_in_at: DateTime.current )
     
     @user2 = User.create!(
       username: "Justin", 
       email:"justin@example.com", 
       password: "password", 
       password_confirmation: "password",
-      signed_in_at: DateTime.now )
+      signed_in_at: DateTime.current )
 
     @car = Car.create!(
       user_id: @user1.id, 
@@ -58,14 +58,14 @@ class RentalTest < ActiveSupport::TestCase
   end
 
   test "end date before start date not ok" do
-    t = Time.now
+    t = DateTime.current
     @rental.start_time = t
     @rental.end_time = t-1
     assert @rental.invalid?
   end
 
   test "start date before end date ok" do
-    t = Time.now + 1.hours
+    t = DateTime.current + 1.hours
     @rental.start_time = t
     @rental.end_time = t+1
     assert @rental.valid?

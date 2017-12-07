@@ -4,9 +4,9 @@
 <section class="container-fluid banner">
   <div class="container text-center">
     <h1>Rental Post #<%= params[:id] %></h1>
-    <p class="mb-1">Created <%= smart_time(@rental.created_at) %></p>
+    <p class="mb-1">Created <%= smart_datetime(@rental.created_at, true) %></p>
     <% if @rental.updated_at > @rental.created_at %>
-      <p class="font-italic mb-0">Last updated <%= smart_time(@rental.updated_at) %></p>
+      <p class="font-italic mb-0">Last updated <%= smart_datetime(@rental.updated_at, true) %></p>
     <% end %>
   </div>
 </section>
@@ -29,7 +29,11 @@
           <div class="card">
             <div class="card-body">
               <div class="text-center my-auto">
-                <p class="font-italic">Looks like no one is renting your car yet...</p>
+                <% if @rental.renter_deleted == false %>
+                  <p class="font-italic">Looks like no one is renting your car yet...</p>
+                <% else %>
+                  <p class="font-italic">Looks like the user who was renting your car has deleted their account...</p>
+                <% end %>
               </div>
             </div>
           </div>
@@ -48,17 +52,37 @@
   </div>
 </section>
 <section class="container mt-5">
-  <div class="row">
-    <div class="col" id="start-col">
+  <div class="row grow-cols">
+    <div class="col-6">
       <h2>Start Location</h2>
       <hr>
+      <div class="card mb-4">
+        <div class="card-body">
+          <% @rental.start_location.split(',').each do |s| %>
+            <p><%= s.strip %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <h2>End Location</h2>
+      <hr>
+      <div class="card mb-4">
+        <div class="card-body">
+          <% @rental.end_location.split(',').each do |s| %>
+            <p><%= s.strip %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row grow-cols">
+    <div class="col-6" id="start-col">
       <p id="start-latitude" hidden><%= @rental.start_latitude %></p>
       <p id="start-longitude" hidden><%= @rental.start_longitude %></p>
       <div id="map-start"></div>
     </div>
-    <div class="col" id="end-col">
-      <h2>End Location</h2>
-      <hr>
+    <div class="col-6" id="end-col">
       <p id="end-latitude" hidden><%= @rental.end_latitude %></p>
       <p id="end-longitude" hidden><%= @rental.end_longitude %></p>
       <div id="map-end"></div>

@@ -1,7 +1,7 @@
 class CarsController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_user, except: [:new, :create, :tag_search]
   before_action :set_car, only: [:edit, :update, :destroy]
-  before_action :signed_in_user, only: [:new, :create, :edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /cars/new
   def new
@@ -80,24 +80,22 @@ class CarsController < ApplicationController
   def destroy
     original_car = @car.dup
 
-    @car.destroy
+    if @car.destroy
+      Log.create!(
+        user_id: session[:user_id], 
+        action: 2, 
+        content: 'Deleted the '+original_car.color+', '+original_car.year.to_s+' '+original_car.make+' '+original_car.model+' from My Cars')
 
-    Log.create!(
-      user_id: session[:user_id], 
-      action: 2, 
-      content: 'Deleted the '+original_car.color+', '+original_car.year.to_s+' '+original_car.make+' '+original_car.model+' from My Cars')
-
-    respond_to do |format|
       flash[:success] = 'Car successfully deleted'
-      format.html { redirect_to cars_user_path(session[:user_username]) }
-    end
-  end
-
-  def tag_search
-    if params[:tag]
-      @cars = Car.tagged_with(params[:tag])
     else
-      @cars = Car.all
+      error_messages = ''
+      @car.errors.full_messages.each do |msg|
+        error_messages += msg
+      end
+      flash[:danger] = error_messages
+    end
+    respond_to do |format|
+      format.html {redirect_to cars_user_path(session[:user_username])}
     end
   end
 
@@ -113,21 +111,13 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
   end
 
-  # before filters for authorization
-  def signed_in_user
-    unless signed_in?
-      flash[:danger] = "Please sign in or register before messing with them cars."
-      redirect_to signin_url
-    end
-  end
-
-  # confirms the correct user
+  # Confirms the correct user
   def correct_user
-    @car = Car.find(params[:id])
+    set_car
     @user = User.find(@car.user.id)
     unless current_user?(@user)
-      flash[:danger] = "You are not the owner of this car! GTFO"
-      redirect_to(@car)
+      flash[:danger] = 'This action is not permitted for this car since you are not the owner'
+      redirect_to overview_user_path(current_user)
     end
   end
 end

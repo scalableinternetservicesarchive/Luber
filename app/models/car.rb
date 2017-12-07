@@ -3,9 +3,10 @@ class Car < ApplicationRecord
   before_save { self.model = model[0,1].upcase + model[1,model.length] }
   before_save { self.color = color.titleize }
   before_save { self.license_plate = license_plate.upcase }
+  before_destroy :handle_associated_rentals
 
   belongs_to :user, counter_cache: true
-  has_many :taggings
+  has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 
   VALID_MAKE = /\A[a-z0-9 -]+\z/i
@@ -16,7 +17,7 @@ class Car < ApplicationRecord
   validates :make, presence: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_MAKE }
   validates :model, presence: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_MODEL }
   validates :color, presence: true, length: { minimum: 2, maximum: 16 }, format: { with: VALID_COLOR }
-  validates :year, numericality: { greater_than: 1899, less_than: DateTime.now.year + 3, only_integer: true }
+  validates :year, numericality: { greater_than: 1899, less_than: DateTime.current.year + 3, only_integer: true }
   # http://guides.rubyonrails.org/active_record_validations.html#validates-each
   validates_each :license_plate do |record, attr, value|
     record.errors.add(attr, 'must have length 2 to 7') unless (value.length >= 2) && (value.length <= 7)
@@ -39,9 +40,18 @@ class Car < ApplicationRecord
     Tag.find_by_name!(name).cars
   end
 
-  before_destroy :remove_taggings
-
-  def remove_taggings
-    Tagging.where(car_id: id).destroy_all
+  def handle_associated_rentals
+    rentals = Rental.where(car_id: self.id).count
+    if rentals == 0
+      return true
+    else
+      err_str = "This car is used in #{rentals} other "
+      rentals == 1 ? err_str += 'rental' : err_str += 'rentals'
+      err_str += ' . You must first delete '
+      rentals == 1 ? err_str += 'it' : err_str += 'them'
+      err_str += ' before you can delete this car'
+      errors.add :base, err_str
+      throw(:abort)
+    end
   end
 end

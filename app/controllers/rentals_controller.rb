@@ -1,7 +1,7 @@
 class RentalsController < ApplicationController
+  before_action :signed_in_user
+  before_action :correct_user, except: [:index, :new, :create]
   before_action :set_rental, only: [:rent, :cancel, :remove]
-  before_action :signed_in_user, only: [:new, :create, :edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_progress, only: [:show]
 
   # GET /rentals
@@ -38,11 +38,6 @@ class RentalsController < ApplicationController
     end
   end
 
-  # GET /rentals/1/edit
-  def edit
-    @cars = Car.where(user_id: @rental.user_id)
-  end
-
   # POST /rentals
   # POST /rentals.json
   def create
@@ -65,6 +60,32 @@ class RentalsController < ApplicationController
         format.html {render :new}
         format.json {render json: @rental.errors, status: :unprocessable_entity}
       end
+    end
+  end
+
+  # GET /rentals/1/edit
+  def edit
+    @cars = Car.where(user_id: @rental.user_id)
+  end
+
+  # DELETE /rentals/1
+  # DELETE /rentals/1.json
+  def destroy
+    start_time = @rental.start_time.dup
+    car = Car.find(@rental.car_id)
+
+    @rental.destroy
+
+    Log.create!(
+      user_id: session[:user_id], 
+      action: 2, 
+      content: 'Deleted the post for my '+car.make+' '+car.model+' starting on '+start_time.strftime("%A, %b. %-d")+' from My Rentals')
+
+    flash[:success] = 'Rental post successfully deleted'
+
+    respond_to do |format|
+      format.html {redirect_to rentals_user_path(session[:user_username])}
+      format.json {head :no_content}
     end
   end
 
@@ -117,8 +138,11 @@ class RentalsController < ApplicationController
 
   # PATCH /rentals/1/rent
   def rent
-    @rental.update_attribute(:renter_id, session[:user_id])
-    @rental.update_attribute(:status, 1)
+    @rental.update_column(:renter_id, session[:user_id])
+    @rental.update_column(:status, 1)
+
+    renter = User.find(session[:user_id])
+    renter.update_column(:renter_rentals_count, renter.renter_rentals_count + 1)
 
     car = Car.find(@rental.car_id)
     Log.create!(
@@ -136,7 +160,7 @@ class RentalsController < ApplicationController
 
   # PATCH /rentals/1/cancel
   def cancel
-    @rental.update_attribute(:status, 4)
+    @rental.update_column(:status, 4)
 
     car = Car.find(@rental.car_id)
     if session[:user_id] == @rental.user_id
@@ -172,7 +196,7 @@ class RentalsController < ApplicationController
 
   # PATCH /rentals/1/remove
   def remove
-    @rental.update_attribute(:renter_visible, false)
+    @rental.update_column(:renter_visible, false)
 
     car = Car.find(@rental.car_id)
     Log.create!(
@@ -181,27 +205,7 @@ class RentalsController < ApplicationController
       content: 'Removed the post for my rental of a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from '+User.find(@rental.user_id).username+' from My Rentals')
 
     flash[:success] = 'You have successfully removed this rental'
-    action_name == 'rentals' ? (redirect_to rentals_user_path(session[:user_username])) : (redirect_to overview_user_path(session[:user_username]))
-  end
-
-  # DELETE /rentals/1
-  # DELETE /rentals/1.json
-  def destroy
-    start_time = @rental.start_time.dup
-    car = Car.find(@rental.car_id)
-
-    @rental.destroy
-
-    Log.create!(
-      user_id: session[:user_id], 
-      action: 2, 
-      content: 'Deleted the post for my '+car.make+' '+car.model+' starting on '+start_time.strftime("%A, %b. %-d")+' from My Rentals')
-
-    respond_to do |format|
-      flash[:success] = 'Rental post successfully deleted'
-      format.html {action_name == 'rentals' ? (redirect_to rentals_user_path(session[:user_username])) : (redirect_to overview_user_path(session[:user_username]))}
-      format.json {head :no_content}
-    end
+    redirect_to rentals_user_path(session[:user_username])
   end
 
   private
@@ -216,30 +220,66 @@ class RentalsController < ApplicationController
     @rental = Rental.find(params[:id])
   end
 
-  # Before filters for authorization
-  def signed_in_user
-    unless signed_in?
-      flash[:danger] = 'Please sign in before accessing rental posts'
-      redirect_to signin_url
-    end
-  end
-
   # Confirms the correct user
   def correct_user
-    @rental = Rental.find(params[:id])
+    set_rental
     @user = User.find(@rental.user_id)
-    unless current_user?(@user)
-      flash[:danger] = 'You are not the owner of this rental post'
-      redirect_to @rental
+    @rental.renter_id.present? ? renter = User.find(@rental.renter_id) : renter = nil
+
+    # Handle conditional access to routes
+    permitted = true
+    message = 'This action is not permitted for this rental post since you are not the owner'
+    case action_name
+    when 'show'
+      unless (current_user?(@user) || current_user?(renter)) || @rental.status == 0
+        permitted = false
+        message = 'You cannot view this rental post since you are not the owner or renter'
+      end
+    when 'rent'
+      unless @rental.status == 0 && !current_user?(@user)
+        permitted = false
+        if current_user?(@user)
+          message = 'You cannot rent your own rental post'
+        else
+          message = 'You cannot rent this rental post since it has already been reserved by another user'
+        end
+      end
+    when 'cancel'
+      unless (@rental.status < 2 && current_user?(@user)) || (@rental.status == 1 && current_user?(renter))
+        permitted = false
+        if current_user?(@user) || current_user?(renter)
+          message = 'You cannot cancel this rental post at this stage in the process'
+        else
+          message = 'You cannot cancel this rental post since you are not the owner or renter'
+        end
+      end
+    when 'remove'
+      unless @rental.status > 2 && current_user?(renter)
+        permitted = false
+        if current_user?(renter)
+          message = 'You cannot remove this rental post at this stage in the process'
+        else
+          message = 'You cannot remove this rental post since you are not the renter'
+        end
+      end
+    else
+      unless current_user?(@user)
+        permitted = false
+      end
+    end
+
+    if !permitted
+      flash[:danger] = message
+      redirect_to overview_user_path(current_user)
     end
   end
 
   # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
   def set_progress
-    @rental = Rental.find(params[:id])
+    set_rental
     if @rental.status == 1 || @rental.status == 2
-      if @rental.end_time < DateTime.now
-        @rental.update_attribute(:status, 3)
+      if @rental.end_time < DateTime.current
+        @rental.update_column(:status, 3)
 
         car = Car.find(@rental.car_id)
         owner_log = Log.create!(
@@ -253,8 +293,8 @@ class RentalsController < ApplicationController
           action: 3, 
           content: 'Completed renting a '+car.make+' '+car.model+' starting on '+@rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(@rental.user_id).username+')')
         renter_log.touch(time: @rental.end_time)
-      elsif @rental.status == 1 && @rental.start_time < DateTime.now
-        @rental.update_attribute(:status, 2)
+      elsif @rental.status == 1 && @rental.start_time < DateTime.current
+        @rental.update_column(:status, 2)
       end
     end
   end

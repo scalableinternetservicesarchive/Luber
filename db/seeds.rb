@@ -207,7 +207,7 @@ def dict_to_db_str(d,cols,delim)
   return s
 end
 
-NOW_DT = DateTime.now
+NOW_DT = DateTime.current
 NOW_STR = NOW_DT.strftime("%FT%T")
 
 
@@ -332,7 +332,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{User.count} users" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{User.count} users" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 ###############################################
@@ -388,7 +388,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{Car.count} cars" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Car.count} cars" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 # ["id", "user_id", "renter_id", "renter_visible", "car_id", "status", "start_location", "start_longitude", 
 #  "start_latitude", "end_location", "end_longitude", "end_latitude", "start_time", "end_time", "price", "terms", "created_at", "updated_at"]
@@ -495,7 +495,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{Rental.count} rental posts" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Rental.count} rental posts" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 ###############################################
@@ -512,7 +512,7 @@ end
 
 TAG_IDS = Tag.ids
 
-puts "Created #{Tag.count} tags" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Tag.count} tags" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 ###############################################
@@ -560,7 +560,7 @@ if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
 end
 
-puts "Created #{Tagging.count} taggings" + DateTime.now.strftime(" on %A, %b. %-d at %-l:%M:%S")
+puts "Created #{Tagging.count} taggings" + DateTime.current.strftime(" on %A, %b. %-d at %-l:%M:%S")
 
 
 # re-enable logger

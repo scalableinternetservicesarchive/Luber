@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:destroy, :cars, :history, :settings, :promote]
-  before_action :signed_in_user, only: [:edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :guest_user, only: [:new, :create]
+  before_action :signed_in_user, except: [:new, :create]
+  before_action :correct_user, except: [:new, :create, :show, :overview]
+  before_action :set_user, only: [:destroy, :cars, :history, :settings, :promote, :destroy_all_cars, :destroy_all_rentals]
   before_action :set_progress, only: [:overview, :rentals]
 
   def show
@@ -90,11 +91,20 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-
-    respond_to do |format|
-      flash[:success] = 'Account successfully deleted'
-      format.html { redirect_to root_url }
+    if @user.destroy
+      respond_to do |format|
+        flash[:success] = 'Account successfully deleted'
+        format.html { redirect_to root_url }
+      end
+    else
+      error_messages = ''
+      @user.errors.full_messages.each do |msg|
+        error_messages += msg
+      end
+      respond_to do |format|
+        flash[:danger] = error_messages
+        format.html { redirect_to settings_user_path(session[:user_username]) }
+      end
     end
   end
 
@@ -120,10 +130,11 @@ class UsersController < ApplicationController
   end
 
   def rentals
-    @total_rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).count
+    @total_rentals = Rental.where(['user_id = ? OR (renter_id = ? AND renter_visible = ?)', @user.id, @user.id, true]).count
     @per_page_count = 4
     params[:page] = validate_page(params[:page], @total_rentals, @per_page_count)
-    @rentals = Rental.where(['user_id = ? OR renter_id = ?', @user.id, @user.id]).paginate( page: params[:page], per_page: @per_page_count )
+    @visible_renter_rentals_count = Rental.where(['renter_id = ? AND renter_visible = ?', @user.id, true]).count
+    @rentals = Rental.where(['user_id = ? OR (renter_id = ? AND renter_visible = ?)', @user.id, @user.id, true]).paginate( page: params[:page], per_page: @per_page_count )
     @owners, @renters, @cars = [], [], []
     @rentals.each do |rental|
       @owners << User.find(rental.user_id)
@@ -153,10 +164,10 @@ class UsersController < ApplicationController
 
   def settings
   end
-
+#%a, %d %b %YThu, 07 Dec 2017
   # PATCH /users/1/promote
   def promote
-    @user.update_attribute(:admin, true)
+    @user.update_column(:admin, true)
 
     Log.create!(
       user_id: session[:user_id], 
@@ -171,6 +182,68 @@ class UsersController < ApplicationController
     redirect_to overview_user_path(@user.username)
   end
 
+  def destroy_all_cars
+    car_count = 0
+    Car.where(user_id: @user.id).each do |car|
+      if !car.destroy
+        car_count += 1
+      end
+    end
+    if car_count == 0
+      Log.create!(
+        user_id: session[:user_id], 
+        action: 2, 
+        content: 'Deleted all of the cars from My Cars')
+
+      flash[:success] = 'All cars successfully deleted'
+      respond_to do |format|
+        format.html {redirect_to cars_user_path(@user.username)}
+        format.json {head :no_content}
+      end
+    else
+      err_str = "You own #{car_count} "
+      car_count == 1 ? err_str += 'car that is' : err_str += 'cars that are'
+      err_str += ' used in other rentals. You must first delete these rentals before you can delete '
+      car_count == 1 ? err_str += 'this car' : err_str += 'these cars'
+
+      flash[:danger] = err_str
+      respond_to do |format|
+        format.html {redirect_to rentals_user_path(@user.username)}
+        format.json {head :no_content}
+      end
+    end
+  end
+
+  def destroy_all_rentals
+    in_progress_count = 0
+    Rental.where(user_id: @user.id).each do |rental|
+      if !rental.destroy
+        in_progress_count += 1
+      end
+    end
+    if in_progress_count == 0
+      Log.create!(
+        user_id: session[:user_id], 
+        action: 2, 
+        content: 'Deleted all of the rental posts as owner from My Rentals')
+
+      flash[:success] = 'All rental posts as owner successfully deleted'
+    else
+      err_str = "You are the owner of #{in_progress_count} "
+      in_progress_count == 1 ? err_str += 'rental' : err_str += 'rentals'
+      err_str += ' currently in progress. You must wait for '
+      in_progress_count == 1 ? err_str += 'it' : err_str += 'them'
+      err_str += ' to complete before you can delete them (the rest have been deleted)'
+
+      flash[:danger] = err_str
+    end
+
+    respond_to do |format|
+      format.html {redirect_to rentals_user_path(@user.username)}
+      format.json {head :no_content}
+    end
+  end
+
   private
 
   def user_params
@@ -182,29 +255,24 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username])
   end
 
-  # Before filters for authorization
-  def signed_in_user
-    unless signed_in?
-      flash[:danger] = 'Please sign in first'
-      redirect_to signin_path
-    end
-  end
-
   # Confirms the correct user
   def correct_user
-    @user = User.find_by(username: params[:username])
-    redirect_to(root_path) unless current_user?(@user)
+    set_user
+    unless current_user?(@user)
+      flash[:danger] = 'This action is not permitted for this account since you are not the owner'
+      redirect_to overview_user_path(current_user)
+    end
   end
 
   # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
   def set_progress
-    @user = User.find_by(username: params[:username])
+    set_user
     @rentals = Rental.where([
       '(renter_id = ? OR user_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
-      @user.id, @user.id, 1, DateTime.now, 2, DateTime.now])
+      @user.id, @user.id, 1, DateTime.current, 2, DateTime.current])
     @rentals.each do |rental|
-      if rental.end_time < DateTime.now
-        rental.update_attribute(:status, 3)
+      if rental.end_time < DateTime.current
+        rental.update_column(:status, 3)
 
         car = Car.find(rental.car_id)
         owner_log = Log.create!(
@@ -219,7 +287,7 @@ class UsersController < ApplicationController
           content: 'Completed renting a '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(rental.user_id).username+')')
         renter_log.touch(time: rental.end_time)
       else
-        rental.update_attribute(:status, 2)
+        rental.update_column(:status, 2)
       end
     end
   end

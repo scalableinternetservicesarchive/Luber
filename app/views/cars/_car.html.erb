@@ -38,7 +38,7 @@
             <% end %>
           <%# If you're an admin, you can delete it %>
           <% elsif current_admin? && !owner.admin %>
-            <%= link_to icon('times')+"Admin Delete", rental, method: :delete, data: { confirm: 'Are you sure you want to permanently delete this car using admin powers?' }, class: 'btn btn-outline-danger ml-1', role: 'button' %>
+            <%= link_to icon('times')+"Admin Delete", car, method: :delete, data: { confirm: 'Are you sure you want to permanently delete this car using admin powers?' }, class: 'btn btn-outline-danger ml-1', role: 'button' %>
           <% end %>
         </div>
       </div>

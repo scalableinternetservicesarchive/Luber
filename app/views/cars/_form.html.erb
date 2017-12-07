@@ -18,7 +18,7 @@
     <div class="col">
       <%= f.label :year %>
       <div class="form-group">
-        <%= f.select :year, (1900..DateTime.now.year + 2).to_a.reverse, {include_blank: 'Select Year'}, class: 'form-control time-select' %>
+        <%= f.select :year, (1900..DateTime.current.year + 2).to_a.reverse, {include_blank: 'Select Year'}, class: 'form-control time-select' %>
       </div>
     </div>
     <div class="col">

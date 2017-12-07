@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20171119063345) do
     t.integer "user_id"
     t.integer "renter_id"
     t.boolean "renter_visible", default: true
+    t.boolean "renter_deleted", default: false
     t.integer "car_id"
     t.integer "status", default: 0
     t.string "start_location"

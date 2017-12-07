@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   def valid_page?(page, total, per)
     valid = false
     last = (total / per.to_f).ceil
-    
     if page.match(/\A\d+\z/)
       page = page.to_i
       if page < 1 || page > last

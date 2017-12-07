@@ -1,0 +1,658 @@
+Heroku deployment notes
+========================
+
+- Justin Pearson
+- Dec 6, 2017
+
+
+Quickstart
+------------
+
+    mkdir Heroku-v2
+    cd Heroku-v2/
+    git clone git@github.com:scalableinternetservices/Luber.git
+    cd Luber/
+    git checkout heroku-deploy    
+    gem install bundler
+    bundle install
+
+Verify it works locally:
+
+    rails db:migrate
+    rails db:seed
+    say done
+    rails s
+
+Heroku setup:
+
+    heroku version
+    heroku login
+    ssh-keygen -t rsa -C "Heroku ssh key for our Luber app, Dec 2017"
+    heroku keys:add
+    heroku create
+    git push heroku heroku-deploy:master
+    heroku run rails db:migrate
+    heroku run rails db:seed    
+    heroku open
+
+To deploy new code:
+
+    # edit some files, then:
+    git commit -am "My awesome local commit"
+    rails t  # run tests
+    rails s  # view site in your own local browser
+    git push origin HEAD  # push to our github (optional)
+    git push heroku heroku-deploy:master   # push to heroku    
+    heroku open
+
+To wipe out database and re-seed:
+
+    heroku run rails console
+
+    irb(main):004:0> ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ; User.delete_all ; Log.delete_all ; ActiveRecord::Base.logger.level = 0
+
+    heroku run rails db:seed
+
+
+
+Pushing to Heroku's master
+----------------------------
+
+heroku only deploys if you push to master; can push a different branch to heroku's master like this:
+
+    git push heroku other:master
+
+as in:
+
+    git push heroku heroku-deploy:master
+
+Source: https://stackoverflow.com/questions/25834500/push-different-branch-to-heroku
+
+
+Problem: No CSS; no bootstrap?
+--------------------------------
+
+I inserted a stylesheet and JS as instructed in the Boostrap docs:
+
+https://getbootstrap.com/docs/4.0/getting-started/introduction/
+
+
+See
+- `app/views/layouts/_head.html.erb`
+- `app/views/layouts/application.html.erb`
+
+That placed things roughly in the right places, but the hero img didn't appear.
+
+So I followed this SE post
+
+- https://stackoverflow.com/questions/33351423/bootstrap-styles-missing-after-deploy-to-heroku
+- https://stackoverflow.com/questions/12719541/css-loading-locally-but-not-in-heroku-for-a-rails-app
+- https://stackoverflow.com/questions/16271696/cant-get-css-working-on-heroku-using-rails-4-with-bootstrap-sass-gem?answertab=active#tab-top
+
+and did 
+
+    rails assets:precompile
+
+which created a lot of large cache-busting files in `public/assets/`
+
+The formatting is not quite right, but at least it's formatted roughly correctly.
+
+
+
+Rails console in Heroku
+-----------------------
+
+    heroku run rails console
+
+Viewing Heroku logs
+---------------------
+
+    heroku log
+
+To view continuously:
+    
+    heroku log -t
+
+
+Seed Heroku db
+---------------
+
+    heroku run rails db:seed
+
+Source: https://stackoverflow.com/questions/23233414/how-to-push-seeds-rb-to-existing-rails-app-on-heroku
+
+
+Limitations on Heroku db size
+------------------------------
+
+When I went to rental list, got a nondescript error. Went to Heroku dashboard:
+
+https://data.heroku.com/datastores/d7743297-6368-4348-bd5f-1a11897085b2
+
+It complained about too many rows:
+
+    17,059 of 10,000
+    ROWS   (red x) IN COMPLIANCE
+
+Had to shrink seed file: only 100 users in production, 2 cars/user, 5 rentals/car.
+Re-deploy.
+Gotta remove old seed file: heroku run rails console to delete all:
+
+    irb(main):004:0> ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ; User.delete_all ; ActiveRecord::Base.logger.level = 0
+
+    irb(main):009:0> Log.delete_all
+
+re-seed: `heroku run rails db:seed`
+
+All better:
+
+    1,759 of 10,000
+    ROWS (checkmark) IN COMPLIANCE
+
+
+History
+==========
+
+
+[justin@Computron Luber (heroku-deploy)]$ history
+  122  rails s
+  123  rails t
+  124  git checkout master
+  125  git st
+  126  git diff
+  127  rails t
+  128  git add db/seeds.rb
+  129  git st
+  130  git commit -m "HOTFIX 2: needed 'if in production' in prev hotfix, sry\!"
+  131  git push origin/master HEAD
+  132  git push origin
+  133  git lol
+  134  git merge origin
+  135  gir push origin HEAD
+  136  git push origin HEAD
+  137  git checkout tsung-create-account 
+  138  git merge master
+  139  git lol
+  140  git st
+  141  subl db/seeds.rb 
+  142  git push origin HEAD
+  143  ssh -i luber.pem ec2-user@34.223.246.146
+  144  cd luber
+  145  git fetfh
+  146  git fetch
+  147  git lol
+  148  git checkout car_model
+  149  git pull
+  150  git st
+  151  git merge origin/master
+  152  git lol
+  153  rails t
+  154  git push origin HEAD
+  155  grep inr transaction *
+  156  ls
+  157  cd Tsung/
+  158  grep inr transaction *
+  159  grep -inr transaction *
+  160  cd luber
+  161  cd ..
+  162  cd ..
+  163  ls
+  164  cd justin-tsung/
+  165  open .
+  166  pwd
+  167  subl .
+  168   rsync -auvLe 'ssh -i /Users/justin/luber.pem' *.xml ec2-user@34.213.111.128:~
+  169  ls
+  170  cd ec2-user/
+  171  ls
+  172   rsync -auvLe 'ssh -i /Users/justin/luber.pem' *.xml ec2-user@34.213.111.128:~
+  173   rsync -auvLe 'ssh -i /Users/justin/luber.pem' *.xml ec2-user@52.27.231.148:~
+  174   rsync -auvLe 'ssh -i /Users/justin/luber.pem' *.xml ec2-user@52.27.231.148:~
+  175  ls
+  176  ssh -i luber.pem ec2-user@52.27.231.148
+  177  ssh -i ~/luber.pem ec2-user@52.27.231.148
+  178  cd luber
+  179  cd ../../
+  180   ssh -i luber.pem luber@ec2.cs291.com
+  181  ssh -i luber.pem luber@ec2.cs291.com
+  182  which tsung
+  183  git fetch
+  184  git lol
+  185  open 
+  186  open .
+  187  git st
+  188  git add Tsung/justin-v2-idempotent.xml
+  189  git commit -m "Added an idempotent tsung file that creates, edits, and deletes a car and rental."
+  190  git push origin HEAD
+  191  git lol
+  192  cd ..
+  193  git st
+  194  git diff
+  195  git st
+  196  git add Tsung/justin-v2-idempotent.xml
+  197  git add Tsung/justin-v3-1sps-60s.xml
+  198  git add Tsung/userlist.csv
+  199  git commit -m "Added another Tsung test."
+  200  git push origin 
+  201  git push origin HEAD
+  202  git fetch
+  203  git lol
+  204  git fetch
+  205  git lol
+  206  cd luber
+  207  cd ../../
+  208  ls
+  209  cd justin-tsung/
+  210  ls
+  211  cd ec2-user/ec2-user/
+  212  ls
+  213  cd ..
+  214  cd luber
+  215  git fetch
+  216  git lol
+  217  git checkout master
+  218  git lol
+  219  git merge origin
+  220  git lol
+  221  rails s
+  222  rm db/test.sqlite3 db/development.sqlite3 db/schema.rb ; rails db:migrate 
+  223  rails db:seed
+  224  rails db:seed
+  225  rm db/test.sqlite3 db/development.sqlite3 db/schema.rb ; rails db:migrate 
+  226  rails db:reset
+  227  rails db:reset
+  228  rails s
+  229  git lol
+  230  git fetch
+  231  git checkout master
+  232  git lol
+  233  git merge origin/master
+  234  git lol
+  235  rails s
+  236  rails t
+  237  rails s
+  238  ls
+  239  emacs db/seeds.rb 
+  240  subl $_
+  241  git lol
+  242  git checkout -b justin-tsung
+  243  rails c
+  244  rm db/test.sqlite3 db/development.sqlite3 db/schema.rb ; rails db:migrate 
+  245  rails db:reset
+  246  rm db/test.sqlite3 db/development.sqlite3 db/schema.rb ; rails db:migrate 
+  247  rails db:reset
+  248  rm db/test.sqlite3 db/development.sqlite3 db/schema.rb ; rails db:migrate 
+  249  rails db:reset
+  250  rm db/test.sqlite3 db/development.sqlite3 db/schema.rb ; rails db:migrate 
+  251  rails db:reset
+  252  rails c
+  253  git st
+  254  git add db/seeds.rb
+  255  git commit -m "Created 'empty' users (with no cars or rentals) to help Tsung tests."
+  256  git push origin HEAD
+  257  ls
+  258  emacs config/environments/production.rb 
+  259  emacs db/seeds.rb 
+  260  git st
+  261  rm lib/tasks/kill_postgres_connections.rake 
+  262  git st
+  263  git commit -am "Set log level to 'warn' to reduce pressure when load testing."
+  264  git push origin HEAD
+  265  subl db/seeds.rb 
+  266  git diff
+  267  subl db/seeds.rb 
+  268  subl db/seeds.rb 
+  269  git commit -am "Remove debugger call from seed."
+  270  git push origin HEAD
+  271  subl .
+  272  git st
+  273  git commit -am "Tsung test: simulate 'empty' users #1001 thru #11000."
+  274  git push origin HEAD
+  275  ls
+  276  ls
+  277  git st
+  278  git diff
+  279  git commit -m "Organized sections into 'transactions', made thinktimes static."
+  280  git commit -am "Organized sections into 'transactions', made thinktimes static."
+  281  git st
+  282  git push origin HEAD
+  283  ssh -i luber.pem luber@ec2.cs291.com
+  284  ssh -i luber.pem luber@ec2.cs291.com
+  285  ssh -i luber.pem ec2-user@34.213.111.128
+  286  ssh -i luber.pem ec2-user@52.27.231.148
+  287  ssh -i luber.pem ec2-user@35.167.231.4
+  288  ssh -i luber.pem ec2-user@35.167.231.4
+  289  ssh -i luber.pem ec2-user@35.167.231.4
+  290  whoami
+  291  ssh -i luber.pem luber@ec2.cs291.com
+  292  ifconfig
+  293  ping www.google.com
+  294  cd luber
+  295  cd
+  296  cd luber
+  297  git st
+  298  git diff
+  299  cd
+  300  ssh -i luber.pem luber@ec2.cs291.com
+  301  cd luber
+  302  cd ../../
+  303  ls
+  304  cd justin-tsung/
+  305  ls
+  306  cd ec2-user/
+  307  ls
+  308  ls -lstrah
+  309   rsync -auvLe 'ssh -i /Users/justin/luber.pem' *.xml ec2-user@52.27.231.148:~
+  310   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.27.231.148:~ .
+  311  open .
+  312   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.27.231.148:~ .
+  313  open .
+  314  open .
+  315   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.27.231.148:~ .
+  316  ls
+  317  pwd
+  318  cp -a ec2-user/justin-v2-idempotent.xml ~/luber/Tsung/
+  319   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.27.231.148:~ .
+  320  open .
+  321  open .
+  322  pwd
+  323  ls
+  324  cd ec2-user/
+  325  ls
+  326   rsync -auvLe 'ssh -i /Users/justin/luber.pem' *.xml ec2-user@35.167.231.4:~
+  327   rsync -auvLe 'ssh -i /Users/justin/luber.pem' *.xml *.csv ec2-user@35.167.231.4:~
+  328   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@35.167.231.4:~ .
+  329  open .
+  330   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@35.167.231.4:~ .
+  331  open .
+  332   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@35.167.231.4:~ . ; cp -a ec2-user/userlist.csv ec2-user/justin-v3-1sps-60s.xml ~/luber/Tsung/
+  333  history 
+  334  pwd
+  335  pwd
+  336   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@35.167.231.4:~ . ; cp -a ec2-user/userlist.csv ec2-user/justin-v3-1sps-60s.xml ~/luber/Tsung/
+  337  open .
+  338  pwd
+  339   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@35.167.231.4:~ . 
+  340  open .
+  341  cd .
+  342  cd ..
+  343  cd ..
+  344   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@35.167.231.4:~ . 
+  345  cd luber
+  346  git st
+  347  git diff
+  348  subl .
+  349  git st
+  350  cd add Tsung/justin-v3-1sps-60s.xml 
+  351  git add Tsung/justin-v3-1sps-60s.xml 
+  352  git st
+  353  git st
+  354  git diff
+  355  git commit -m "Removed justin's EB host -- provide your own! ;)"
+  356  git fetch
+  357  git push origin HEAD
+  358  git merge origin/master
+  359  subl db/seeds.rb 
+  360  pwd
+  361  git st
+  362  git lol
+  363  git reset --hard
+  364  git lol
+  365  git lol
+  366  pwd
+  367  nsearch quanser
+  368  cd luber
+  369  git fetch
+  370  git  ol
+  371  git lol
+  372  ssh -i luber.pem luber@ec2.cs291.com
+  373  cd luber
+  374  git lol
+  375  git fetch
+  376  ls -a
+  377  cat <<EOF > .ebextensions/nginx.config
+  378  git st
+  379  git add .ebextensions/nginx.config
+  380  git commit -m "Add .ebextensions file to increase cxn count, see https://piazza.com/class/j789lo09yai5qx?cid=79"
+  381  git push origin HEAD
+  382  git fetch
+  383  git pull
+  384  git lol
+  385  mkdir tmpluber
+  386  cd tmpluber/
+  387  git clone https://github.com/scalableinternetservices/Luber.git
+  388  du -d 1
+  389  du -d 2 -h
+  390  ls
+  391  cd Luber/
+  392  ls
+  393  cd TS
+  394  cd Tsung/
+  395  ls
+  396  touch Note-see-justin-tsung-branch-for-those-xmls
+  397  git add Note-see-justin-tsung-branch-for-those-xmls
+  398  git rm justin-v2-idempotent.xml
+  399  git rm justin-v3-1sps-60s.xml
+  400  git rm userlist.csv
+  401  git st
+  402  git commit -m "Removing master's justin-v3...xml Tsung test. Use the one in justin-tsung branch."
+  403  git push origin HEAD
+  404  cd ..
+  405  cd ..
+  406  cd ..
+  407  rm -rf tmpluber
+  408  getpw github
+  409  cd luber
+  410  git fetch
+  411  git lol
+  412  ssh -i luber.pem luber@ec2.cs291.com
+  413  ssh -i luber.pem luber@ec2.cs291.com
+  414  jb
+  415  cd luber
+  416  git lol
+  417  n
+  418  ls "_tn.png"
+  419  ls "*_tn.png"
+  420  ls
+  421  ls *_tn.png
+  422  rm *_tn.png
+  423  ssh -i luber.pem luber@ec2.cs291.com
+  424  ssh -i luber.pem u@aaduxvepas58zh.cxsnhvva4y19.us-west-2.rds.amazonaws.com
+  425  rm *_tn.png
+  426  open .
+  427  cd luber
+  428  git st
+  429  ls -a
+  430  cd .ebextensions/
+  431  ls
+  432  less nginx.config 
+  433  git rm nginx.config 
+  434  less luber.config 
+  435  man mkdir
+  436  mkdir -p nginx/conf.d/
+  437  git st
+  438  git add nginx/
+  439  cd ..
+  440  git st
+  441  touch .ebextensions/nginx/conf.d/justin.conf
+  442  git add .ebextensions/nginx/conf.d/justin.conf
+  443  git st
+  444  git add README.md
+  445  git commit -m "Configuring more connections in nginx, v1"
+  446  git push origin HEAD
+  447  pwd
+  448  git pull
+  449  git lol
+  450  pwd
+  451  ls
+  452  cd Tsung/
+  453  ls
+  454  rsync -auvLe 'ssh -i /Users/justin/luber.pem' justin-v3-1sps-60s.xml userlist.csv ec2-user@52.33.247.249:~
+  455  pwd
+  456  cd luber
+  457  rails s
+  458  ssh -i luber.pem luber@ec2.cs291.com
+  459  ssh -i luber.pem luber@ec2.cs291.com
+  460  ssh -i luber.pem luber@ec2.cs291.com
+  461  subl .
+  462  ssh -i luber.pem ec2-user@52.33.247.249
+  463  ssh -i luber.pem ec2-user@52.33.247.249
+  464  ssh -i luber.pem ec2-user@34.216.119.30
+  465  subl .
+  466  cd luber
+  467  cd ../../
+  468  ls
+  469  cd justin-tsung/
+  470  ls
+  471  ls
+  472  mkdir dec-5
+  473  cd dec-5/
+  474   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  475   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  476   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  477   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  478   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  479  open .
+  480  ls
+  481  ls ec2-user/
+  482  ls ec2-user/tsung_logs/
+  483  ls ec2-user/tsung_logs/20171205-1704/
+  484  open ec2-user/tsung_logs/20171205-1704/graph.html 
+  485  pwd
+  486  pwd | pbcopy
+  487   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  488   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  489  open .
+  490   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  491  open .
+  492   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  493   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  494   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  495   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  496  open .
+  497   rsync -auvLe 'ssh -i /Users/justin/luber.pem' ec2-user@52.33.247.249:~ . 
+  498  open .
+  499  open l
+  500  open .
+  501  getpw heroku
+  502  cd luber
+  503  ls
+  504  pwd
+  505  cd ../
+  506  mkdir Heroku
+  507  cd Heroku/
+  508  cd ../Luber
+  509  git remote -v
+  510  cd ../Heroku/
+  511  git clone git@github.com:scalableinternetservices/Luber.git
+  512  ls
+  513  cd Luber/
+  514  heroku version
+  515  heroku login
+  516  heroku keys:add
+  517  heroku keys:add
+  518  nsearch ssh
+  519  nsearch heroku
+  520  n
+  521  ssh-keygen -t rsa -C "Heroku ssh key for our Luber app, Dec 2017"
+  522  heroku keys:add
+  523  heroku create
+  524  heroku create
+  525  git branch -a
+  526  git remote -v
+  527  git push heroku master
+  528  heroku open
+  529  heroku run rails db:migrate
+  530  rails s
+  531  bundle install
+  532  gem install bundler
+  533  pwd
+  534  cd ../../
+  535  mkdir Heroku-v2
+  536  cd Heroku-v2/
+  537  git clone git@github.com:scalableinternetservices/Luber.git
+  538  ls
+  539  cd Luber/
+  540  gem install bundler
+  541  bundle install
+  542  rails db:migrate
+  543  rails db:seed
+  544  say done
+  545  rails s
+  546  heroku version
+  547  heroku login
+  548  heroku keys:add
+  549  heroku create
+  550  git push heroku master
+  551  heroku open
+  552  heroku run rails db:migrate
+  553  heroku run rails console
+  554  subl app/views/layouts/application.html.erb 
+  555  subl .
+  556  git st
+  557  rails s
+  558  git stash
+  559  git checkout -b heroku-deploy
+  560  git stash apply
+  561  git commit -am "No css in Heroku deploy; adding bootstrapcdn css & js."
+  562  git push origin HEAD
+  563  rails t
+  564  say done
+  565  rails s
+  566  git push heroku master
+  567  git push heroku HEAD
+  568  heroku open
+  569  git push heroku heroku-deploy:master
+  570  heroku open
+  571  rails
+  572  rails assets:precompile
+  573  git st
+  574  git commit -am "Hero img no appear on Heroku, did rails asset:precompile."
+  575  git st
+  576  git add public/assets/
+  577  git st
+  578  git commit -am "Hero img no appear on Heroku, did rails asset:precompile, v2."
+  579  git push heroku heroku-deploy:master
+  580  heroku open
+  581  heroku run rails db:seed
+  582  rails schema
+  583  subl .
+  584  heroku run rails db:migrate
+  585  rails c
+  586  rails db:seed
+  587  rm db/test.sqlite3 db/development.sqlite3 db/schema.rb ; rails db:migrate 
+  588  rails db:reset
+  589  say done
+  590  git st
+  591  git commit -am "Updated seed file to new user model."
+  592  git push heroku heroku-deploy:master
+  593  heroku run rails db:migrate
+  594  heroku run rails db:seed
+  595  subl db/seeds.rb 
+  596  git commit -am "Updated seed file to new user model, v2."
+  597  subl db/seeds.rb 
+  598  git push heroku heroku-deploy:master
+  599  heroku run rails db:seed
+  600  heroku open
+  601  git push origin HEAD
+  602  history | tail -n 100
+  603  find . -iname "application*"
+  604  subl db/seeds.rb 
+  605  git st
+  606  git commit -am "Shrunk seed file; 1000usr, 2car/usr, 5rent/car yields 17059 rows > 10000 allowed."
+  607  git push origin HEAD
+  608  git st
+  609  git push heroku heroku-deploy:master
+  610  heroku run rails console
+  611  heroku run rails db:seed
+  612  heroku open
+  613  heroku logs
+  614  ls
+  615  git st
+  616  git diff
+  617  git commit -am "Heroku error: no have 'match?' for String."
+  618  git push heroku heroku-deploy:master
+  619  heroku logs -t
+  620  git push origin HEAD
+  621  history
+[justin@Computron Luber (heroku-deploy)]$ 

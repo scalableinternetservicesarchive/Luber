@@ -295,7 +295,7 @@ user_ids.each do |i|  # don't use .times, then id will be 0, bad.
       city:                 "Goleta",
       state:                "CA",
       about:                terms = all_terms.sample(1)[0],
-      meetup:               "Hi, my name is Bob and I'm an auto-generated user. Don't mind me!",
+      meetup:               "Hi, my name is Bob and I\'m an auto-generated user. Don\'t mind me!",
       username:             "skater4#{i}",
       email:                "user#{i}@boo.com",
       password:             PASSWORD,

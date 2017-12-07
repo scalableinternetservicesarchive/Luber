@@ -294,10 +294,24 @@ class UsersController < ApplicationController
   # Update the rental status to either 2 (In Progress) or 3 (Completed) based on time
   def set_progress
     set_user
-    @rentals = Rental.where([
+    expired_rentals = Rental.where([
+      'user_id = ? AND status = ? AND start_time < ? AND renter_id = ?', 
+      @user.id, 0, DateTime.current, nil])
+    expired_rentals.each do |rental|
+      rental.update_column(:status, 4)
+
+      car = Car.find(rental.car_id)
+      owner_log = Log.create!(
+        user_id: rental.user_id, 
+        action: 4, 
+        content: 'Canceled renting my '+car.make+' '+car.model+' starting '+helpers.smart_date(rental.start_time, true)+' due to no one renting it before the start time')
+      owner_log.touch(time: rental.start_time)
+    end
+
+    rentals = Rental.where([
       '(renter_id = ? OR user_id = ?) AND ((status = ? AND start_time < ?) OR (status = ? AND end_time < ?))', 
       @user.id, @user.id, 1, DateTime.current, 2, DateTime.current])
-    @rentals.each do |rental|
+    rentals.each do |rental|
       if rental.end_time < DateTime.current
         rental.update_column(:status, 3)
 
@@ -305,13 +319,12 @@ class UsersController < ApplicationController
         owner_log = Log.create!(
           user_id: rental.user_id, 
           action: 3, 
-          content: 'Completed renting my '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' to the renter ('+User.find(rental.renter_id).username+')')
+          content: 'Completed renting my '+car.make+' '+car.model+' starting '+helpers.smart_date(rental.start_time, true)+' to the renter ('+User.find(rental.renter_id).username+')')
         owner_log.touch(time: rental.end_time)
-        
         renter_log = Log.create!(
           user_id: rental.renter_id, 
           action: 3, 
-          content: 'Completed renting a '+car.make+' '+car.model+' starting on '+rental.start_time.strftime("%A, %b. %-d")+' from the owner ('+User.find(rental.user_id).username+')')
+          content: 'Completed renting a '+car.make+' '+car.model+' starting '+helpers.smart_date(rental.start_time, true)+' from the owner ('+User.find(rental.user_id).username+')')
         renter_log.touch(time: rental.end_time)
       else
         rental.update_column(:status, 2)

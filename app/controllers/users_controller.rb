@@ -135,9 +135,10 @@ class UsersController < ApplicationController
 
     # Parse and validate any parameters that may have been passed
     if params[:page].present?
-      params[:page], page_valid = validate_page(params[:page], @total_rentals, @per_page_count)
+      params[:page], page_valid, message = valid_page?(params[:page], @total_rentals, @per_page_count)
       if !page_valid
-        flash.now[:danger] = 'The page you tried to jump to does not exist'
+        flash[:danger] = message
+        redirect_to rentals_user_path
       end
     end
 
@@ -157,9 +158,10 @@ class UsersController < ApplicationController
 
     # Parse and validate any parameters that may have been passed
     if params[:page].present?
-      params[:page], page_valid = validate_page(params[:page], @total_cars, @per_page_count)
+      params[:page], page_valid, message = valid_page?(params[:page], @total_cars, @per_page_count)
       if !page_valid
-        flash.now[:danger] = 'The page you tried to jump to does not exist'
+        flash[:danger] = message
+        redirect_to cars_user_path
       end
     end
 
@@ -176,9 +178,10 @@ class UsersController < ApplicationController
 
     # Parse and validate any parameters that may have been passed
     if params[:page].present?
-      params[:page], page_valid = validate_page(params[:page], @total_logs, @per_page_count)
+      params[:page], page_valid, message = valid_page?(params[:page], @total_logs, @per_page_count)
       if !page_valid
-        flash.now[:danger] = 'The page you tried to jump to does not exist'
+        flash[:danger] = message
+        redirect_to history_user_path
       end
     end
 

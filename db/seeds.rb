@@ -449,11 +449,14 @@ user_ids.each do |uid|
       terms = all_terms.sample(1)[0]
       # puts terms
 
+
+
       d = {
         id:               (i+=1),
         user_id:          uid, # u.id,
         renter_id:        renter,
         renter_visible:   true,
+        renter_deleted:   false,
         car_id:           cid, # c.id,
         start_location:   c1,
         end_location:     c2,

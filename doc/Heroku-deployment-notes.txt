@@ -49,10 +49,30 @@ To wipe out database and re-seed:
 
     heroku run rails console
 
-    irb(main):004:0> ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ; User.delete_all ; Log.delete_all ; ActiveRecord::Base.logger.level = 0
+    ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ; User.delete_all ; Log.delete_all ; ActiveRecord::Base.logger.level = 0
 
     heroku run rails db:seed
 
+
+Hard-Resetting Heroku database
+-------------------------------
+
+I think the problem was you added the `renter_deleted` column to the `create_rentals` migration instead of making a new migration that adds the column.
+
+I was puzzled why doing `Rental.column_names` at the Heroku rails console didn't show `renter_deleted` even after I ran `heroku run rails db:migrate`
+
+Ah, it works now. K, do this:
+
+  heroku pg:reset DATABASE_URL
+
+then re-seed with
+
+  heroku run rails db:migrate
+  heroku run rails db:seed
+
+Source:
+
+https://stackoverflow.com/questions/24725823/rerun-all-db-migrations-on-heroku-rake-dbmigratereset
 
 
 Pushing to Heroku's master

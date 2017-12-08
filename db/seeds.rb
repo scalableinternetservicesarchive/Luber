@@ -449,6 +449,8 @@ user_ids.each do |uid|
       terms = all_terms.sample(1)[0]
       # puts terms
 
+
+
       d = {
         id:               (i+=1),
         user_id:          uid, # u.id,

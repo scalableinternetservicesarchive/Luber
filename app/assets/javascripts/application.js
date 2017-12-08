@@ -4,5 +4,6 @@
 //= require popper
 //= require bootstrap
 //= require_tree ./scoped/.
-//= require_tree ./core/.
+//= require ./core/global.js
+//= require ./core/init.js
 //= require_tree .

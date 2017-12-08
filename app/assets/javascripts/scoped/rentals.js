@@ -37,7 +37,7 @@ initMaps = function() {
     $('#end-col').addClass('no-section-content');
     $('#end-col').append('<div class="no-map"><div><p>Looks like the End Location could not be found...</p></div></div>');
   }
-}
+};
 
 // This modifies Google API's insertBefore method to prevent it from injecting Roboto font into the page
 preventFontInjection = function() {
@@ -53,7 +53,7 @@ preventFontInjection = function() {
       }
       insertBefore.call(head, newElement, referenceElement);
   };
-}
+};
 
 // Allow the user to search available rentals for a specific tag
 tagSearch = function() {
@@ -68,7 +68,7 @@ tagSearch = function() {
       link.attr('href', link.attr('href') + '?tag=*');
     }
   });
-}
+};
 
 // Randomize rental card header gradient angle
 rentalHeaderColor = function() {
@@ -84,4 +84,4 @@ rentalHeaderColor = function() {
   for(var i = 0; i < headers.length; i++) {
     headers[i].style.setProperty('--angle', String(angles[Math.floor(Math.random()*angles.length)]+"deg"));
   }
-}
+};

@@ -16,7 +16,7 @@ alerts = function() {
     
     setTimeout(function() { wrapper.addClass('closed'); }, duration);
   }
-}
+};
 
 // Allow the user to jump to a specific page
 pageJump = function() {
@@ -31,7 +31,7 @@ pageJump = function() {
       link.attr('href', link.attr('href') + '?page=*');
     }
   });
-}
+};
 
 // Enable buttons that rely on javascript to function/remove warning text
 enableButtons = function() {
@@ -44,4 +44,4 @@ enableButtons = function() {
   if($('.js-text')) {
     $('.js-text').remove();
   }
-}
+};

@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
   before_action :signed_in_user
-  before_action :correct_user, except: [:new, :create]
+  before_action :correct_user, except: [:new, :create, :tag_search]
   before_action :set_car, only: [:edit, :update, :destroy]
 
   # GET /cars/new
@@ -96,14 +96,6 @@ class CarsController < ApplicationController
     end
     respond_to do |format|
       format.html {redirect_to cars_user_path(session[:user_username])}
-    end
-  end
-
-  def tag_search
-    if params[:tag]
-      @cars = Car.tagged_with(params[:tag])
-    else
-      @cars = Car.all
     end
   end
 

@@ -15,8 +15,8 @@ class User < ApplicationRecord
   VALID_LAST_NAME = /\A[a-z ]+\z/i
   VALID_CITY = /\A[a-z -]+\z/i
   VALID_STATE = /\A[a-z]+\z/i
-  VALID_ABOUT = /\A[\w`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|:'",<\.>\/\? ]+\z/
-  VALID_MEETUP = /\A[\w`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|:'",<\.>\/\? ]+\z/
+  VALID_ABOUT = /\A[\w\r\n`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|:'",<\.>\/\? ]+\z/
+  VALID_MEETUP = /\A[\w\r\n`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|:'",<\.>\/\? ]+\z/
   VALID_USERNAME = /\A[\w -]+\z/i
   VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   VALID_PASSWORD = /\A[\w`~!@#\$%\^&\*\(\)\-\+=\[\]\{\}\\|;:'",<\.>\/\?]+\z/

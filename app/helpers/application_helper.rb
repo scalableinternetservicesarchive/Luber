@@ -18,9 +18,9 @@ module ApplicationHelper
       if dt.month != 5 then dot = '.' else dot = '' end
 
       if dt.year != DateTime.current.year
-        str += dt.strftime("%b#{dot} #{dt.day.ordinalize}, %Y")
+        str << dt.strftime("%b#{dot} #{dt.day.ordinalize}, %Y")
       else
-        str += dt.strftime("%A, %b#{dot} #{dt.day.ordinalize}")
+        str << dt.strftime("%A, %b#{dot} #{dt.day.ordinalize}")
       end
     end
 

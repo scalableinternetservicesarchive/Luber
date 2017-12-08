@@ -2,6 +2,15 @@
   margin-left: $spacer * 0.5;
 }
 
+#start-col,
+#end-col {
+  .card-body {
+    p {
+      margin-bottom: ($spacer * 0.25);
+    }
+  }
+}
+
 #map-start,
 #map-end {
   display: block;
@@ -15,15 +24,18 @@
 .no-section-content {
   display: flex;
   flex-direction: column;
-  height: 40vh;
 
   hr {
     margin-top: 0.25rem;
-    margin-bottom: 0;
   }
 
-  div {
+  .no-map {
+    margin-top: ($spacer * 4);
+    display: flex;
     flex-grow: 1;
+    align-items: center;
+    text-align: center;
+    font-style: italic;
 
     div {
       flex-grow: 1;

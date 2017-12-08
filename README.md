@@ -13,6 +13,7 @@
 ## About
 
 [Project Report (PDF)](doc/cs291-project-luber-aws-tsung.pdf)
+
 [Project Presentation (PDF)](doc/Luber-Presentation.pdf)
 
 Sharing economy is efficient, environment-friendly and accessible to all. Uber and Airbnb have swept out the traditional rental business in every aspect. It's much faster and more convenient to ask for a ride by Uber or Lyft, however, sometimes a ride is not sufficient for all travelling demand, in case of family trip, long journey or private event. Therefore, We'd like to work on a Uber-like car-sharing app for CS291A project.

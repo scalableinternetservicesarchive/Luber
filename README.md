@@ -191,7 +191,7 @@ How to run load-tests with Tsung
 
     - for Tsung testing:
 
-            eb create -db.engine postgres -db.i db.m3.medium -db.user u -db.pass=866b90021b2c4a0ebc32571e4b2ca94a --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a -i m3.medium luber-justin
+            eb create -db.engine postgres -db.i db.m3.medium -db.user u -db.pass=866b90021b2c4a0ebc32571e4b2ca94a --envvars SECRET_KEY_BASE=866b90021b2c4a0ebc32571e4b2ca94a -i m3.medium --scale 2 luber-justin
 
     - *Note*: `-db.i` (the db machine) can be one of
 

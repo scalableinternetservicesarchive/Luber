@@ -166,10 +166,11 @@ How to run load-tests with Tsung
         mkdir Justin
         cd Justin
 
-1. clone our repo *(if not done already)*
+1. clone our repo and switch to `justin-tsung` branch *(if not done already)*
 
         git clone https://github.com/scalableinternetservices/Luber.git
         cd Luber
+        git checkout justin-tsung
 
 ### From EC2, start Elastic Beanstalk
 

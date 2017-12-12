@@ -84,7 +84,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
         start_location: 'Minneapolis',
         end_location: 'St. Paul',
         start_time: '3024-05-11 11:59:00.00',
-        end_time: '3024-12-30 23:59:00.00',
+        end_time: '3024-06-30 23:59:00.00',
         price: 0.01,
         terms: 'chronic, depression' } }
     assert_redirected_to rental_path(myrental)
@@ -95,7 +95,7 @@ class RentalsFlowTest < ActionDispatch::IntegrationTest
     assert_select 'span.rental-start', 'Minneapolis'
     assert_select 'span.rental-end', 'St. Paul'
     assert_select 'h3', '$0.01'
-    assert_select 'p.list-group-item', 'From May 11th, 3024 at 11:59 AM until Dec. 30th, 3024 at 11:59 PM'
+    assert_select 'p.list-group-item', 'From May 11th, 3024 at 11:59 AM until Jun. 30th, 3024 at 11:59 PM'
     assert_select 'p.list-group-item', 'Terms: chronic, depression'
     assert_select 'p > a', 'RickSanchez'
     assert_select 'p.list-group-item', 'Ford Mustang'

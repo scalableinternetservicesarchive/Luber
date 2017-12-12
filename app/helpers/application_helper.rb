@@ -6,12 +6,12 @@ module ApplicationHelper
 
   def smart_date(dt, prefix=false)
     dt = Rails.application.config.tz.utc_to_local(dt)
-    case dt.day
-    when DateTime.yesterday.day
+    case [dt.day, dt.month, dt.year]
+    when [DateTime.yesterday.day, DateTime.yesterday.month, DateTime.yesterday.year]
       str = 'Yesterday'
-    when DateTime.current.day
+    when [DateTime.current.day, DateTime.current.month, DateTime.current.year]
       str = 'Today'
-    when DateTime.tomorrow.day
+    when [DateTime.tomorrow.day, DateTime.tomorrow.month, DateTime.tomorrow.year]
       str = 'Tomorrow'
     else
       if prefix then str = 'on ' else str = '' end

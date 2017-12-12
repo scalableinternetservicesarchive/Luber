@@ -5,7 +5,9 @@
 - [About](#about)
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
-- [How to run load-tests with Tsung](#how-to-run-load-tests-with-tsung)
+- [Deploying to Heroku](#deploying-to-heroku)
+- [Deploying to AWS Elastic Beanstalk](#deploying-to-aws-elastic-beanstalk)
+- [Load testing with Tsung](#load-testing-with-tsung)
 - [Tips](#tips)
 - [References](#references)
 - [Team Members](#team-members)
@@ -89,74 +91,70 @@ git push origin my-feature-branch
 # Open a pull request on the GitHub page and assign someone to review it
 ```
 
-## How to run load-tests with Tsung
+## Deploying to Heroku
 
-*(Note: Please use the `justin-tsung` branch for load-testing)*
+1. Make an account on [Heroku](https://signup.heroku.com/)
 
-1. [Quickstart](#quickstart)
-2. [Launch your app on Elastic Beanstalk](#launch-your-app-on-elastic-beanstalk)
-    1. [SSH into AWS EC2](#ssh-into-aws-ec2)
-    2. [From EC2, start Elastic Beanstalk](#from-ec2-start-elastic-beanstalk)
-    3. [Monitor EB from the AWS console in web browser](#monitor-eb-from-the-aws-console-in-web-browser)
-    4. [Seed the DB](#seed-the-db)
-    5. [Verify app works](#verify-app-works)
-3. [Run Tsung against your app](#run-tsung-against-your-app)
-    1. [Use CloudFormation to create a Tsung machine and SSH into it](#use-cloudformation-to-create-a-tsung-machine-and-ssh-into-it)
-    2. [Copy XML files to Tsung](#copy-xml-files-to-tsung)
-    3. [Run Tsung](#run-tsung)
-    4. [Download Tsung data](#download-tsung-data)
-4. [Rapid reset for another Tsung test](#rapid-reset-for-another-tsung-test)
-
-### Quickstart 
-
-*(if you know what you're doing)*
-
-1. Log in to EC2
+2. From your local Luber directory, verify that the application is seeding/testing/running correctly
 ```sh
-ssh -i luber.pem luber@ec2.cs291.com
+rails db:migrate
+rails db:reset
+rails t
+rails s
 ```
 
-2. `cd` to Luber in your personal directory
-
-3. Start our app on Elastic Beanstalk:
+3. [Install Heroku](https://devcenter.heroku.com/articles/heroku-cli), login, and add a SSH key (installing will differ depending on your OS)
 ```sh
-EC2$ git pull
-EC2$ eb deploy # if it's still running, or 'eb create ...' if not.
+# Install then verify a version appears
+heroku version
+
+# Login and either add a SSH key or make a new one (may need to specify path when adding)
+heroku login
+ssh-keygen -t rsa -C "Heroku ssh key for our Luber"
+heroku keys:add
 ```
 
-4. Seed the db:
+4. From your local Luber directory, create a heroku app and deploy it to heroku
 ```sh
-EC2$ eb ssh -e 'ssh -i ~/luber.pem'
-```
-    - Now you're in the production machine (the App Server). Delete all the db's data (note: order you delete the models is imporant to avoid foreign key errors):
-    ```sh
-    APP-SERVER$ cd /var/app/current
-    APP-SERVER$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ; User.delete_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
-    APP-SERVER$ rails db:seed
-    ```
-
-5. In [AWS CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/), make a new stack for Tsung
-
-6. In Options, use ssh command to ssh into Tsung machine
-
-7. Copy XML to Tsung:
-```sh
-rsync -auvLe 'ssh -i luber.pem' *.xml ec2-user@52.41.232.150:~
+heroku create
+git push heroku master
+# If you are pushing a branch other than local master to heroku master, use:
+# git push heroku other-local-branch:master
 ```
 
-8. Run Tsung:
+5. Migrate/seed the database and precompile assets
 ```sh
-tsung -f simple.xml -k start
+# NOTE: To run commands (or specifically run bash and access the terminal) on your remote heroku machine use:
+heroku run # insert command here
+heroku run bash
+
+# Seed the database
+heroku run rails db:migrate
+heroku run rails db:seed
+
+# Precompile assets so images/css/js is served correctly
+heroku run bundle exec rake assets:precompile
+
+# Open up the app (it may take a few minutes for the app-server/db to get ready after deploying)
+heroku open
 ```
 
-9. Save XML from Tsung:
+6. In case you need to wipe out the existing database (if say you want to re-seed it differently):
 ```sh
-rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:~ .
+heroku pg:reset DATABASE_URL
+heroku run rails db:migrate
+heroku run rails db:seed
 ```
 
-### Launch your app on Elastic Beanstalk
+## Deploying to AWS Elastic Beanstalk
 
-#### SSH into AWS EC2
+1. [SSH into AWS EC2](#ssh-into-aws-ec2)
+2. [From EC2, start Elastic Beanstalk](#from-ec2-start-elastic-beanstalk)
+3. [Monitor EB from the AWS console in web browser](#monitor-eb-from-the-aws-console-in-web-browser)
+4. [Seed the DB](#seed-the-db)
+5. [Verify app works](#verify-app-works)
+
+### SSH into AWS EC2
 
 1. Download our secret key `luber.pem` from Piazza *(if don't have `luber.pem` already)* 
 
@@ -178,7 +176,7 @@ git clone https://github.com/scalableinternetservices/Luber.git
 cd Luber
 ```
 
-#### From EC2, start Elastic Beanstalk
+### From EC2, start Elastic Beanstalk
 
 - Ensure you're ssh'd into EC2 (see above)
 
@@ -265,7 +263,7 @@ INFO: Created EIP: 54.191.49.249
 INFO: Creating RDS database named: aa3e7jh8yi6knq. This may take a few minutes.
 ```
 
-#### Monitor EB from the AWS console in web browser
+### Monitor EB from the AWS console in web browser
 
 1. Log in: 
 
@@ -278,7 +276,7 @@ INFO: Creating RDS database named: aa3e7jh8yi6knq. This may take a few minutes.
 
 3. When it's finished deploying, see the tiny URL near the top. Visit it in a web browser to verify it works.
 
-#### Seed the DB
+### Seed the DB
 
 1. SSH into the app server and go to the rails installation:
 ```sh
@@ -297,9 +295,68 @@ APP-SERVER$ rails db:seed
     APP-SERVER$ DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:reset
     ```
 
-#### Verify app works
+### Verify app works
 
 - Now your app should be populated with data.
+
+## Load testing with Tsung
+
+*(Note: Please use the `justin-tsung` branch for load-testing)*
+
+1. [Quickstart](#quickstart)
+2. [Run Tsung against your app](#run-tsung-against-your-app)
+    1. [Use CloudFormation to create a Tsung machine and SSH into it](#use-cloudformation-to-create-a-tsung-machine-and-ssh-into-it)
+    2. [Copy XML files to Tsung](#copy-xml-files-to-tsung)
+    3. [Run Tsung](#run-tsung)
+    4. [Download Tsung data](#download-tsung-data)
+3. [Rapid reset for another Tsung test](#rapid-reset-for-another-tsung-test)
+
+### Quickstart 
+
+*(if you know what you're doing)*
+
+1. Log in to EC2
+```sh
+ssh -i luber.pem luber@ec2.cs291.com
+```
+
+2. `cd` to Luber in your personal directory
+
+3. Start our app on Elastic Beanstalk:
+```sh
+EC2$ git pull
+EC2$ eb deploy # if it's still running, or 'eb create ...' if not.
+```
+
+4. Seed the db:
+```sh
+EC2$ eb ssh -e 'ssh -i ~/luber.pem'
+```
+    - Now you're in the production machine (the App Server). Delete all the db's data (note: order you delete the models is imporant to avoid foreign key errors):
+    ```sh
+    APP-SERVER$ cd /var/app/current
+    APP-SERVER$ date ; echo 'ActiveRecord::Base.logger.level = 1 ; Tagging.delete_all ; Rental.delete_all ; Tag.delete_all ; Car.delete_all ; User.delete_all ; ActiveRecord::Base.logger.level = 0' | rails c ; date
+    APP-SERVER$ rails db:seed
+    ```
+
+5. In [AWS CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/), make a new stack for Tsung
+
+6. In Options, use ssh command to ssh into Tsung machine
+
+7. Copy XML to Tsung:
+```sh
+rsync -auvLe 'ssh -i luber.pem' *.xml ec2-user@52.41.232.150:~
+```
+
+8. Run Tsung:
+```sh
+tsung -f simple.xml -k start
+```
+
+9. Save XML from Tsung:
+```sh
+rsync -auvLe 'ssh -i demo.pem' ec2-user@54.166.5.220:~ .
+```
 
 ### Run Tsung against your app
 
@@ -313,7 +370,7 @@ APP-SERVER$ rails db:seed
     - IAM user name: luber
     - Password: see `luber@ec2.cs291.com:~/luber.txt`
 
-2. Use for the ["S3 template URL"](https://cs291.s3.amazonaws.com/Tsung.json)
+2. Use for the "S3 template URL": https://cs291.s3.amazonaws.com/Tsung.json
 
 3. Pick a Stack Name of the form `luber-justin`.
 

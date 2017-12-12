@@ -19,4 +19,4 @@ function makeCaretsDynamic() {
       prevQuestion = null;
     }
   });
-}
+};

@@ -53,6 +53,13 @@ To wipe out database and re-seed:
 
     heroku run rails db:seed
 
+Completely wip the db
+
+    heroku pg:reset DATABASE_URL
+
+Set the default appserver timezone
+
+    heroku config:add TZ="America/Los_Angeles"
 
 Hard-Resetting Heroku database
 -------------------------------

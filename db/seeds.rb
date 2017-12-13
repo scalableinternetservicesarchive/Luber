@@ -401,8 +401,8 @@ puts "Created #{Car.count} cars" + DateTime.current.strftime(" on %A, %b. %-d at
 
 # https://github.com/scalableinternetservices/Luber/issues/107
 deltatimes = [1.weeks, 2.hours, -30.minutes, -1.weeks, -1.weeks]
-TSTARTS = deltatimes.map {|dt| Time.at(Time.now + dt)}
-TENDS   = TSTARTS.map {|tstart| Time.at(tstart + 1.hours)}
+TSTARTS = deltatimes.map {|dt| DateTime.current + dt}
+TENDS   = TSTARTS.map {|tstart| tstart + 1.hours}
 
 # > Rental.column_names
 # => ["id", "user_id", "renter_id", "renter_visible", "car_id", 
@@ -435,12 +435,17 @@ user_ids.each do |uid|
       # dt = deltatimes[ i % deltatimes.length ]
       # tstart = Time.at(Time.now + dt)
       # tend = Time.at(tstart + 1.hours)
-      tstart = TSTARTS[i % deltatimes.length]
-      tend = TENDS[i % deltatimes.length]
-      status = i % Rental::MAX_STATUS # see rental.rb for meaning
+      if direct_sql_inject
+        tstart = TSTARTS[i % deltatimes.length]
+        tend = TENDS[i % deltatimes.length]
+      else
+        tstart = Rails.application.config.tz.utc_to_local(TSTARTS[i % deltatimes.length])
+        tend = Rails.application.config.tz.utc_to_local(TENDS[i % deltatimes.length])
+      end
+      status = i % (Rental::MAX_STATUS + 1) # see rental.rb for meaning
       label = Rental.status_int_to_label(status)
       if label == 'Available' 
-        renter = nil 
+        renter = nil
       else
         # renter = (User.all-[u]).sample.id
         renter = (user_ids-[uid]).sample
@@ -476,10 +481,10 @@ user_ids.each do |uid|
 
       if direct_sql_inject
         d[:renter_id]       = d[:renter_id].nil?  ? "NULL_SHITTY_HACK" : d[:renter_id]
-        d[:created_at]      = NOW_STR
-        d[:updated_at]      = NOW_STR
-        d[:start_time]      = NOW_STR
-        d[:end_time]        = NOW_STR
+        d[:created_at]      = (tstart - 1.week).strftime("%FT%T")
+        d[:updated_at]      = (tstart - 1.week).strftime("%FT%T")
+        d[:start_time]      = tstart.strftime("%FT%T")
+        d[:end_time]        = tend.strftime("%FT%T")
         d[:renter_visible]  = d[:renter_visible]  ? "TRUE" : "FALSE"
         d[:skip_in_seed]    = d[:skip_in_seed]    ? "TRUE" : "FALSE"
         vals = dict_to_db_str(d,cols,val_delim)

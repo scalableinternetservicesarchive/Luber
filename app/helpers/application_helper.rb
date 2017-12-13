@@ -1,23 +1,34 @@
 module ApplicationHelper
-  def smart_time(dt)
-    dt = Rails.application.config.tz.utc_to_local(dt)
+  def utc_to_local(dt)
+    return Rails.application.config.tz.utc_to_local(dt)
+  end
+
+  def local_to_utc(dt)
+    return Rails.application.config.tz.local_to_utc(dt)
+  end
+
+  def smart_time(dt, converted=false)
+    dt = utc_to_local(dt) if !converted
     return dt.strftime("%-l:%M %p")
   end
 
-  def smart_date(dt, prefix=false)
-    dt = Rails.application.config.tz.utc_to_local(dt)
+  def smart_date(dt, prefix=false, converted=false)
+    dt = utc_to_local(dt) if !converted
+    yesterday = utc_to_local(DateTime.yesterday.to_datetime)
+    today = utc_to_local(DateTime.current)
+    tomorrow = utc_to_local(DateTime.tomorrow.to_datetime)
     case [dt.day, dt.month, dt.year]
-    when [DateTime.yesterday.day, DateTime.yesterday.month, DateTime.yesterday.year]
+    when [yesterday.day, yesterday.month, yesterday.year]
       str = 'Yesterday'
-    when [DateTime.current.day, DateTime.current.month, DateTime.current.year]
+    when [today.day, today.month, today.year]
       str = 'Today'
-    when [DateTime.tomorrow.day, DateTime.tomorrow.month, DateTime.tomorrow.year]
+    when [tomorrow.day, tomorrow.month, tomorrow.year]
       str = 'Tomorrow'
     else
       if prefix then str = 'on ' else str = '' end
       if dt.month != 5 then dot = '.' else dot = '' end
 
-      if dt.year != DateTime.current.year
+      if dt.year != today.year
         str << dt.strftime("%b#{dot} #{dt.day.ordinalize}, %Y")
       else
         str << dt.strftime("%A, %b#{dot} #{dt.day.ordinalize}")
@@ -27,16 +38,21 @@ module ApplicationHelper
     return str
   end
 
-  def smart_datetime(dt, prefix=false)
-    return "#{smart_date(dt, prefix)} at #{smart_time(dt)}"
+  def smart_datetime(dt, prefix=false, converted=false)
+    if !converted
+      dt = utc_to_local(dt)
+      converted = true
+    end
+    return "#{smart_date(dt, prefix, converted)} at #{smart_time(dt, converted)}"
   end
 
   def smart_datetime_range(dt_start, dt_end, prefix_start=false, prefix_end=false)
-    dt = Rails.application.config.tz.utc_to_local(dt)
-    if dt_start.day == dt_end.day
-      str = "#{smart_date(dt_start)} from #{smart_time(dt_start)} until #{smart_time(dt_end)}"
+    dt_start = utc_to_local(dt_start)
+    dt_end = utc_to_local(dt_end)
+    if dt_start.day == dt_end.day && dt_start.month == dt_end.month && dt_start.year == dt_end.year
+      str = "#{smart_date(dt_start, prefix_start, true)} from #{smart_time(dt_start, true)} until #{smart_time(dt_end, true)}"
     else
-      str = "From #{smart_datetime(dt_start, prefix_start)} until #{smart_datetime(dt_end, prefix_end)}"
+      str = "From #{smart_datetime(dt_start, prefix_start, true)} until #{smart_datetime(dt_end, prefix_end, true)}"
     end
 
     return str

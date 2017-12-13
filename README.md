@@ -120,8 +120,8 @@ heroku keys:add
 ```sh
 heroku create
 git push heroku master
-# If you are pushing a branch other than local master to heroku master, use:
-# git push heroku other-local-branch:master
+# If you are pushing a branch other than master to heroku master, use:
+# git push heroku other-branch:master
 ```
 
 5. Migrate/seed the database and precompile assets
@@ -143,9 +143,12 @@ heroku open
 
 6. In case you need to wipe out the existing database (if say you want to re-seed it differently):
 ```sh
+# Locally
 heroku pg:reset DATABASE_URL
-heroku run rails db:migrate
-heroku run rails db:seed
+
+# Remotely on Heroku, give it a minute to finish the previous command
+rails db:migrate
+rails db:seed
 ```
 
 ## Deploying to AWS Elastic Beanstalk

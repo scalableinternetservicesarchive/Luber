@@ -481,10 +481,10 @@ user_ids.each do |uid|
 
       if direct_sql_inject
         d[:renter_id]       = d[:renter_id].nil?  ? "NULL_SHITTY_HACK" : d[:renter_id]
-        d[:created_at]      = NOW_STR
-        d[:updated_at]      = NOW_STR
-        d[:start_time]      = NOW_STR
-        d[:end_time]        = NOW_STR
+        d[:created_at]      = (tstart - 1.week).strftime("%FT%T")
+        d[:updated_at]      = (tstart - 1.week).strftime("%FT%T")
+        d[:start_time]      = tstart.strftime("%FT%T")
+        d[:end_time]        = tend.strftime("%FT%T")
         d[:renter_visible]  = d[:renter_visible]  ? "TRUE" : "FALSE"
         d[:skip_in_seed]    = d[:skip_in_seed]    ? "TRUE" : "FALSE"
         vals = dict_to_db_str(d,cols,val_delim)

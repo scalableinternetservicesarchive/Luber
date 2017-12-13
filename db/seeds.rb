@@ -401,8 +401,8 @@ puts "Created #{Car.count} cars" + DateTime.current.strftime(" on %A, %b. %-d at
 
 # https://github.com/scalableinternetservices/Luber/issues/107
 deltatimes = [1.weeks, 2.hours, -30.minutes, -1.weeks, -1.weeks]
-TSTARTS = deltatimes.map {|dt| Time.at(Time.now + dt)}
-TENDS   = TSTARTS.map {|tstart| Time.at(tstart + 1.hours)}
+TSTARTS = deltatimes.map {|dt| DateTime.current + dt}
+TENDS   = TSTARTS.map {|tstart| tstart + 1.hours}
 
 # > Rental.column_names
 # => ["id", "user_id", "renter_id", "renter_visible", "car_id", 
@@ -435,12 +435,17 @@ user_ids.each do |uid|
       # dt = deltatimes[ i % deltatimes.length ]
       # tstart = Time.at(Time.now + dt)
       # tend = Time.at(tstart + 1.hours)
-      tstart = TSTARTS[i % deltatimes.length]
-      tend = TENDS[i % deltatimes.length]
-      status = i % Rental::MAX_STATUS # see rental.rb for meaning
+      if direct_sql_inject
+        tstart = TSTARTS[i % deltatimes.length]
+        tend = TENDS[i % deltatimes.length]
+      else
+        tstart = Rails.application.config.tz.utc_to_local(TSTARTS[i % deltatimes.length])
+        tend = Rails.application.config.tz.utc_to_local(TENDS[i % deltatimes.length])
+      end
+      status = i % (Rental::MAX_STATUS + 1) # see rental.rb for meaning
       label = Rental.status_int_to_label(status)
       if label == 'Available' 
-        renter = nil 
+        renter = nil
       else
         # renter = (User.all-[u]).sample.id
         renter = (user_ids-[uid]).sample

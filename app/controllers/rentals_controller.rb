@@ -89,8 +89,8 @@ class RentalsController < ApplicationController
   def create
     @cars = Car.where(user_id: session[:user_id])
     mutable_params = rental_params
-    mutable_params[:start_time] = helpers.local_to_utc(mutable_params[:start_time])
-    mutable_params[:end_time] = helpers.local_to_utc(mutable_params[:end_time])
+    mutable_params[:start_time] = helpers.local_to_utc(mutable_params[:start_time].to_datetime)
+    mutable_params[:end_time] = helpers.local_to_utc(mutable_params[:end_time].to_datetime)
     @rental = Rental.new(mutable_params)
     @rental.user_id = session[:user_id]
 
@@ -143,9 +143,9 @@ class RentalsController < ApplicationController
   def update
     mutable_params = rental_params
     mutable_params.delete(:terms) if mutable_params[:terms].blank?
-    mutable_params[:start_time] = helpers.local_to_utc(mutable_params[:start_time])
-    mutable_params[:end_time] = helpers.local_to_utc(mutable_params[:end_time])
-    
+    mutable_params[:start_time] = helpers.local_to_utc(mutable_params[:start_time].to_datetime)
+    mutable_params[:end_time] = helpers.local_to_utc(mutable_params[:end_time].to_datetime)
+
     original_rental = @rental.dup
     car = Car.find(@rental.car_id)
     @cars = Car.where(user_id: session[:user_id])
